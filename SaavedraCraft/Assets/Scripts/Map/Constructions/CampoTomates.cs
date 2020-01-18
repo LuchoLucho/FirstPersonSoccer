@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Interfaces;
 using Assets.Scripts.Map.Resources;
+using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 
