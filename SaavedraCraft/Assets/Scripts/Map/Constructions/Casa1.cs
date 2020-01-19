@@ -1,6 +1,7 @@
-﻿using Assets.Scripts.Interfaces;
+﻿
 using Assets.Scripts.Map.Resources;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +10,19 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Casa1 : IConstruction, IResourceProducer
+    public class Casa1 : IResourceProducer<Component>
     {
         protected string name;
         protected Component componentMolde;
         private int i, j;
         private bool active;
-        protected ICentralResourcesCommunicator centralCommunicator;
+        protected ICentralResourcesCommunicator<Component> centralCommunicator;
         
         private Component componentInstanciaReal;
 
         private List<IResource> resources = new List<IResource>();
 
-        public Casa1(string aName, Component aComponent, int newI, int newj, ICentralResourcesCommunicator newCentralCommunicator)
+        public Casa1(string aName, Component aComponent, int newI, int newj, ICentralResourcesCommunicator<Component> newCentralCommunicator)
         {
             name = aName;
             componentMolde = aComponent;
@@ -37,7 +38,7 @@ namespace Assets.Scripts
             return new List<IResource>() { new SimpleResource(4, "Persona/s")};
         }
 
-        public virtual IConstruction CloneMe()
+        public virtual IConstruction<Component> CloneMe()
         {
             return new Casa1(this.name,this.componentMolde,this.i,this.j, centralCommunicator);
         }
@@ -106,7 +107,7 @@ namespace Assets.Scripts
             }
         }
 
-        public IConstruction SetNewIJ(int v1, int v2)
+        public IConstruction<Component> SetNewIJ(int v1, int v2)
         {
             this.i = v1;
             this.j = v2;
@@ -126,12 +127,9 @@ namespace Assets.Scripts
             }
         }
 
-        public Rect GetBroadCastingProductionArea()
-        {
-            return new Rect(this.GetCoordI(), this.GetCoordJ(), this.GetWidh(), this.GetHeigh());
-        }
+        
 
-        public void SetCentralCommunicator(ICentralResourcesCommunicator newCentralCommunicator)
+        public void SetCentralCommunicator(ICentralResourcesCommunicator<Component> newCentralCommunicator)
         {
             centralCommunicator = newCentralCommunicator;
         }
@@ -140,5 +138,12 @@ namespace Assets.Scripts
         {
             return resources;
         }
+
+       
+        Rectangle IResourceProducer<Component>.GetBroadCastingProductionArea()
+        {
+            return new Rectangle(this.GetCoordI(), this.GetCoordJ(), this.GetWidh(), this.GetHeigh());
+        }
+
     }
 }

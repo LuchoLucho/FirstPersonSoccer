@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Interfaces;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Constructions;
+using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +9,8 @@ using UnityEngine;
 
 public class ConstructionManager : MonoBehaviour, ICameraObserver {
 
-    private List<IConstruction> constructionAvailable = new List<IConstruction>();
-    private List<IConstruction> constructionInMap = new List<IConstruction>();
+    private List<IConstruction<Component>> constructionAvailable = new List<IConstruction<Component>>();
+    private List<IConstruction<Component>> constructionInMap = new List<IConstruction<Component>>();
     private List<ConstructionClickable> constructionClickables = new List<ConstructionClickable>();
 
     public Component CasaNS1Molde;
@@ -18,10 +18,10 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
     public Component Campo01;
     public Component Mercado01;
 
-    private IConstructionManagerObserver singleObserver;
-    private ICentralResourcesCommunicator centralResourcesCommunicator = new CentralResourcesCommunicator();
+    private IConstructionManagerObserver<Component> singleObserver;
+    private ICentralResourcesCommunicator<Component> centralResourcesCommunicator = new CentralResourcesCommunicator();
 
-    public void AddConstructionManagerObserver(IConstructionManagerObserver newObserver)
+    public void AddConstructionManagerObserver(IConstructionManagerObserver<Component> newObserver)
     {
         singleObserver = newObserver;
     }
@@ -94,7 +94,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         constructionClickables.AddRange(consClickable);
     }
 
-    public void NewBuild(IConstruction toBeConstructedClone)
+    public void NewBuild(IConstruction<Component> toBeConstructedClone)
     {
         constructionInMap.Add(toBeConstructedClone);
         singleObserver.NewBuildCreated(toBeConstructedClone);
@@ -111,7 +111,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         return constructionClickables;
     }
 
-    public IConstruction getConstructionSelected()
+    public IConstruction<Component> getConstructionSelected()
     {
         ConstructionClickable clickeable = constructionClickables.Find(x => x.IsSelected());
         return clickeable.GetContruction();
@@ -120,20 +120,20 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
     // Update is called once per frame
     void Update ()
     {
-		foreach (IConstruction currentConstruction in constructionInMap)
+		foreach (IConstruction<Component> currentConstruction in constructionInMap)
         {
             currentConstruction.TimeTick(Time.deltaTime);
         }
 	}
 
-    public List<IConstruction> GetAvailableConstructions()
+    public List<IConstruction<Component>> GetAvailableConstructions()
     {
         return constructionAvailable;
     }
 
-    public IConstruction getConstructionFromTileCoor(float i, float j)
+    public IConstruction<Component> getConstructionFromTileCoor(float i, float j)
     {
-        IConstruction contructionToFind = constructionInMap.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
+        IConstruction<Component> contructionToFind = constructionInMap.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
         if (contructionToFind == null)
         {
             return null;

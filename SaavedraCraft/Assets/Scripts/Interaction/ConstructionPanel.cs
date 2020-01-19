@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SaavedraCraft.Model.Interfaces;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class ConstructionPanel : MonoBehaviour {
 
     public Texture btnTexture;
     private bool isContructionListDesplegable = false;
-    private IConstruction toBeConstructedClone;
+    private IConstruction<Component> toBeConstructedClone;
     public Vector2 scrollPosition = Vector2.zero;
 
     private Component toBeConstructedGhostComponent = null;
@@ -28,7 +29,7 @@ public class ConstructionPanel : MonoBehaviour {
             GUI.BeginGroup(new Rect(30, 80, 350, 280));
             scrollPosition = GUI.BeginScrollView(new Rect(5, 5, 310, 275), scrollPosition, new Rect(0, 0, 220, n * 80), false, true);
             int i = 0;
-            foreach (IConstruction currentConstruction in constructionManager.GetAvailableConstructions())
+            foreach (IConstruction<Component> currentConstruction in constructionManager.GetAvailableConstructions())
             {
                 GUI.BeginGroup(new Rect(5, 80 * i, 310, 80));
                 GUI.Label(new Rect(5, 35, 130, 70), currentConstruction.GetName());
@@ -72,7 +73,7 @@ public class ConstructionPanel : MonoBehaviour {
         }
         if (constructionManager.isThereAConstructionSelected())
         {
-            IConstruction constructionSelected = constructionManager.getConstructionSelected();
+            IConstruction<Component> constructionSelected = constructionManager.getConstructionSelected();
             int initialX = Screen.width * 2 / 3;
             int initialY = Screen.height * 2 / 3;
             GUI.Box(new Rect(initialX, initialY, 200, 100), btnTexture);

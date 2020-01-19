@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Interfaces;
+using SaavedraCraft.Model.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

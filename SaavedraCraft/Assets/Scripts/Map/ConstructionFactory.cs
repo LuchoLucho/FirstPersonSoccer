@@ -1,10 +1,10 @@
-﻿using Assets.Scripts.Interfaces;
+﻿using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver
+public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver<Component>
 {
 
     public static float isoMetricAngleX = 34.3f*Mathf.PI/180.0f; //RAD
@@ -116,7 +116,7 @@ public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver
     {
         float[] realCoordArray = turnIJCoordIntoRealVector3(i, j);
         Vector3 realCoord = new Vector3(realCoordArray[0], realCoordArray[1], realCoordArray[2]);
-        IConstruction newChildConstruction = constructionManager.getConstructionFromTileCoor(i, j);
+        IConstruction<Component> newChildConstruction = constructionManager.getConstructionFromTileCoor(i, j);
         Component newChild = null;
         if (newChildConstruction == null)
         {
@@ -157,7 +157,7 @@ public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver
 		
 	}
 
-    public void NewBuildCreated(IConstruction constructionToBeRender)
+    public void NewBuildCreated(IConstruction<Component> constructionToBeRender)
     {
         Vector2 keyToFindAlreadyBuild = new Vector2(constructionToBeRender.GetCoordI(), constructionToBeRender.GetCoordJ());
         if ( ijCoordSprite.ContainsKey(keyToFindAlreadyBuild))

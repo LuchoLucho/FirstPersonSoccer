@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using SaavedraCraft.Model.Interfaces;
 using UnityEngine;
 
 public class ConstructionClickable : MonoBehaviour {
 
-    private IConstruction contruction;
+    private IConstruction<Component> contruction;
     private bool isSelected = false;
     private Component selectedIcon;
 
@@ -46,12 +47,12 @@ public class ConstructionClickable : MonoBehaviour {
         }        
     }
 
-    public void SetConstruction(IConstruction aConstruction)
+    public void SetConstruction(IConstruction<Component> aConstruction)
     {
         contruction = aConstruction;
     }
 
-    public IConstruction GetContruction()
+    public IConstruction<Component> GetContruction()
     {
         return contruction;
     }

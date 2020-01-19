@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Interfaces;
+﻿using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
