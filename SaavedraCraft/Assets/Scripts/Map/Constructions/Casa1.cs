@@ -122,7 +122,7 @@ namespace Assets.Scripts
                 currentResource.TimeTick(timedelta);
                 if (currentResource.GetResourceAmount() > resourceCntPreviousTick)
                 {
-                    centralCommunicator.ResourcesAvailables(this);
+                    centralCommunicator.AddProducer(this);
                 }
             }
         }

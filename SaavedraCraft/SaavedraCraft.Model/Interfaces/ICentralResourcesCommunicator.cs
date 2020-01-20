@@ -6,6 +6,6 @@ namespace SaavedraCraft.Model.Interfaces
 {
     public interface ICentralResourcesCommunicator<T>
     {
-        void ResourcesAvailables(IResourceProducer<T> resourceProducer);
+        void AddProducer(IResourceProducer<T> resourceProducer);
     }
 }

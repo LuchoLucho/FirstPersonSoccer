@@ -2,6 +2,7 @@
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Constructions;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Resources;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
     public Component Mercado01;
 
     private IConstructionManagerObserver<Component> singleObserver;
-    private ICentralResourcesCommunicator<Component> centralResourcesCommunicator = new CentralResourcesCommunicator();
+    private ICentralResourcesCommunicator<Component> centralResourcesCommunicator = new CentralResourcesCommunicator<Component>();
 
     public void AddConstructionManagerObserver(IConstructionManagerObserver<Component> newObserver)
     {

@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using SaavedraCraft.Model.Resources;
+
+namespace SaavedraCraft.Model.Interfaces
+{
+    public interface IResourceConsumer<T> : IConstruction<T>
+    {
+        List<IResource> GetNeeds();
+        List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer);
+    }
+}
