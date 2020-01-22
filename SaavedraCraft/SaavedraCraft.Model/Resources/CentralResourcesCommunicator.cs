@@ -67,6 +67,17 @@ namespace SaavedraCraft.Model.Resources
                 (c1.GetCoordJ()-c2.GetCoordJ())* (c1.GetCoordJ() - c2.GetCoordJ());
             return (int) Math.Sqrt(squareDistance);
         }
-        
+
+        private List<IResource> clonResourcesAndInactive(List<IResource> list)
+        {
+            List<IResource> toRet = new List<IResource>();
+            foreach (IResource resource in list)
+            {
+                IResource newResource = resource.Clone();
+                toRet.Add(newResource);
+            }
+            return toRet;
+        }
+
     }
 }

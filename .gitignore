@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SaavedraCraft/Assets/Libraries
+/SaavedraCraft/MyBUILDs
+/SaavedraCraft/Packages
+/SaavedraCraft/SaavedraCraft.Model/obj/Debug
+/SaavedraCraft.Tests/bin/Debug
+/SaavedraCraft.Tests/obj/Debug

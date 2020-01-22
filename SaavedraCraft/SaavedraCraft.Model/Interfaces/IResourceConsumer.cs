@@ -7,7 +7,8 @@ namespace SaavedraCraft.Model.Interfaces
 {
     public interface IResourceConsumer<T> : IConstruction<T>
     {
-        List<IResource> GetNeeds();
+        List<IResource> GetNeeds(List<IResource> resources);
         List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer);
+        void Buy(List<IResource> list);
     }
 }

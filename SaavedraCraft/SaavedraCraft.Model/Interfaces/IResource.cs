@@ -11,5 +11,8 @@ namespace SaavedraCraft.Model.Interfaces
         string GetResourceName();
         bool isActive();
         void setActive(bool newValue);
+        IResource Clone();
+        void Add(int toAdd);
+        void Subtract(int toSubtract);        
     }
 }

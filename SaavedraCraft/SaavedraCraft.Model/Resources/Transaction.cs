@@ -32,5 +32,12 @@ namespace SaavedraCraft.Model.Resources
         {
             return intersectionOfNeedsAndProvisionsFromProducer;
         }
+
+        public void DebitarAcreditar()
+        {            
+            this.producer.Sell(getResources());
+            this.consumer.Buy(getResources());
+        }
+        
     }
 }

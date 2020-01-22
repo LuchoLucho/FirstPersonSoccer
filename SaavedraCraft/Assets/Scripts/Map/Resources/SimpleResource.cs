@@ -19,6 +19,16 @@ namespace Assets.Scripts.Map.Resources
             this.name = name;
         }
 
+        public void Add(int toAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResource Clone()
+        {
+            return new SimpleResource((int)this.floatResourceCnt, this.name);
+        }
+
         public int GetResourceAmount()
         {
             return Mathf.RoundToInt(floatResourceCnt);
@@ -37,6 +47,11 @@ namespace Assets.Scripts.Map.Resources
         public void setActive(bool newValue)
         {
             active = newValue;
+        }
+
+        public void Subtract(int toSubtract)
+        {
+            throw new NotImplementedException();
         }
 
         public void TimeTick(float timedelta)

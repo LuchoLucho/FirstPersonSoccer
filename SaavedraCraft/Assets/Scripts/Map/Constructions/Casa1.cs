@@ -145,5 +145,9 @@ namespace Assets.Scripts
             return new Rectangle(this.GetCoordI(), this.GetCoordJ(), this.GetWidh(), this.GetHeigh());
         }
 
+        public void Sell(List<IResource> list)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

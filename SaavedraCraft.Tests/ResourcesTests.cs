@@ -25,11 +25,45 @@ namespace SaavedraCraft.Tests
             Assert.AreEqual(1, transactions[0].getResources().Count);
         }
 
+        [TestMethod]
+        public void SingleTransactionApplyTest()
+        {
+            IResourceProducer<object> resourceProducer = new MockResourceProducer();
+            IResourceConsumer<object> resourceConsumer = new MockResourceConsumer();
+            List<IResource> resourcesInTransactions = new List<IResource> { new MockResource()};
+            Transaction<object> transaction = new Transaction<object>(resourceConsumer,resourceProducer, resourcesInTransactions);
+            transaction.DebitarAcreditar();
+            Assert.AreEqual(0, resourceProducer.getAllResources()[0].GetResourceAmount());
+            Assert.AreEqual(1, resourceConsumer.getAllResources()[0].GetResourceAmount());
+        }
+
         public class MockResourceConsumer : IResourceConsumer<object>
         {
+            private List<IResource> resources = new List<IResource>();
+
+            public void Buy(List<IResource> list)
+            {
+                foreach(IResource toAdd in list)
+                {
+                    if (resources.Contains(toAdd))
+                    {
+                        resources.Find(x => x.Equals(toAdd)).Add(toAdd.GetResourceAmount());
+                    }
+                    else
+                    {
+                        resources.Add(toAdd);
+                    }
+                }
+            }
+
             public IConstruction<object> CloneMe()
             {
                 throw new NotImplementedException();
+            }
+
+            public List<IResource> getAllResources()
+            {
+                return resources;
             }
 
             public object GetComponentMolde()
@@ -62,15 +96,27 @@ namespace SaavedraCraft.Tests
                 throw new NotImplementedException();
             }
 
-            public List<IResource> GetNeeds()
+            public List<IResource> GetNeeds(List<IResource> resourcesToCheck)
             {
                 return new List<IResource>() { new MockResource()};
             }
 
             public List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer)
             {
-                List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllResources().FindAll(x => this.GetNeeds().Contains(x));                          
-                return intersectionOfNeedsAndProvisionsFromProducer;
+                List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllResources().FindAll(x => this.GetNeeds(new List<IResource> { x }).Contains(x));
+                List<IResource> resourcesIntersectionWithActualNeededAmount = clonResourcesAndInactive(this.GetNeeds(intersectionOfNeedsAndProvisionsFromProducer));
+                return resourcesIntersectionWithActualNeededAmount;
+            }
+
+            private List<IResource> clonResourcesAndInactive(List<IResource> list)
+            {
+                List<IResource> toRet = new List<IResource>();
+                foreach (IResource resource in list)
+                {
+                    IResource newResource = resource.Clone();
+                    toRet.Add(newResource);
+                }
+                return toRet;
             }
 
             public int GetWidh()
@@ -106,9 +152,11 @@ namespace SaavedraCraft.Tests
 
         public class MockResource : IResource
         {
+            private int cnt = 1;
+
             public int GetResourceAmount()
             {
-                return 1;
+                return cnt;
             }
 
             public string GetResourceName()
@@ -145,6 +193,23 @@ namespace SaavedraCraft.Tests
                 }
                 return this.GetResourceName().Equals(other.GetResourceName());
             }
+
+            public IResource Clone()
+            {
+                return new MockResource();
+            }
+
+            public void Add(int toAdd)
+            {
+                cnt += toAdd;
+            }
+
+            public void Subtract(int amountConsumed)
+            {
+                cnt -= amountConsumed;
+            }
+
+            
         }
 
         public class MockResourceProducer : IResourceProducer<object>
@@ -204,6 +269,11 @@ namespace SaavedraCraft.Tests
             public bool isActive()
             {
                 throw new NotImplementedException();
+            }
+
+            public void Sell(List<IResource> list)
+            {
+                this.getAllResources().FindAll(x => list.Contains(x)).ForEach(y => y.Subtract(list.Find(z => z.Equals(y)).GetResourceAmount()));
             }
 
             public void SetActive(bool newValue)

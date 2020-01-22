@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace SaavedraCraft.Model.Interfaces
 {
     public interface IConstruction<T>
@@ -16,5 +18,6 @@ namespace SaavedraCraft.Model.Interfaces
         string GetConstructionInfo();
         bool isActive();
         void SetActive(bool newValue);
+        List<IResource> getAllResources();
     }
 }
