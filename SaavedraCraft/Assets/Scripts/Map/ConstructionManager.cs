@@ -20,7 +20,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
     public Component Mercado01;
 
     private IConstructionManagerObserver<Component> singleObserver;
-    private ICentralResourcesCommunicator<Component> centralResourcesCommunicator = new CentralResourcesCommunicator<Component>();
+    private ICentralMarket<Component> centralMarket = new CentralMarket<Component>();
 
     public void AddConstructionManagerObserver(IConstructionManagerObserver<Component> newObserver)
     {
@@ -31,15 +31,15 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
     void Start ()
     {
         //Available Constructions:
-        constructionAvailable.Add(new Assets.Scripts.Casa1("Casa1", CasaNS1Molde, 0, 0, centralResourcesCommunicator));
-        constructionAvailable.Add(new Assets.Scripts.Casa1("CalleNS1", CalleNS1, 0, 0, centralResourcesCommunicator));
-        constructionAvailable.Add(new CampoTomates("Campo01", Campo01, 0, 0, centralResourcesCommunicator));
-        constructionAvailable.Add(new Assets.Scripts.Casa1("Mercado01", Mercado01, 0, 0, centralResourcesCommunicator));
+        constructionAvailable.Add(new Assets.Scripts.Casa1("Casa1", CasaNS1Molde, 0, 0, centralMarket));
+        constructionAvailable.Add(new Assets.Scripts.Casa1("CalleNS1", CalleNS1, 0, 0, centralMarket));
+        constructionAvailable.Add(new CampoTomates("Campo01", Campo01, 0, 0, centralMarket));
+        constructionAvailable.Add(new Assets.Scripts.Casa1("Mercado01", Mercado01, 0, 0, centralMarket));
         //----
         constructionInMap.Add(constructionAvailable[0].CloneMe().SetNewIJ(0, -2));
-        constructionInMap.Add(new Assets.Scripts.Casa1("Casa2", CasaNS1Molde, 1, -2, centralResourcesCommunicator));
-        constructionInMap.Add(new Assets.Scripts.Casa1("Casa3", CasaNS1Molde, 2, -2, centralResourcesCommunicator));
-        constructionInMap.Add(new Assets.Scripts.Casa1("Casa4", CasaNS1Molde, 0, 2, centralResourcesCommunicator));
+        constructionInMap.Add(new Assets.Scripts.Casa1("Casa2", CasaNS1Molde, 1, -2, centralMarket));
+        constructionInMap.Add(new Assets.Scripts.Casa1("Casa3", CasaNS1Molde, 2, -2, centralMarket));
+        constructionInMap.Add(new Assets.Scripts.Casa1("Casa4", CasaNS1Molde, 0, 2, centralMarket));
         constructionInMap.Add(constructionAvailable[3].CloneMe().SetNewIJ(-2, -2));//Mercado
         constructionInMap.Add(constructionAvailable[2].CloneMe().SetNewIJ(4, -2));//Campo
 

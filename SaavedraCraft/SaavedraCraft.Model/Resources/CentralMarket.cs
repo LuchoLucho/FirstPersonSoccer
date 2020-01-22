@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SaavedraCraft.Model.Resources
 {
-    public class CentralResourcesCommunicator<T> : ICentralResourcesCommunicator<T>
+    public class CentralMarket<T> : ICentralMarket<T>
     {
         public const int MAX_DISTANCE_PRODUCER_CONSUMER = 3;
 

@@ -40,14 +40,14 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Interfaces\ICameraController.cs" />
-    <Compile Include="Interfaces\ICentralResourcesCommunicator.cs" />
+    <Compile Include="Interfaces\ICentralMarket.cs" />
     <Compile Include="Interfaces\IConstruction.cs" />
     <Compile Include="Interfaces\IConstructionManagerObserver.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IResourceConsumer.cs" />
     <Compile Include="Interfaces\IResourceProducer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\CentralResourcesCommunicator.cs" />
+    <Compile Include="Resources\CentralMarket.cs" />
     <Compile Include="Resources\Transaction.cs" />
     <Compile Include="Utils\Rectangle.cs" />
   </ItemGroup>

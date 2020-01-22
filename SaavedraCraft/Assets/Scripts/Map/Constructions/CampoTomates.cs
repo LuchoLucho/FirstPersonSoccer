@@ -11,7 +11,7 @@ namespace Assets.Scripts.Map.Constructions
 {
     public class CampoTomates : Casa1
     {
-        public CampoTomates(string aName, Component aComponent, int newI, int newj, ICentralResourcesCommunicator<Component> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
+        public CampoTomates(string aName, Component aComponent, int newI, int newj, ICentralMarket<Component> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
         {
         }
 

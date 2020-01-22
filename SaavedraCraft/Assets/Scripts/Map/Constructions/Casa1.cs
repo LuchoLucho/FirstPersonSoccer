@@ -16,13 +16,13 @@ namespace Assets.Scripts
         protected Component componentMolde;
         private int i, j;
         private bool active;
-        protected ICentralResourcesCommunicator<Component> centralCommunicator;
+        protected ICentralMarket<Component> centralCommunicator;
         
         private Component componentInstanciaReal;
 
         private List<IResource> resources = new List<IResource>();
 
-        public Casa1(string aName, Component aComponent, int newI, int newj, ICentralResourcesCommunicator<Component> newCentralCommunicator)
+        public Casa1(string aName, Component aComponent, int newI, int newj, ICentralMarket<Component> newCentralCommunicator)
         {
             name = aName;
             componentMolde = aComponent;
@@ -129,7 +129,7 @@ namespace Assets.Scripts
 
         
 
-        public void SetCentralCommunicator(ICentralResourcesCommunicator<Component> newCentralCommunicator)
+        public void SetCentralCommunicator(ICentralMarket<Component> newCentralCommunicator)
         {
             centralCommunicator = newCentralCommunicator;
         }

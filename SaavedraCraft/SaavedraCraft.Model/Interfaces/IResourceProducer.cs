@@ -8,7 +8,7 @@ namespace SaavedraCraft.Model.Interfaces
     public interface IResourceProducer<T> : IConstruction<T>
     {
         Rectangle GetBroadCastingProductionArea();
-        void SetCentralCommunicator(ICentralResourcesCommunicator<T> newCentralCommunicator);        
+        void SetCentralCommunicator(ICentralMarket<T> newCentralCommunicator);        
         void Sell(List<IResource> list);
     }
 }

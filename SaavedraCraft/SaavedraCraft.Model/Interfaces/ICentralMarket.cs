@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SaavedraCraft.Model.Interfaces
 {
-    public interface ICentralResourcesCommunicator<T>
+    public interface ICentralMarket<T>
     {
         void AddProducer(IResourceProducer<T> resourceProducer);
     }

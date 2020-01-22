@@ -15,10 +15,10 @@ namespace SaavedraCraft.Tests
         {
             IResourceProducer<object> resourceProducer = new MockResourceProducer();
             IResourceConsumer<object> resourceConsumer = new MockResourceConsumer();
-            CentralResourcesCommunicator<object> resourcesCommunicator = new CentralResourcesCommunicator<object>();
-            resourcesCommunicator.AddProducer(resourceProducer);
-            resourcesCommunicator.AddConsumer(resourceConsumer);
-            List<Transaction<object>> transactions = resourcesCommunicator.GetTransactions();
+            CentralMarket<object> centralMarket = new CentralMarket<object>();
+            centralMarket.AddProducer(resourceProducer);
+            centralMarket.AddConsumer(resourceConsumer);
+            List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
             Assert.AreEqual(resourceProducer,transactions[0].getProducer());
             Assert.AreEqual(resourceConsumer, transactions[0].getConsumer());
@@ -281,7 +281,7 @@ namespace SaavedraCraft.Tests
                 throw new NotImplementedException();
             }
 
-            public void SetCentralCommunicator(ICentralResourcesCommunicator<object> newCentralCommunicator)
+            public void SetCentralCommunicator(ICentralMarket<object> newCentralCommunicator)
             {
                 throw new NotImplementedException();
             }
