@@ -68,9 +68,10 @@
     <Compile Include="Assets\Scripts\Interaction\ConstructionPanel.cs" />
     <Compile Include="Assets\Scripts\Map\ConstructionFactory.cs" />
     <Compile Include="Assets\Scripts\Map\ConstructionManager.cs" />
+    <Compile Include="Assets\Scripts\Map\Constructions\Calle.cs" />
     <Compile Include="Assets\Scripts\Map\Constructions\CampoTomates.cs" />
     <Compile Include="Assets\Scripts\Map\Constructions\Casa1.cs" />
-    <Compile Include="Assets\Scripts\Map\Resources\SimpleResource.cs" />
+    <Compile Include="Assets\Scripts\Map\Resources\CentralMarketBehaviour.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/lucho/Desktop/MisProjectos/Unity/git/FirstPersonSoccer/SaavedraCraft/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

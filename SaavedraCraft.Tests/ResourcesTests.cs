@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SaavedraCraft.Model.Constructions;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Resources;
 using SaavedraCraft.Model.Utils;
@@ -13,9 +14,9 @@ namespace SaavedraCraft.Tests
         [TestMethod]
         public void SingleTransactionWithProducerConsumerTest()
         {
-            IResourceProducer<object> resourceProducer = new MockResourceProducer();
-            IResourceConsumer<object> resourceConsumer = new MockResourceConsumer();
             CentralMarket<object> centralMarket = new CentralMarket<object>();
+            IResourceConsumer<object> resourceConsumer = new CasaTest("Casa",null,0,0, centralMarket);//new MockResourceProducer();
+            IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo",null,1,1,centralMarket);
             centralMarket.AddProducer(resourceProducer);
             centralMarket.AddConsumer(resourceConsumer);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
@@ -28,16 +29,46 @@ namespace SaavedraCraft.Tests
         [TestMethod]
         public void SingleTransactionApplyTest()
         {
-            IResourceProducer<object> resourceProducer = new MockResourceProducer();
-            IResourceConsumer<object> resourceConsumer = new MockResourceConsumer();
-            List<IResource> resourcesInTransactions = new List<IResource> { new MockResource()};
+            CentralMarket<object> centralMarket = new CentralMarket<object>();
+            IResourceConsumer<object> resourceConsumer = new CasaTest("Casa", null, 0, 0, centralMarket);//new MockResourceProducer();
+            IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo", null, 1, 1, centralMarket);
+            IResource tomate = new SimpleResource(1, "Tomates/s");
+            List<IResource> resourcesInTransactions = new List<IResource> { tomate };
             Transaction<object> transaction = new Transaction<object>(resourceConsumer,resourceProducer, resourcesInTransactions);
+            Assert.AreEqual(1, resourceProducer.getAllResources()[0].GetResourceAmount());            
+            //Assert.AreEqual(0, resourceConsumer.getAllResources().Find(x=>x == tomate).GetResourceAmount()); solo hay personas!
             transaction.DebitarAcreditar();
             Assert.AreEqual(0, resourceProducer.getAllResources()[0].GetResourceAmount());
-            Assert.AreEqual(1, resourceConsumer.getAllResources()[0].GetResourceAmount());
+            Assert.AreEqual(1, resourceConsumer.getAllResources().Find(x => x == tomate).GetResourceAmount());
         }
 
-        public class MockResourceConsumer : IResourceConsumer<object>
+        public class CasaTest : Casa<object>
+        {
+            public CasaTest(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
+            {
+            }
+        }
+
+        public class CampoTomatesTest : CampoTomates<object>
+        {
+            public CampoTomatesTest(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
+            {
+            }
+
+            public override List<IResource> AddInitialResources()
+            {
+                return new List<IResource>() { new SimpleResource(1, "Tomates/s") }; ;
+            }
+
+            public override void Sell(List<IResource> list)
+            {
+                //tomatesVendidos += list[0].GetResourceAmount();
+                this.getAllResources().FindAll(x => list.Contains(x)).ForEach(y => y.Subtract(list.Find(z => z.Equals(y)).GetResourceAmount()));
+                //base.Sell(list);
+            }
+        }
+
+        /*public class MockResourceConsumer : IResourceConsumer<object>
         {
             private List<IResource> resources = new List<IResource>();
 
@@ -104,11 +135,11 @@ namespace SaavedraCraft.Tests
             public List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer)
             {
                 List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllResources().FindAll(x => this.GetNeeds(new List<IResource> { x }).Contains(x));
-                List<IResource> resourcesIntersectionWithActualNeededAmount = clonResourcesAndInactive(this.GetNeeds(intersectionOfNeedsAndProvisionsFromProducer));
+                List<IResource> resourcesIntersectionWithActualNeededAmount = cloneResourcesAndInactive(this.GetNeeds(intersectionOfNeedsAndProvisionsFromProducer));
                 return resourcesIntersectionWithActualNeededAmount;
             }
 
-            private List<IResource> clonResourcesAndInactive(List<IResource> list)
+            private List<IResource> cloneResourcesAndInactive(List<IResource> list)
             {
                 List<IResource> toRet = new List<IResource>();
                 foreach (IResource resource in list)
@@ -300,6 +331,6 @@ namespace SaavedraCraft.Tests
             {
                 throw new NotImplementedException();
             }
-        }
+        }*/
     }
 }

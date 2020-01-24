@@ -39,6 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Constructions\CampoTomates.cs" />
+    <Compile Include="Constructions\Casa.cs" />
     <Compile Include="Interfaces\ICameraController.cs" />
     <Compile Include="Interfaces\ICentralMarket.cs" />
     <Compile Include="Interfaces\IConstruction.cs" />
@@ -48,6 +50,7 @@
     <Compile Include="Interfaces\IResourceProducer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\CentralMarket.cs" />
+    <Compile Include="Resources\SimpleResource.cs" />
     <Compile Include="Resources\Transaction.cs" />
     <Compile Include="Utils\Rectangle.cs" />
   </ItemGroup>

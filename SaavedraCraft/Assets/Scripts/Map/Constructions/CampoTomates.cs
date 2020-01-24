@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Map.Resources;
-using SaavedraCraft.Model.Interfaces;
+﻿using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Resources;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +11,8 @@ namespace Assets.Scripts.Map.Constructions
 {
     public class CampoTomates : Casa1
     {
+        private int tomatesVendidos = 0;
+
         public CampoTomates(string aName, Component aComponent, int newI, int newj, ICentralMarket<Component> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
         {
         }
@@ -22,9 +24,14 @@ namespace Assets.Scripts.Map.Constructions
 
         public override IConstruction<Component> CloneMe()
         {
-            return new CampoTomates(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralCommunicator);
+            return new CampoTomates(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralMarket);
         }
 
+        public override void Sell(List<IResource> list)
+        {
+            tomatesVendidos += list[0].GetResourceAmount();
+            this.getAllResources().FindAll(x => list.Contains(x)).ForEach(y => y.Subtract(list.Find(z => z.Equals(y)).GetResourceAmount()));
+        }
 
     }
 }
