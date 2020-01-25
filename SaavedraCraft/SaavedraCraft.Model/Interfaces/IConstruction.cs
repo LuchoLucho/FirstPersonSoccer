@@ -18,6 +18,7 @@ namespace SaavedraCraft.Model.Interfaces
         string GetConstructionInfo();
         bool isActive();
         void SetActive(bool newValue);
-        List<IResource> getAllResources();
+        List<IResource> getAllProducedResources();
+        List<IResource> getAllExternalResources();
     }
 }

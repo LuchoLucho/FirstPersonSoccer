@@ -16,7 +16,8 @@ namespace SaavedraCraft.Model.Constructions
 
         protected T componentInstanciaReal;
 
-        private List<IResource> resources = new List<IResource>();
+        private List<IResource> producedResources = new List<IResource>();
+        private List<IResource> externalResources = new List<IResource>();
 
         public Casa(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator)
         {
@@ -24,12 +25,12 @@ namespace SaavedraCraft.Model.Constructions
             componentMolde = aComponent;
             i = newI;
             j = newj;
-            resources.AddRange(AddInitialResources());
+            producedResources.AddRange(AddInitialProducedResources());
             active = false;
             this.SetCentralCommunicator(newCentralCommunicator);
         }
 
-        public virtual List<IResource> AddInitialResources()
+        public virtual List<IResource> AddInitialProducedResources()
         {
             return new List<IResource>() { new SimpleResource(4, "Persona/s") };
         }
@@ -47,8 +48,10 @@ namespace SaavedraCraft.Model.Constructions
         public string GetConstructionInfo()
         {
             int totalNumberOfResources = 0;
-            string toRet = this.GetName() + "\r\n";
-            resources.ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");
+            string toRet = this.GetName() + "\r\nProd:\r\n";
+            producedResources.ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");
+            toRet += "Externo:\r\n";
+            externalResources.ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");
             toRet.TrimEnd(new char[] { '\r', '\n' });
             return toRet;
         }
@@ -86,7 +89,8 @@ namespace SaavedraCraft.Model.Constructions
         public virtual void SetActive(bool newValue)
         {
             active = newValue;
-            this.resources.ForEach(x => x.setActive(newValue));
+            this.externalResources.ForEach(x => x.setActive(newValue));
+            this.producedResources.ForEach(x => x.setActive(newValue));
         }
 
         public virtual void SetComponentInstanciaReal(T componentReal)
@@ -108,7 +112,7 @@ namespace SaavedraCraft.Model.Constructions
 
         public void TimeTick(float timedelta)
         {
-            foreach (IResource currentResource in resources)
+            foreach (IResource currentResource in producedResources)
             {
                 int resourceCntPreviousTick = currentResource.GetResourceAmount();
                 currentResource.TimeTick(timedelta);
@@ -141,11 +145,15 @@ namespace SaavedraCraft.Model.Constructions
             centralMarket = newCentralCommunicator;
         }
 
-        public List<IResource> getAllResources()
+        public List<IResource> getAllProducedResources()
         {
-            return resources;
+            return producedResources;
         }
 
+        public List<IResource> getAllExternalResources()
+        {
+            return externalResources;
+        }
 
         Rectangle IResourceProducer<T>.GetBroadCastingProductionArea()
         {
@@ -157,14 +165,21 @@ namespace SaavedraCraft.Model.Constructions
             throw new NotImplementedException();
         }
 
-        public List<IResource> GetNeeds(List<IResource> resources)
+        public virtual List<IResource> GetNeeds(List<IResource> resources)
         {
-            return new List<IResource> { new SimpleResource(1, "Tomates/s") };
+            int neededAmount = 1;
+            IResource singleNeed = new SimpleResource(neededAmount, "Tomates/s");
+            IResource alreadyGotResource = externalResources.Find(x => x.Equals(singleNeed));
+            if (alreadyGotResource?.GetResourceAmount()>= neededAmount)
+            {
+                return new List<IResource>();//My need was fulfil!!!
+            }
+            return new List<IResource> { singleNeed };
         }
 
         public List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer)
         {
-            List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllResources().FindAll(x => this.GetNeeds(new List<IResource> { x }).Contains(x));
+            List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllProducedResources().FindAll(x => this.GetNeeds(new List<IResource> { x }).Contains(x));
             if ((intersectionOfNeedsAndProvisionsFromProducer.Count == 0) || (intersectionOfNeedsAndProvisionsFromProducer[0].GetResourceAmount()==0))
             {
                 return new List<IResource>();
@@ -188,13 +203,13 @@ namespace SaavedraCraft.Model.Constructions
         {
             foreach (IResource toAdd in list)
             {
-                if (resources.Contains(toAdd))
+                if (externalResources.Contains(toAdd))
                 {
-                    resources.Find(x => x.Equals(toAdd)).Add(toAdd.GetResourceAmount());
+                    externalResources.Find(x => x.Equals(toAdd)).Add(toAdd.GetResourceAmount());
                 }
                 else
                 {
-                    resources.Add(toAdd);
+                    externalResources.Add(toAdd);
                 }
             }
         }
@@ -207,6 +222,6 @@ namespace SaavedraCraft.Model.Constructions
                 return false;
             }
             return this.GetCoordI() == other.GetCoordI() && this.GetCoordJ() == other.GetCoordJ();
-        }
+        }        
     }
 }

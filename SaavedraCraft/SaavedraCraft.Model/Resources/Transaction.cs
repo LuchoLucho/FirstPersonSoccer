@@ -10,6 +10,7 @@ namespace SaavedraCraft.Model.Resources
         private IResourceConsumer<T> consumer;
         private IResourceProducer<T> producer;
         private List<IResource> intersectionOfNeedsAndProvisionsFromProducer;
+        private bool wasApplied = false;
 
         public Transaction(IResourceConsumer<T> consumer, IResourceProducer<T> producer, List<IResource> intersectionOfNeedsAndProvisionsFromProducer)
         {
@@ -35,8 +36,13 @@ namespace SaavedraCraft.Model.Resources
 
         public void DebitarAcreditar()
         {            
+            if (wasApplied)
+            {
+                return;
+            }
             this.producer.Sell(getResources());
             this.consumer.Buy(getResources());
+            wasApplied = true;
         }
         
     }

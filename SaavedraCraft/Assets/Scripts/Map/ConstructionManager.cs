@@ -48,7 +48,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         constructionInMap.Add(new Assets.Scripts.Casa1("Casa3", CasaNS1Molde, 2, -2, GetCentralMarket()));
         constructionInMap.Add(new Assets.Scripts.Casa1("Casa4", CasaNS1Molde, 0, 2, GetCentralMarket()));
         constructionInMap.Add(constructionAvailable[3].CloneMe().SetNewIJ(-2, -2));//Mercado
-        constructionInMap.Add(constructionAvailable[2].CloneMe().SetNewIJ(4, -2));//Campo
+        //constructionInMap.Add(constructionAvailable[2].CloneMe().SetNewIJ(4, -2));//Campo
 
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(-4, -1));
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(-3, -1));

@@ -21,6 +21,7 @@ public class CentralMarketBehaviour : MonoBehaviour
         if (transactions.Count > 0 )
         {
             Debug.Log("There are transactions! Cnt = " + transactions.Count);
+            transactions.ForEach(t => t.DebitarAcreditar());
         }
     }
 

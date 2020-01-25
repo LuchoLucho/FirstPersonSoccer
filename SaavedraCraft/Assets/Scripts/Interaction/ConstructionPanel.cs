@@ -76,9 +76,10 @@ public class ConstructionPanel : MonoBehaviour {
             IConstruction<Component> constructionSelected = constructionManager.getConstructionSelected();
             int initialX = Screen.width * 2 / 3;
             int initialY = Screen.height * 2 / 3;
-            GUI.Box(new Rect(initialX, initialY, 200, 100), btnTexture);
-            GUI.BeginGroup(new Rect(initialX + 10, initialY + 10, 190, 290));
-            GUI.Label(new Rect(5, 5, 190, 60), "Info: " + constructionSelected.GetConstructionInfo());
+            GUI.Box(new Rect(initialX, initialY, 200, 150), btnTexture);
+            GUI.BeginGroup(new Rect(initialX + 10, initialY + 10, 190, 320));
+            GUI.skin.label.fontSize = 15;
+            GUI.Label(new Rect(5, 5, 190, 90), "Info: " + constructionSelected.GetConstructionInfo());
 
             GUI.EndGroup();
         }

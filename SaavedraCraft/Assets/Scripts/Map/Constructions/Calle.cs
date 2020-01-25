@@ -30,7 +30,12 @@ namespace Assets.Scripts
             return new Calle(name,calleNS1, GetCoordI(), GetCoordJ());
         }
 
-        public List<IResource> getAllResources()
+        public List<IResource> getAllExternalResources()
+        {
+            return new List<IResource>();
+        }
+
+        public List<IResource> getAllProducedResources()
         {
             return new List<IResource>();
         }

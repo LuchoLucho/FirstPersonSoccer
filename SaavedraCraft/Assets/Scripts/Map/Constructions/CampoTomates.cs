@@ -17,7 +17,7 @@ namespace Assets.Scripts.Map.Constructions
         {
         }
 
-        public override List<IResource> AddInitialResources()
+        public override List<IResource> AddInitialProducedResources()
         {            
             return new List<IResource>() { new SimpleResource(0, "Tomates/s") }; ;
         }
@@ -30,7 +30,12 @@ namespace Assets.Scripts.Map.Constructions
         public override void Sell(List<IResource> list)
         {
             tomatesVendidos += list[0].GetResourceAmount();
-            this.getAllResources().FindAll(x => list.Contains(x)).ForEach(y => y.Subtract(list.Find(z => z.Equals(y)).GetResourceAmount()));
+            this.getAllProducedResources().FindAll(x => list.Contains(x)).ForEach(y => y.Subtract(list.Find(z => z.Equals(y)).GetResourceAmount()));
+        }
+
+        public override List<IResource> GetNeeds(List<IResource> resources)
+        {
+            return new List<IResource>();// I HAVE NO NEEDS!
         }
 
     }

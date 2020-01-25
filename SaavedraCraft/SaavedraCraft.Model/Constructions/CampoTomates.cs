@@ -12,7 +12,7 @@ namespace SaavedraCraft.Model.Constructions
         {
         }
 
-        public override List<IResource> AddInitialResources()
+        public override List<IResource> AddInitialProducedResources()
         {
             return new List<IResource>() { new SimpleResource(0, "Tomates/s") }; ;
         }
