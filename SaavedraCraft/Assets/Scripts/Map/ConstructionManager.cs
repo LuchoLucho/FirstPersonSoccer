@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Map;
 using Assets.Scripts.Map.Constructions;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Resources;
@@ -40,15 +39,15 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         //Available Constructions:
         constructionAvailable.Add(new Assets.Scripts.Casa1("Casa1", CasaNS1Molde, 0, 0, GetCentralMarket()));
         constructionAvailable.Add(new Assets.Scripts.Calle("CalleNS1", CalleNS1, 0, 0));
-        constructionAvailable.Add(new CampoTomates("Campo01", Campo01, 0, 0, GetCentralMarket()));
+        constructionAvailable.Add(new CampoTomatesMono("Campo01", Campo01, 0, 0, GetCentralMarket()));
         constructionAvailable.Add(new Assets.Scripts.Casa1("Mercado01", Mercado01, 0, 0, GetCentralMarket()));
         //----
         constructionInMap.Add(constructionAvailable[0].CloneMe().SetNewIJ(0, -2));
         constructionInMap.Add(new Assets.Scripts.Casa1("Casa2", CasaNS1Molde, 1, -2, GetCentralMarket()));
         constructionInMap.Add(new Assets.Scripts.Casa1("Casa3", CasaNS1Molde, 2, -2, GetCentralMarket()));
         constructionInMap.Add(new Assets.Scripts.Casa1("Casa4", CasaNS1Molde, 0, 2, GetCentralMarket()));
-        constructionInMap.Add(constructionAvailable[3].CloneMe().SetNewIJ(-2, -2));//Mercado
-        //constructionInMap.Add(constructionAvailable[2].CloneMe().SetNewIJ(4, -2));//Campo
+        constructionInMap.Add(constructionAvailable[2].CloneMe().SetNewIJ(4, -2));//Mercado
+        
 
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(-4, -1));
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(-3, -1));

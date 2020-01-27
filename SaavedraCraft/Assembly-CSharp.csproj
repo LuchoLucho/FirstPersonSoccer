@@ -69,7 +69,7 @@
     <Compile Include="Assets\Scripts\Map\ConstructionFactory.cs" />
     <Compile Include="Assets\Scripts\Map\ConstructionManager.cs" />
     <Compile Include="Assets\Scripts\Map\Constructions\Calle.cs" />
-    <Compile Include="Assets\Scripts\Map\Constructions\CampoTomates.cs" />
+    <Compile Include="Assets\Scripts\Map\Constructions\CampoTomatesMono.cs" />
     <Compile Include="Assets\Scripts\Map\Constructions\Casa1.cs" />
     <Compile Include="Assets\Scripts\Map\Resources\CentralMarketBehaviour.cs" />
     <Reference Include="Unity.Timeline.Editor">

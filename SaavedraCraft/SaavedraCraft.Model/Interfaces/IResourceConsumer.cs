@@ -10,5 +10,8 @@ namespace SaavedraCraft.Model.Interfaces
         List<IResource> GetNeeds(List<IResource> resources);
         List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer);
         void Buy(List<IResource> list);
+        void AddToExternalResource(IResource newExternalResournce);
+        List<IResource> getAllExternalResources();
+        void SetCentralMarket(ICentralMarket<T> newCentralCommunicator);
     }
 }

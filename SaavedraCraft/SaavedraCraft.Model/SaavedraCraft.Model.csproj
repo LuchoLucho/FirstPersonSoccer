@@ -39,6 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Constructions\BasicConstrucProducer.cs" />
+    <Compile Include="Constructions\BasicContrucConsumer.cs" />
+    <Compile Include="Constructions\BasicContruction.cs" />
     <Compile Include="Constructions\CampoTomates.cs" />
     <Compile Include="Constructions\Casa.cs" />
     <Compile Include="Interfaces\ICameraController.cs" />

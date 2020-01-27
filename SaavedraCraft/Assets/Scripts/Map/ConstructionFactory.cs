@@ -120,6 +120,7 @@ public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver<C
         Component newChild = null;
         if (newChildConstruction == null)
         {
+            return;
             newChild = Instantiate(BaldioNS1, realCoord, Quaternion.identity);
         }
         else
