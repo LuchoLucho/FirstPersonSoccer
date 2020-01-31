@@ -119,8 +119,7 @@ public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver<C
         IConstruction<Component> newChildConstruction = constructionManager.getConstructionFromTileCoor(i, j);
         Component newChild = null;
         if (newChildConstruction == null)
-        {
-            return;
+        {            
             newChild = Instantiate(BaldioNS1, realCoord, Quaternion.identity);
         }
         else

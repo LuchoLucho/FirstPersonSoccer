@@ -24,5 +24,11 @@ namespace Assets.Scripts.Map.Constructions
                 construcClickable.SetConstruction(this);
             }
         }
+
+        public override IConstruction<Component> CloneMe()
+        {
+            return new CampoTomatesMono(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralMarket);
+        }
+
     }
 }

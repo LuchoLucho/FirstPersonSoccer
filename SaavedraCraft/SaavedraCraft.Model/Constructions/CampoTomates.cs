@@ -23,8 +23,13 @@ namespace SaavedraCraft.Model.Constructions
         }
 
         public override string GetConstructionInfo()
-        {
-            throw new NotImplementedException();
+        {            
+            string toRet = this.GetName() + "\r\nProd:\r\n";
+            getAllProducedResources().ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");           
+            toRet.TrimEnd(new char[] { '\r', '\n' });
+            return toRet;
         }
+
+        
     }
 }

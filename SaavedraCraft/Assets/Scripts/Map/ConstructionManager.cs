@@ -72,7 +72,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(0, 1));
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(1, 1));
         constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(2, 1));
-        constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(3, 1)); 
+        constructionInMap.Add(constructionAvailable[1].CloneMe().SetNewIJ(3, 1));
     }
 
     public void ConstructionWasClicked(ConstructionClickable constructionClickable)

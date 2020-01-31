@@ -23,5 +23,10 @@ namespace Assets.Scripts
                 construcClickable.SetConstruction(this);
             }
         }
+
+        public override IConstruction<Component> CloneMe()
+        {
+            return new Casa1(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralMarket);
+        }
     }
 }
