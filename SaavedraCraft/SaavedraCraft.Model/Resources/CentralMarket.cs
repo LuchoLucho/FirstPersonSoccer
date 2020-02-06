@@ -12,6 +12,8 @@ namespace SaavedraCraft.Model.Resources
         public List<IResourceProducer<T>> producersWithProductionAvailable = new List<IResourceProducer<T>>();
         public List<IResourceConsumer<T>> consumerWithNeeds = new List<IResourceConsumer<T>>();
 
+        private List<Transaction<T>> allTransactions = new List<Transaction<T>>();
+
         public void AddProducer(IResourceProducer<T> resourceProducer)
         {
             //throw new NotImplementedException();
@@ -53,6 +55,14 @@ namespace SaavedraCraft.Model.Resources
                     }
                 }
             }
+            ret.ForEach(x =>
+            {
+                if (!allTransactions.Contains(x))
+                {
+                    allTransactions.Add(x);
+                }                
+            }
+            );
             return ret;
         }
 
@@ -77,6 +87,11 @@ namespace SaavedraCraft.Model.Resources
                 toRet.Add(newResource);
             }
             return toRet;
+        }
+
+        public List<Transaction<T>> GetAllTransactions()
+        {
+            return allTransactions;
         }
 
     }

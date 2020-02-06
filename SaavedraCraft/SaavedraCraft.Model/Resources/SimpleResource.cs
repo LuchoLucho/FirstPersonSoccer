@@ -71,5 +71,15 @@ namespace SaavedraCraft.Model.Resources
             }
             return GetResourceName().Equals(other.GetResourceName());
         }
+
+        public override int GetHashCode()
+        {
+            return GetResourceName().GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "Resource: " + GetResourceName() + " (" + GetResourceAmount() + ")";
+        }
     }
 }

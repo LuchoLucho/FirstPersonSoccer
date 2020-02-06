@@ -44,6 +44,11 @@ namespace SaavedraCraft.Model.Resources
             this.consumer.Buy(getResources());
             wasApplied = true;
         }
-        
+
+        public override string ToString()
+        {
+            return "Transac between: " + getProducer().ToString() + " and " + getConsumer() + " Resources: " + getResources()[0].ToString();
+        }
+
     }
 }

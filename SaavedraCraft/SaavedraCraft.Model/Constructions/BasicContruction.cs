@@ -94,5 +94,10 @@ namespace SaavedraCraft.Model.Constructions
             return base.GetHashCode();
         }
 
+        public override string ToString()
+        {
+            return this.name + "(" + this.i + "," + this.j + ")";
+        }
+
     }
 }

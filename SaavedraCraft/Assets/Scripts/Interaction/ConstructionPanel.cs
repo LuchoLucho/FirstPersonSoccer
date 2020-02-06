@@ -1,4 +1,5 @@
 ﻿using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Resources;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,12 @@ public class ConstructionPanel : MonoBehaviour {
     void OnGUI()
     {
         ConstructionManager constructionManager = getConstructionManager();
+        ICentralMarket<Component> centralMarket = constructionManager.GetCentralMarket();
+
+        foreach (Transaction<Component> currentTransanction in centralMarket.GetTransactions())
+        {
+            Debug.Log(currentTransanction.ToString());
+        }
 
         GUI.skin.button.fontSize = 24;
         GUI.skin.label.fontSize = 24;
@@ -78,7 +85,7 @@ public class ConstructionPanel : MonoBehaviour {
             int initialY = Screen.height * 2 / 3;
             GUI.Box(new Rect(initialX, initialY, 200, 150), btnTexture);
             GUI.BeginGroup(new Rect(initialX + 10, initialY + 10, 190, 320));
-            GUI.skin.label.fontSize = 15;
+            GUI.skin.label.fontSize = 12;
             GUI.Label(new Rect(5, 5, 190, 90), "Info: " + constructionSelected.GetConstructionInfo());
 
             GUI.EndGroup();

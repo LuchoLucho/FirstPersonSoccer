@@ -26,7 +26,7 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         singleObserver = newObserver;
     }
 
-    private ICentralMarket<Component> GetCentralMarket()
+    public ICentralMarket<Component> GetCentralMarket()
     {
         CentralMarketBehaviour centralMarketBehaviour = CentralMarketComponent.GetComponent<CentralMarketBehaviour>();
         ICentralMarket<Component> centralMarket = centralMarketBehaviour.GetCentralMarket();
