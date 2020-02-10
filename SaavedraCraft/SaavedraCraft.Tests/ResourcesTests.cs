@@ -56,6 +56,20 @@ namespace SaavedraCraft.Tests
             Assert.AreEqual(0, resourceConsumer.GetNeeds(resourcesInTransactions).Count);
         }
 
+        [TestMethod]
+        public void SingleTransactionIfThereIsOnlyResourceTest()
+        {
+            CentralMarket<object> centralMarket = new CentralMarket<object>();
+            IResourceConsumer<object> resourceConsumer1 = new CasaTest("Casa1", null, 0, 0, centralMarket);//new MockResourceProducer();
+            IResourceConsumer<object> resourceConsumer2 = new CasaTest("Casa2", null, 1, 0, centralMarket);//new MockResourceProducer();
+            IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo", null, 1, 1, centralMarket);
+            centralMarket.AddProducer(resourceProducer);
+            centralMarket.AddConsumer(resourceConsumer1);
+            centralMarket.AddConsumer(resourceConsumer2);
+            List<Transaction<object>> transactions = centralMarket.GetTransactions();
+            Assert.AreEqual(1, transactions.Count);
+        }
+
         public class CasaTest : Casa<object>
         {
             public CasaTest(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)

@@ -55,6 +55,7 @@ namespace SaavedraCraft.Model.Resources
                     }
                 }
             }
+            ret = removeTransactionInvolvingTheSameProducer(ret);
             ret.ForEach(x =>
             {
                 if (!allTransactions.Contains(x))
@@ -63,6 +64,25 @@ namespace SaavedraCraft.Model.Resources
                 }                
             }
             );
+            return ret;
+        }
+
+        private List<Transaction<T>> removeTransactionInvolvingTheSameProducer(List<Transaction<T>> ret)
+        {
+            List<IResourceProducer<T>> producersWithMultipleTransactions = new List<IResourceProducer<T>>();
+            ret.ForEach(x =>
+            {
+                if ((ret.FindAll(y => y.getProducer().Equals(x.getProducer())).Count > 1 ) && (!producersWithMultipleTransactions.Contains(x.getProducer())))
+                {
+                    producersWithMultipleTransactions.Add(x.getProducer());
+                }
+            });
+            foreach (IResourceProducer<T> currentProducer in producersWithMultipleTransactions)
+            {
+                List<Transaction<T>> allRepeatedTransactions = ret.FindAll(x=>x.getProducer() == currentProducer);
+                allRepeatedTransactions.Remove(allRepeatedTransactions[0]);//Remove the first one so this get ignored and it is no removed later
+                allRepeatedTransactions.ForEach(x => ret.Remove(x));
+            }
             return ret;
         }
 
