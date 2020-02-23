@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Constructions\BasicConstrucHybridConsumerProducer.cs" />
     <Compile Include="Constructions\BasicConstrucProducer.cs" />
     <Compile Include="Constructions\BasicContrucConsumer.cs" />
     <Compile Include="Constructions\BasicContruction.cs" />

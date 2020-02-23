@@ -23,8 +23,8 @@ public class ConstructionPanel : MonoBehaviour {
             Debug.Log(currentTransanction.ToString());
         }
 
-        GUI.skin.button.fontSize = 24;
-        GUI.skin.label.fontSize = 24;
+        GUI.skin.button.fontSize = 18;
+        GUI.skin.label.fontSize = 18;
         if (GUI.Button(new Rect(20, 30, 150, 45), "Construir!"))
         {
             isContructionListDesplegable = !isContructionListDesplegable;

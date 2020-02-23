@@ -70,6 +70,44 @@ namespace SaavedraCraft.Tests
             Assert.AreEqual(1, transactions.Count);
         }
 
+        [TestMethod]
+        public void ConsumerProducerHybridSimpleConsutrctionInfoTest()
+        {
+            BasicConstrucHybridConsumerProducer<object> casaCampo = new CasaDeCampoTest("casaCampoHybrid",null,1,3,null);
+            string hybridInfo = casaCampo.GetConstructionInfo();
+            Assert.IsTrue(hybridInfo.Contains("Hybrid"));
+        }
+
+        public class CasaDeCampoTest : BasicConstrucHybridConsumerProducer<object>
+        {
+            public CasaDeCampoTest(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
+            {
+            }
+
+            public override List<IResource> AddInitialProducedResources()
+            {
+                return new List<IResource>() { new SimpleResource(0, "Tomates/s") }; ;
+            }
+
+            public override IConstruction<object> CloneMe()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override string GetConstructionInfo()
+            {
+                string toRet = string.Empty;
+                getAllProducedResources().ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");
+                toRet += meAsConsumer.GetConstructionInfo(); // <<<< Hybrid
+                return toRet;
+            }
+
+            public override BasicContrucConsumer<object> getNewInstanceMeAsConsumer(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator)
+            {
+                return new CasaTest(aName,aComponent,newI,newj,newCentralCommunicator);
+            }
+        }
+
         public class CasaTest : Casa<object>
         {
             public CasaTest(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)

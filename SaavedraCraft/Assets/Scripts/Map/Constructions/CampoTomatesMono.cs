@@ -20,7 +20,7 @@ namespace Assets.Scripts.Map.Constructions
             componentInstanciaReal = componentReal;
             ConstructionClickable construcClickable = componentReal.gameObject.GetComponent<ConstructionClickable>();
             if (construcClickable != null)
-            {
+            {   
                 construcClickable.SetConstruction(this);
             }
         }
