@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SaavedraCraft.Model.Constructions
+namespace SaavedraCraft.Model.Constructions.Implementations
 {
     public class CampoTomates<T> : BasicConstrucProducer<T>
     {

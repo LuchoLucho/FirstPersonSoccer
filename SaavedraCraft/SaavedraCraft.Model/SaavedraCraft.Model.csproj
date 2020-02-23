@@ -43,8 +43,9 @@
     <Compile Include="Constructions\BasicConstrucProducer.cs" />
     <Compile Include="Constructions\BasicContrucConsumer.cs" />
     <Compile Include="Constructions\BasicContruction.cs" />
-    <Compile Include="Constructions\CampoTomates.cs" />
-    <Compile Include="Constructions\Casa.cs" />
+    <Compile Include="Interfaces\IBasicConstrucHybridConsumerProducer.cs" />
+    <Compile Include="Constructions\Implementations\CampoTomates.cs" />
+    <Compile Include="Constructions\Implementations\Casa.cs" />
     <Compile Include="Interfaces\ICameraController.cs" />
     <Compile Include="Interfaces\ICentralMarket.cs" />
     <Compile Include="Interfaces\IConstruction.cs" />

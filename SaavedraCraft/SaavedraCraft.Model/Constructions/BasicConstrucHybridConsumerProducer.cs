@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SaavedraCraft.Model.Constructions.Interfaces;
 using SaavedraCraft.Model.Interfaces;
 
 namespace SaavedraCraft.Model.Constructions
 {
     abstract public class BasicConstrucHybridConsumerProducer<T> : BasicConstrucProducer<T>, IResourceConsumer<T> //Producer will be the father, consumer will be a property
+, IHybridConsumerProducer<T>
     {
         protected BasicContrucConsumer<T> meAsConsumer;
 
@@ -39,6 +41,16 @@ namespace SaavedraCraft.Model.Constructions
         public List<IResource> GetResourceIntersectionWithProducer<T1>(IResourceProducer<T1> producer)
         {
             return meAsConsumer.GetResourceIntersectionWithProducer(producer);
+        }
+
+        public IResourceConsumer<T> GetAsConsumer()
+        {
+            return meAsConsumer;
+        }
+
+        public IResourceProducer<T> GetAsProducer()
+        {
+            return this;
         }
     }
 }

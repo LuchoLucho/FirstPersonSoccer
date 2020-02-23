@@ -1,4 +1,5 @@
-﻿using SaavedraCraft.Model.Interfaces;
+﻿using SaavedraCraft.Model.Constructions.Interfaces;
+using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,7 @@ namespace SaavedraCraft.Model.Resources
 
         public List<IResourceProducer<T>> producersWithProductionAvailable = new List<IResourceProducer<T>>();
         public List<IResourceConsumer<T>> consumerWithNeeds = new List<IResourceConsumer<T>>();
+        public List<IHybridConsumerProducer<T>> hybrids = new List<IHybridConsumerProducer<T>>();
 
         private List<Transaction<T>> allTransactions = new List<Transaction<T>>();
 
@@ -114,5 +116,11 @@ namespace SaavedraCraft.Model.Resources
             return allTransactions;
         }
 
+        public void AddHybrid(IHybridConsumerProducer<T> hybrid)
+        {
+            hybrids.Add(hybrid);
+            AddConsumer(hybrid.GetAsConsumer());
+            AddProducer(hybrid.GetAsProducer());
+        }
     }
 }

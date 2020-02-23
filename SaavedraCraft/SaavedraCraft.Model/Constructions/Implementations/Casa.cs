@@ -4,7 +4,7 @@ using SaavedraCraft.Model.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace SaavedraCraft.Model.Constructions
+namespace SaavedraCraft.Model.Constructions.Implementations
 {
     public class Casa<T> : BasicContrucConsumer<T>
     {
@@ -19,34 +19,12 @@ namespace SaavedraCraft.Model.Constructions
 
         public override string GetConstructionInfo()
         {
-            int totalNumberOfResources = 0;
-            string toRet = this.GetName() + "\r\n";// + "\r\nProd:\r\n";
-           // producedResources.ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");
+            string toRet = this.GetName() + "\r\n";
             toRet += "Externo:\r\n";
             getAllExternalResources().ForEach(x => toRet += x.GetResourceAmount() + " " + x.GetResourceName() + "\r\n");
             toRet.TrimEnd(new char[] { '\r', '\n' });
             return toRet;
-        }        
-        /*
-        public virtual void SetComponentInstanciaReal(T componentReal)
-        {
-            componentInstanciaReal = componentReal;
-            ConstructionClickable construcClickable = componentReal.gameObject.GetComponent<ConstructionClickable>();
-            if (construcClickable != null)
-            {
-                construcClickable.SetConstruction(this);
-            }           
-        }*/    
-
-        /*Rectangle IResourceProducer<T>.GetBroadCastingProductionArea()
-        {
-            return new Rectangle(this.GetCoordI(), this.GetCoordJ(), this.GetWidh(), this.GetHeigh());
-        }*/
-
-        /*public virtual void Sell(List<IResource> list)
-        {
-            throw new NotImplementedException();
-        }*/
+        }
 
         public override List<IResource> GetNeeds(List<IResource> resources)
         {
