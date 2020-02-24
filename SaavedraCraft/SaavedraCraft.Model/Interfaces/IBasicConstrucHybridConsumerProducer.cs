@@ -3,7 +3,7 @@ using SaavedraCraft.Model.Interfaces;
 
 namespace SaavedraCraft.Model.Constructions.Interfaces
 {
-    public interface IHybridConsumerProducer<T>
+    public interface IHybridConsumerProducer<T> : IResourceConsumer<T>, IResourceProducer<T>
     {
         void AddToExternalResource(IResource newExternalResournce);
         void Buy(List<IResource> list);
@@ -11,7 +11,7 @@ namespace SaavedraCraft.Model.Constructions.Interfaces
         List<IResource> GetNeeds(List<IResource> resources);
         BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator);
         List<IResource> GetResourceIntersectionWithProducer<T1>(IResourceProducer<T1> producer);
-        IResourceConsumer<T> GetAsConsumer();
-        IResourceProducer<T> GetAsProducer();
+        /*IResourceConsumer<T> GetAsConsumer();
+        IResourceProducer<T> GetAsProducer();*/
     }
 }

@@ -84,12 +84,27 @@ namespace SaavedraCraft.Tests
         public void ConsumerProducerHybridTransactionTest()
         {
             ICentralMarket<object> centralMarket = new CentralMarket<object>();
-            CampoTomatesTest campoTomatesTest = new CampoTomatesTest("casaCampoHybrid", null, 1, 1, centralMarket);
+            CampoTomatesTest campoTomatesTest = new CampoTomatesTest("CampoTomates", null, 1, 1, centralMarket);
             IHybridConsumerProducer<object> hybrid = new CasaWorker("Casa", null, 0, 0, centralMarket);
             centralMarket.AddProducer(campoTomatesTest);
             centralMarket.AddHybrid(hybrid);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
+        }
+
+        [TestMethod]
+        public void ConsumerProducerHybridTransactionShouldProduceWorkerTest()
+        {
+            ICentralMarket<object> centralMarket = new CentralMarket<object>();
+            CampoTomatesTest campoTomatesTest = new CampoTomatesTest("CampoTomates", null, 1, 1, centralMarket);
+            IHybridConsumerProducer<object> hybrid = new CasaWorker("Casa", null, 0, 0, centralMarket);
+            centralMarket.AddProducer(campoTomatesTest);
+            centralMarket.AddHybrid(hybrid);
+            List<Transaction<object>> transactions = centralMarket.GetTransactions();
+            Assert.AreEqual(0, hybrid.getAllProducedResources()[0].GetResourceAmount());
+            transactions[0].DebitarAcreditar();
+            //After buy tomatoes, a worker should be generated
+            Assert.AreEqual(1, hybrid.getAllProducedResources()[0].GetResourceAmount());            
         }
 
         public class TallerCampoTest : BasicConstrucHybridConsumerProducer<object>
@@ -120,6 +135,11 @@ namespace SaavedraCraft.Tests
             {
                 return new TallerTest(aName, aComponent, newI, newj, newCentralCommunicator);
             }
+
+            public override void newResoucesArrivedToBeTransformed(IResourceConsumer<object> meAsConsumer)
+            {
+                throw new NotImplementedException();
+            }            
         }
 
         public class TallerTest : Casa<object>
@@ -169,6 +189,30 @@ namespace SaavedraCraft.Tests
             {
                 return new CasaTest(aName,aComponent,newI,newj,newCentralCommunicator);
             }
+
+            public override void newResoucesArrivedToBeTransformed(IResourceConsumer<object> meAsConsumer)
+            {
+                List<IResource> allResources = meAsConsumer.getAllExternalResources();
+                if (allResources.Count > 0) 
+                {
+                    IResource singleTomatoe = allResources.Find(x => x.GetResourceName().Contains("Toma"));
+                    if (singleTomatoe.GetResourceAmount() > 0)
+                    {
+                        //We transform the resources:
+                        singleTomatoe.Subtract(1);
+                        if (getAllProducedResources().FindAll(x=>x.GetResourceName().Contains("Worker")).Count == 0)
+                        {
+                            IResource newResource = new SimpleResource(1, "Worker/s");
+                            getAllProducedResources().Add(newResource);
+                        }
+                        else
+                        {
+                            IResource alreadyFoundResource = this.getAllProducedResources().Find(x => x.GetResourceName().Contains("Worker"));
+                            alreadyFoundResource.Add(1);
+                        }
+                    }                    
+                }
+            }            
         }
 
         public class CampoTomatesTest : CampoTomates<object>

@@ -6,10 +6,10 @@ using SaavedraCraft.Model.Interfaces;
 
 namespace SaavedraCraft.Model.Constructions
 {
-    abstract public class BasicConstrucHybridConsumerProducer<T> : BasicConstrucProducer<T>, IResourceConsumer<T> //Producer will be the father, consumer will be a property
+    abstract public class BasicConstrucHybridConsumerProducer<T> : BasicConstrucProducer<T> //Producer will be the father, consumer will be a property
 , IHybridConsumerProducer<T>
     {
-        protected BasicContrucConsumer<T> meAsConsumer;
+        protected IResourceConsumer<T> meAsConsumer;
 
         public BasicConstrucHybridConsumerProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
@@ -26,7 +26,8 @@ namespace SaavedraCraft.Model.Constructions
         public void Buy(List<IResource> list)
         {
             meAsConsumer.Buy(list);
-        }
+            newResoucesArrivedToBeTransformed(meAsConsumer);
+        }        
 
         public List<IResource> getAllExternalResources()
         {
@@ -43,14 +44,6 @@ namespace SaavedraCraft.Model.Constructions
             return meAsConsumer.GetResourceIntersectionWithProducer(producer);
         }
 
-        public IResourceConsumer<T> GetAsConsumer()
-        {
-            return meAsConsumer;
-        }
-
-        public IResourceProducer<T> GetAsProducer()
-        {
-            return this;
-        }
+        public abstract void newResoucesArrivedToBeTransformed(IResourceConsumer<T> consumer);        
     }
 }

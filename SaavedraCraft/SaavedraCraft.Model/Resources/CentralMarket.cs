@@ -119,8 +119,10 @@ namespace SaavedraCraft.Model.Resources
         public void AddHybrid(IHybridConsumerProducer<T> hybrid)
         {
             hybrids.Add(hybrid);
-            AddConsumer(hybrid.GetAsConsumer());
-            AddProducer(hybrid.GetAsProducer());
+            /*AddConsumer(hybrid.GetAsConsumer());
+            AddProducer(hybrid.GetAsProducer());*/
+            AddConsumer(hybrid);
+            AddProducer(hybrid);
         }
     }
 }
