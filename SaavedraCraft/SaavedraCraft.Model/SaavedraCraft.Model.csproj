@@ -43,6 +43,7 @@
     <Compile Include="Constructions\BasicConstrucProducer.cs" />
     <Compile Include="Constructions\BasicContrucConsumer.cs" />
     <Compile Include="Constructions\BasicContruction.cs" />
+    <Compile Include="Constructions\Implementations\CasaWorkerModel.cs" />
     <Compile Include="Interfaces\IBasicConstrucHybridConsumerProducer.cs" />
     <Compile Include="Constructions\Implementations\CampoTomates.cs" />
     <Compile Include="Constructions\Implementations\Casa.cs" />

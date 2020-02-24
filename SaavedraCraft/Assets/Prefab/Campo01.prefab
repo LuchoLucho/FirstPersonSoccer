@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4f6871a8e6b664ea8d853dab968c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectableComponent: {fileID: 4116601648713162, guid: 4ffff3b91259d434b88ae7cde0109e52,
+  SelectableComponent: {fileID: 1281357245147667972, guid: 4ffff3b91259d434b88ae7cde0109e52,
     type: 3}
 --- !u!61 &61951899629359904
 BoxCollider2D:
