@@ -12,5 +12,6 @@ namespace SaavedraCraft.Model.Interfaces
         void AddConsumer(IResourceConsumer<T> resourceConsumer);
         List<Transaction<T>> GetTransactions();
         void AddHybrid(IHybridConsumerProducer<T> resourceConsumer);
+        void SetLogAction(Action<string> newAction);
     }
 }

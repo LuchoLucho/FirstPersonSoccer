@@ -11,7 +11,7 @@ public class CentralMarketBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        centralMarket.SetLogAction(x => Debug.Log("CentralMarketBehaviour:" + x));
     }
 
     // Update is called once per frame

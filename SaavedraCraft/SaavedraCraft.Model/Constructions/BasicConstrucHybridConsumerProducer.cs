@@ -13,10 +13,13 @@ namespace SaavedraCraft.Model.Constructions
 
         public BasicConstrucHybridConsumerProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
-            meAsConsumer = getNewInstanceMeAsConsumer(aName+"-Consumer",aComponent,newI,newj, newCentralMarket);
+            meAsConsumer = getNewInstanceMeAsConsumer(aName+"-Consumer",aComponent,newI,newj);
+            centralMarket.AddHybrid(this);
         }
 
-        public abstract BasicContrucConsumer<T>  getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator);
+        public abstract BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj);
+        /*, ICentralMarket<T> newCentralCommunicator);*/
+        //Consumer new instance should not have direct control of the market! 
 
         public void AddToExternalResource(IResource newExternalResournce)
         {

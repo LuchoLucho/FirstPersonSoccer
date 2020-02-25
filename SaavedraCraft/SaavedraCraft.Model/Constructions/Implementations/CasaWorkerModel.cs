@@ -15,7 +15,7 @@ namespace SaavedraCraft.Model.Constructions.Implementations
         public override List<IResource> AddInitialProducedResources()
         {
             int neededAmount = 0;
-            IResource initialResource = new SimpleResource(neededAmount, "Worker/s");
+            IResource initialResource = new SimpleResource(neededAmount, "Worker/s",0);
             return new List<IResource> { initialResource };
         }
 
@@ -36,9 +36,9 @@ namespace SaavedraCraft.Model.Constructions.Implementations
             return toRet;
         }
 
-        public override BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator)
+        public override BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj)//, ICentralMarket<T> newCentralCommunicator)
         {
-            return new Casa<T>(aName, aComponent, newI, newj, newCentralCommunicator);
+            return new Casa<T>(aName, aComponent, newI, newj, null);
         }
 
         public override void newResoucesArrivedToBeTransformed(IResourceConsumer<T> meAsConsumer)
@@ -53,7 +53,7 @@ namespace SaavedraCraft.Model.Constructions.Implementations
                     singleTomatoe.Subtract(1);
                     if (getAllProducedResources().FindAll(x => x.GetResourceName().Contains("Worker")).Count == 0)
                     {
-                        IResource newResource = new SimpleResource(1, "Worker/s");
+                        IResource newResource = new SimpleResource(1, "Worker/s",0);
                         getAllProducedResources().Add(newResource);
                     }
                     else

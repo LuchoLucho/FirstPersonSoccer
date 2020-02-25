@@ -19,8 +19,6 @@ namespace SaavedraCraft.Tests
             CentralMarket<object> centralMarket = new CentralMarket<object>();
             IResourceConsumer<object> resourceConsumer = new CasaTest("Casa", null, 0, 0, centralMarket);//new MockResourceProducer();
             IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo", null, 1, 1, centralMarket);
-            centralMarket.AddProducer(resourceProducer);
-            centralMarket.AddConsumer(resourceConsumer);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
             Assert.AreEqual(resourceProducer, transactions[0].getProducer());
@@ -37,8 +35,7 @@ namespace SaavedraCraft.Tests
             IResource tomate = new SimpleResource(1, "Tomates/s");
             List<IResource> resourcesInTransactions = new List<IResource> { tomate };
             Transaction<object> transaction = new Transaction<object>(resourceConsumer, resourceProducer, resourcesInTransactions);
-            Assert.AreEqual(1, resourceProducer.getAllProducedResources()[0].GetResourceAmount());
-            //Assert.AreEqual(0, resourceConsumer.getAllResources().Find(x=>x == tomate).GetResourceAmount()); solo hay personas!
+            Assert.AreEqual(1, resourceProducer.getAllProducedResources()[0].GetResourceAmount());            
             transaction.DebitarAcreditar();
             Assert.AreEqual(0, resourceProducer.getAllProducedResources()[0].GetResourceAmount());
             Assert.AreEqual(1, resourceConsumer.getAllExternalResources().Find(x => x == tomate).GetResourceAmount());
@@ -65,9 +62,6 @@ namespace SaavedraCraft.Tests
             IResourceConsumer<object> resourceConsumer1 = new CasaTest("Casa1", null, 0, 0, centralMarket);//new MockResourceProducer();
             IResourceConsumer<object> resourceConsumer2 = new CasaTest("Casa2", null, 1, 0, centralMarket);//new MockResourceProducer();
             IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo", null, 1, 1, centralMarket);
-            centralMarket.AddProducer(resourceProducer);
-            centralMarket.AddConsumer(resourceConsumer1);
-            centralMarket.AddConsumer(resourceConsumer2);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
         }
@@ -75,7 +69,8 @@ namespace SaavedraCraft.Tests
         [TestMethod]
         public void ConsumerProducerHybridSimpleConsutrctionInfoTest()
         {
-            BasicConstrucHybridConsumerProducer<object> casaCampo = new TallerCampoTest("casaCampoHybrid", null, 1, 3, null);
+            ICentralMarket<object> centralMarket = new CentralMarket<object>();
+            BasicConstrucHybridConsumerProducer<object> casaCampo = new TallerCampoTest("casaCampoHybrid", null, 1, 3, centralMarket);
             string hybridInfo = casaCampo.GetConstructionInfo();
             Assert.IsTrue(hybridInfo.Contains("Hybrid"));
         }
@@ -86,8 +81,6 @@ namespace SaavedraCraft.Tests
             ICentralMarket<object> centralMarket = new CentralMarket<object>();
             CampoTomatesTest campoTomatesTest = new CampoTomatesTest("CampoTomates", null, 1, 1, centralMarket);
             IHybridConsumerProducer<object> hybrid = new CasaWorker("Casa", null, 0, 0, centralMarket);
-            centralMarket.AddProducer(campoTomatesTest);
-            centralMarket.AddHybrid(hybrid);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
         }
@@ -98,12 +91,12 @@ namespace SaavedraCraft.Tests
             ICentralMarket<object> centralMarket = new CentralMarket<object>();
             CampoTomatesTest campoTomatesTest = new CampoTomatesTest("CampoTomates", null, 1, 1, centralMarket);
             IHybridConsumerProducer<object> hybrid = new CasaWorker("Casa", null, 0, 0, centralMarket);
-            centralMarket.AddProducer(campoTomatesTest);
-            centralMarket.AddHybrid(hybrid);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
+            Assert.AreEqual(1, campoTomatesTest.getAllProducedResources()[0].GetResourceAmount());
             Assert.AreEqual(0, hybrid.getAllProducedResources()[0].GetResourceAmount());
             transactions[0].DebitarAcreditar();
             //After buy tomatoes, a worker should be generated
+            Assert.AreEqual(0, campoTomatesTest.getAllProducedResources()[0].GetResourceAmount());
             Assert.AreEqual(1, hybrid.getAllProducedResources()[0].GetResourceAmount());            
         }
 
@@ -131,9 +124,9 @@ namespace SaavedraCraft.Tests
                 return toRet;
             }
 
-            public override BasicContrucConsumer<object> getNewInstanceMeAsConsumer(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator)
+            public override BasicContrucConsumer<object> getNewInstanceMeAsConsumer(string aName, object aComponent, int newI, int newj)//, ICentralMarket<object> newCentralCommunicator)
             {
-                return new TallerTest(aName, aComponent, newI, newj, newCentralCommunicator);
+                return new TallerTest(aName, aComponent, newI, newj, null);
             }
 
             public override void newResoucesArrivedToBeTransformed(IResourceConsumer<object> meAsConsumer)
@@ -162,57 +155,11 @@ namespace SaavedraCraft.Tests
         }
 
         //Consumer tomates y genera trabajadores
-        public class CasaWorker : BasicConstrucHybridConsumerProducer<object>
+        public class CasaWorker : CasaWorkerModel<object>
         {
             public CasaWorker(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
             {
             }
-
-            public override List<IResource> AddInitialProducedResources()
-            {
-                int neededAmount = 0;
-                IResource initialResource = new SimpleResource(neededAmount, "Worker/s");
-                return new List<IResource> { initialResource };
-            }
-
-            public override IConstruction<object> CloneMe()
-            {
-                throw new NotImplementedException();
-            }
-
-            public override string GetConstructionInfo()
-            {
-                throw new NotImplementedException();
-            }
-
-            public override BasicContrucConsumer<object> getNewInstanceMeAsConsumer(string aName, object aComponent, int newI, int newj, ICentralMarket<object> newCentralCommunicator)
-            {
-                return new CasaTest(aName,aComponent,newI,newj,newCentralCommunicator);
-            }
-
-            public override void newResoucesArrivedToBeTransformed(IResourceConsumer<object> meAsConsumer)
-            {
-                List<IResource> allResources = meAsConsumer.getAllExternalResources();
-                if (allResources.Count > 0) 
-                {
-                    IResource singleTomatoe = allResources.Find(x => x.GetResourceName().Contains("Toma"));
-                    if (singleTomatoe.GetResourceAmount() > 0)
-                    {
-                        //We transform the resources:
-                        singleTomatoe.Subtract(1);
-                        if (getAllProducedResources().FindAll(x=>x.GetResourceName().Contains("Worker")).Count == 0)
-                        {
-                            IResource newResource = new SimpleResource(1, "Worker/s");
-                            getAllProducedResources().Add(newResource);
-                        }
-                        else
-                        {
-                            IResource alreadyFoundResource = this.getAllProducedResources().Find(x => x.GetResourceName().Contains("Worker"));
-                            alreadyFoundResource.Add(1);
-                        }
-                    }                    
-                }
-            }            
         }
 
         public class CampoTomatesTest : CampoTomates<object>

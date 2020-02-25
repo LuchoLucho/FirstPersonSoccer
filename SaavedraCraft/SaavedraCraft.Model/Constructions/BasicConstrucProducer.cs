@@ -15,6 +15,7 @@ namespace SaavedraCraft.Model.Constructions
         {
             centralMarket = newCentralMarket;
             producedResources.AddRange(AddInitialProducedResources());
+            centralMarket.AddProducer(this);
         }
 
         public abstract List<IResource> AddInitialProducedResources();        
@@ -50,11 +51,7 @@ namespace SaavedraCraft.Model.Constructions
             foreach (IResource currentResource in producedResources)
             {
                 int resourceCntPreviousTick = currentResource.GetResourceAmount();
-                currentResource.TimeTick(timedelta);
-                if (currentResource.GetResourceAmount() > resourceCntPreviousTick)
-                {
-                    centralMarket.AddProducer(this);
-                }
+                currentResource.TimeTick(timedelta);                
             }            
         }
     }

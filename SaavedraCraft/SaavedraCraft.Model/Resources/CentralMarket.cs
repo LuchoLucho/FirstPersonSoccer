@@ -16,6 +16,22 @@ namespace SaavedraCraft.Model.Resources
 
         private List<Transaction<T>> allTransactions = new List<Transaction<T>>();
 
+        private Action<string> logAction = null;
+
+        public void SetLogAction(Action<string> newAction)
+        {
+            logAction = newAction;
+        }
+
+        private void logMessage(string message)
+        {
+            if (logAction == null)
+            {
+                return;
+            }
+            logAction(message);
+        }
+
         public void AddProducer(IResourceProducer<T> resourceProducer)
         {
             //throw new NotImplementedException();
@@ -40,6 +56,7 @@ namespace SaavedraCraft.Model.Resources
             List<Transaction<T>> ret = new List<Transaction<T>>();
             if ((producersWithProductionAvailable.Count == 0) || (consumerWithNeeds.Count == 0))
             {
+                logMessage("There are no producers("+ producersWithProductionAvailable.Count+") or consumers("+ consumerWithNeeds.Count+")");
                 return ret;
             }
             //I'm not using area instead distance:

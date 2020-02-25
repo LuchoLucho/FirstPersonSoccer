@@ -13,6 +13,10 @@ namespace SaavedraCraft.Model.Constructions
         public BasicContrucConsumer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator) : base(aName, aComponent, newI, newj)
         {
             centralMarket = newCentralCommunicator;
+            if (centralMarket != null)
+            {
+                centralMarket.AddConsumer(this);//Hybrid contains consumers that should not deal with Central market by themselfs.
+            }
         }        
 
         public void Buy(List<IResource> list)
@@ -79,7 +83,7 @@ namespace SaavedraCraft.Model.Constructions
         {            
             if (GetNeeds(null).Count > 0 && needsHaveResourceAvailables())
             {
-                centralMarket.AddConsumer(this);
+                //centralMarket.AddConsumer(this);
             }
         }
 
