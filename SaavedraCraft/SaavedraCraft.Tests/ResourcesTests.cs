@@ -19,6 +19,8 @@ namespace SaavedraCraft.Tests
             CentralMarket<object> centralMarket = new CentralMarket<object>();
             IResourceConsumer<object> resourceConsumer = new CasaTest("Casa", null, 0, 0, centralMarket);//new MockResourceProducer();
             IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo", null, 1, 1, centralMarket);
+            resourceConsumer.SetActive(true);
+            resourceProducer.SetActive(true);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
             Assert.AreEqual(resourceProducer, transactions[0].getProducer());
@@ -62,6 +64,9 @@ namespace SaavedraCraft.Tests
             IResourceConsumer<object> resourceConsumer1 = new CasaTest("Casa1", null, 0, 0, centralMarket);//new MockResourceProducer();
             IResourceConsumer<object> resourceConsumer2 = new CasaTest("Casa2", null, 1, 0, centralMarket);//new MockResourceProducer();
             IResourceProducer<object> resourceProducer = new CampoTomatesTest("Campo", null, 1, 1, centralMarket);
+            resourceConsumer1.SetActive(true);
+            resourceConsumer2.SetActive(true);
+            resourceProducer.SetActive(true);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
         }
@@ -81,6 +86,8 @@ namespace SaavedraCraft.Tests
             ICentralMarket<object> centralMarket = new CentralMarket<object>();
             CampoTomatesTest campoTomatesTest = new CampoTomatesTest("CampoTomates", null, 1, 1, centralMarket);
             IHybridConsumerProducer<object> hybrid = new CasaWorker("Casa", null, 0, 0, centralMarket);
+            campoTomatesTest.SetActive(true);//This is needed to be put in the centralMarket
+            hybrid.SetActive(true);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, transactions.Count);
         }
@@ -91,6 +98,8 @@ namespace SaavedraCraft.Tests
             ICentralMarket<object> centralMarket = new CentralMarket<object>();
             CampoTomatesTest campoTomatesTest = new CampoTomatesTest("CampoTomates", null, 1, 1, centralMarket);
             IHybridConsumerProducer<object> hybrid = new CasaWorker("Casa", null, 0, 0, centralMarket);
+            campoTomatesTest.SetActive(true);//This is needed to be put in the centralMarket
+            hybrid.SetActive(true);
             List<Transaction<object>> transactions = centralMarket.GetTransactions();
             Assert.AreEqual(1, campoTomatesTest.getAllProducedResources()[0].GetResourceAmount());
             Assert.AreEqual(0, hybrid.getAllProducedResources()[0].GetResourceAmount());

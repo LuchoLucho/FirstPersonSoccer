@@ -14,8 +14,7 @@ namespace SaavedraCraft.Model.Constructions
         public BasicConstrucProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj)
         {
             centralMarket = newCentralMarket;
-            producedResources.AddRange(AddInitialProducedResources());
-            centralMarket.AddProducer(this);
+            producedResources.AddRange(AddInitialProducedResources());            
         }
 
         public abstract List<IResource> AddInitialProducedResources();        
@@ -39,6 +38,14 @@ namespace SaavedraCraft.Model.Constructions
         {
             base.SetActive(newValue);
             producedResources.ForEach(x => x.setActive(newValue));
+            if (newValue)
+            {
+                centralMarket.AddProducer(this);
+            }
+            else
+            {
+                centralMarket.RemoveProducer(this);
+            }
         }
 
         public void SetCentralMarket(ICentralMarket<T> newCentralCommunicator)

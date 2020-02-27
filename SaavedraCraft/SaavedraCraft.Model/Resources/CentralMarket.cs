@@ -51,6 +51,16 @@ namespace SaavedraCraft.Model.Resources
             }
         }
 
+        public void RemoveProducer(IResourceProducer<T> basicConstrucProducer)
+        {
+            producersWithProductionAvailable.Remove(basicConstrucProducer);
+        }
+
+        public void RemoveConsumer(IResourceConsumer<T> basicContrucConsumer)
+        {
+            consumerWithNeeds.Remove(basicContrucConsumer);
+        }
+
         public List<Transaction<T>> GetTransactions()
         {
             List<Transaction<T>> ret = new List<Transaction<T>>();
@@ -59,6 +69,7 @@ namespace SaavedraCraft.Model.Resources
                 logMessage("There are no producers("+ producersWithProductionAvailable.Count+") or consumers("+ consumerWithNeeds.Count+")");
                 return ret;
             }
+            bool isThereProducerConsumerCloseEachOther = false;
             //I'm not using area instead distance:
             foreach (IResourceProducer<T> producer in producersWithProductionAvailable)
             {                
@@ -66,6 +77,7 @@ namespace SaavedraCraft.Model.Resources
                 {
                     if (distanceBetweenConstructions(producer,consumer) < MAX_DISTANCE_PRODUCER_CONSUMER)
                     {
+                        isThereProducerConsumerCloseEachOther = true;
                         List<IResource> resourceIntersection = consumer.GetResourceIntersectionWithProducer(producer);
                         if (resourceIntersection.Count > 0)
                         {
@@ -83,6 +95,10 @@ namespace SaavedraCraft.Model.Resources
                 }                
             }
             );
+            if (!isThereProducerConsumerCloseEachOther)
+            {
+                logMessage("There are no producer consumer close enought!");
+            }
             return ret;
         }
 
@@ -140,6 +156,13 @@ namespace SaavedraCraft.Model.Resources
             AddProducer(hybrid.GetAsProducer());*/
             AddConsumer(hybrid);
             AddProducer(hybrid);
+        }
+
+        public void RemoveHybrid(IHybridConsumerProducer<T> basicConstrucHybridConsumerProducer)
+        {
+            hybrids.Remove(basicConstrucHybridConsumerProducer);
+            RemoveConsumer(basicConstrucHybridConsumerProducer);
+            RemoveProducer(basicConstrucHybridConsumerProducer);
         }
     }
 }

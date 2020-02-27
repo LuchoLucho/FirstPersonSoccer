@@ -13,8 +13,7 @@ namespace SaavedraCraft.Model.Constructions
 
         public BasicConstrucHybridConsumerProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
-            meAsConsumer = getNewInstanceMeAsConsumer(aName+"-Consumer",aComponent,newI,newj);
-            centralMarket.AddHybrid(this);
+            meAsConsumer = getNewInstanceMeAsConsumer(aName+"-Consumer",aComponent,newI,newj);            
         }
 
         public abstract BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj);
@@ -47,6 +46,19 @@ namespace SaavedraCraft.Model.Constructions
             return meAsConsumer.GetResourceIntersectionWithProducer(producer);
         }
 
-        public abstract void newResoucesArrivedToBeTransformed(IResourceConsumer<T> consumer);        
+        public abstract void newResoucesArrivedToBeTransformed(IResourceConsumer<T> consumer);
+
+        public override void SetActive(bool newValue)
+        {
+            base.SetActive(newValue);
+            if (newValue)
+            {
+                centralMarket.AddHybrid(this);
+            }
+            else
+            {
+                centralMarket.RemoveHybrid(this);
+            }
+        }
     }
 }
