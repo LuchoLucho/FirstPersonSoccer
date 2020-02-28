@@ -78,7 +78,7 @@ namespace SaavedraCraft.Model.Resources
                     if (distanceBetweenConstructions(producer,consumer) < MAX_DISTANCE_PRODUCER_CONSUMER)
                     {
                         isThereProducerConsumerCloseEachOther = true;
-                        List<IResource> resourceIntersection = consumer.GetResourceIntersectionWithProducer(producer);
+                        List<IResource> resourceIntersection = consumer.GetResourceIntersectionWithProducer(producer,consumer);
                         if (resourceIntersection.Count > 0)
                         {
                             ret.Add(generateTransaction(consumer, producer, resourceIntersection));

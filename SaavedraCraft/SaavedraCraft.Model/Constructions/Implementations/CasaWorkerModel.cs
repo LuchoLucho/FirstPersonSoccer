@@ -8,6 +8,8 @@ namespace SaavedraCraft.Model.Constructions.Implementations
 {
     public class CasaWorkerModel<T> : BasicConstrucHybridConsumerProducer<T>
     {
+        public const int MAX_AMOUNT_WORKER = 3;
+
         public CasaWorkerModel(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
         }
@@ -41,11 +43,21 @@ namespace SaavedraCraft.Model.Constructions.Implementations
             return new Casa<T>(aName, aComponent, newI, newj, null);
         }
 
+        private bool wasTheMaxProductionAchieved()
+        {
+            return getAllProducedResources()[0].GetResourceAmount() >= MAX_AMOUNT_WORKER;
+        }
+
         public override void newResoucesArrivedToBeTransformed(IResourceConsumer<T> meAsConsumer)
         {
             List<IResource> allResources = meAsConsumer.getAllExternalResources();
             if (allResources.Count > 0)
             {
+                if (wasTheMaxProductionAchieved())
+                {
+                    //We want a max of 3 workers.
+                    return;
+                }
                 IResource singleTomatoe = allResources.Find(x => x.GetResourceName().Contains("Toma"));
                 if (singleTomatoe.GetResourceAmount() > 0)
                 {
@@ -63,6 +75,15 @@ namespace SaavedraCraft.Model.Constructions.Implementations
                     }
                 }
             }
+        }
+
+        public override List<IResource> GetNeeds(List<IResource> resources)
+        {
+            if (wasTheMaxProductionAchieved())
+            {
+                return new List<IResource>();
+            }
+            return base.GetNeeds(resources);
         }
     }
 }

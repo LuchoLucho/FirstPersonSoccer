@@ -42,9 +42,10 @@ namespace SaavedraCraft.Model.Constructions
 
         public abstract List<IResource> GetNeeds(List<IResource> resources);
 
-        public List<IResource> GetResourceIntersectionWithProducer<T1>(IResourceProducer<T1> producer)
+        public List<IResource> GetResourceIntersectionWithProducer(IResourceProducer<T> producer, IResourceConsumer<T> consumerWithTheNeedMethod)
         {
-            List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllProducedResources().FindAll(x => this.GetNeeds(new List<IResource> { x }).Contains(x));
+            //consumerWithTheNeedMethod> could be the same than THIS . But for hybrid I needed to override the behaviour from the hybrid itself!
+            List<IResource> intersectionOfNeedsAndProvisionsFromProducer = producer.getAllProducedResources().FindAll(x => consumerWithTheNeedMethod.GetNeeds(new List<IResource> { x }).Contains(x));
             if ((intersectionOfNeedsAndProvisionsFromProducer.Count == 0) || (intersectionOfNeedsAndProvisionsFromProducer[0].GetResourceAmount() == 0))
             {
                 return new List<IResource>();

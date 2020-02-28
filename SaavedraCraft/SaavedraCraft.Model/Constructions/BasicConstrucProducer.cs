@@ -8,19 +8,23 @@ namespace SaavedraCraft.Model.Constructions
 {
     public abstract class BasicConstrucProducer<T> : BasicContruction<T>, IResourceProducer<T>
     {
-        private List<IResource> producedResources = new List<IResource>();
+        private List<IResource> producedResources;
         protected ICentralMarket<T> centralMarket;
 
         public BasicConstrucProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj)
         {
-            centralMarket = newCentralMarket;
-            producedResources.AddRange(AddInitialProducedResources());            
+            centralMarket = newCentralMarket;                        
         }
 
         public abstract List<IResource> AddInitialProducedResources();        
 
         public List<IResource> getAllProducedResources()
         {
+            if (producedResources == null)
+            {
+                producedResources = new List<IResource>();
+                producedResources.AddRange(AddInitialProducedResources());
+            }
             return producedResources;
         }
 
@@ -37,7 +41,7 @@ namespace SaavedraCraft.Model.Constructions
         public override void SetActive(bool newValue)
         {
             base.SetActive(newValue);
-            producedResources.ForEach(x => x.setActive(newValue));
+            getAllProducedResources().ForEach(x => x.setActive(newValue));
             if (newValue)
             {
                 centralMarket.AddProducer(this);
@@ -55,7 +59,7 @@ namespace SaavedraCraft.Model.Constructions
         
         public override void TimeTick(float timedelta)
         {
-            foreach (IResource currentResource in producedResources)
+            foreach (IResource currentResource in getAllProducedResources())
             {
                 int resourceCntPreviousTick = currentResource.GetResourceAmount();
                 currentResource.TimeTick(timedelta);                

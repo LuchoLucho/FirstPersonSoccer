@@ -8,7 +8,7 @@ namespace SaavedraCraft.Model.Interfaces
     public interface IResourceConsumer<T> : IConstruction<T>
     {
         List<IResource> GetNeeds(List<IResource> resources);
-        List<IResource> GetResourceIntersectionWithProducer<T>(IResourceProducer<T> producer);
+        List<IResource> GetResourceIntersectionWithProducer(IResourceProducer<T> producer, IResourceConsumer<T> consumerWithTheNeedMethod);
         void Buy(List<IResource> list);
         void AddToExternalResource(IResource newExternalResournce);
         List<IResource> getAllExternalResources();

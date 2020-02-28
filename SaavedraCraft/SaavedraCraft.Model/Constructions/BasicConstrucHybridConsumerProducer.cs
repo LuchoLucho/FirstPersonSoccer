@@ -9,7 +9,7 @@ namespace SaavedraCraft.Model.Constructions
     abstract public class BasicConstrucHybridConsumerProducer<T> : BasicConstrucProducer<T> //Producer will be the father, consumer will be a property
 , IHybridConsumerProducer<T>
     {
-        protected IResourceConsumer<T> meAsConsumer;
+        private IResourceConsumer<T> meAsConsumer;
 
         public BasicConstrucHybridConsumerProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
@@ -36,14 +36,14 @@ namespace SaavedraCraft.Model.Constructions
             return meAsConsumer.getAllExternalResources();
         }
 
-        public List<IResource> GetNeeds(List<IResource> resources)
+        public virtual List<IResource> GetNeeds(List<IResource> resources)
         {
             return meAsConsumer.GetNeeds(resources);
         }
         
-        public List<IResource> GetResourceIntersectionWithProducer<T1>(IResourceProducer<T1> producer)
+        public List<IResource> GetResourceIntersectionWithProducer(IResourceProducer<T> producer, IResourceConsumer<T> consumerWithTheNeedMethod)
         {
-            return meAsConsumer.GetResourceIntersectionWithProducer(producer);
+            return meAsConsumer.GetResourceIntersectionWithProducer(producer,this);
         }
 
         public abstract void newResoucesArrivedToBeTransformed(IResourceConsumer<T> consumer);
@@ -59,6 +59,6 @@ namespace SaavedraCraft.Model.Constructions
             {
                 centralMarket.RemoveHybrid(this);
             }
-        }
+        }        
     }
 }
