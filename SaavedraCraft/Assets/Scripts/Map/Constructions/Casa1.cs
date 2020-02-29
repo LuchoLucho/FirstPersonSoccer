@@ -17,7 +17,7 @@ namespace Assets.Scripts
 
         public override void SetComponentInstanciaReal(Component componentReal)
         {
-            componentInstanciaReal = componentReal;
+            base.SetComponentInstanciaReal(componentReal);
             ConstructionClickable construcClickable = componentReal.gameObject.GetComponent<ConstructionClickable>();
             if (construcClickable != null)
             {
@@ -25,9 +25,9 @@ namespace Assets.Scripts
             }
         }
 
-        public override IConstruction<Component> CloneMe()
+        public override IObject<Component> CloneMe()
         {
-            return new Casa1(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralMarket);
+            return new Casa1(this.GetName(), this.GetComponentMolde(), this.GetCoordI(), this.GetCoordJ(), centralMarket);
         }
     }
 }

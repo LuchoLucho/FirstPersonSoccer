@@ -12,9 +12,9 @@ namespace SaavedraCraft.Model.Constructions.Implementations
         {
         }
 
-        public override IConstruction<T> CloneMe()
+        public override IObject<T> CloneMe()
         {
-            return new Casa<T>(name, componentMolde, i, j, centralMarket);
+            return new Casa<T>(this.GetName(), GetComponentMolde(), GetCoordI(), GetCoordJ(), centralMarket);
         }
 
         public override string GetConstructionInfo()

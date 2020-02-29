@@ -38,7 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="BasicObject.cs" />
     <Compile Include="Constructions\BasicConstrucHybridConsumerProducer.cs" />
     <Compile Include="Constructions\BasicConstrucProducer.cs" />
     <Compile Include="Constructions\BasicContrucConsumer.cs" />
@@ -51,6 +51,8 @@
     <Compile Include="Interfaces\ICentralMarket.cs" />
     <Compile Include="Interfaces\IConstruction.cs" />
     <Compile Include="Interfaces\IConstructionManagerObserver.cs" />
+    <Compile Include="Interfaces\IMovable.cs" />
+    <Compile Include="Interfaces\IObject.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IResourceConsumer.cs" />
     <Compile Include="Interfaces\IResourceProducer.cs" />

@@ -42,7 +42,7 @@ public class ConstructionPanel : MonoBehaviour {
                 GUI.Label(new Rect(5, 35, 130, 70), currentConstruction.GetName());
                 if (GUI.Button(new Rect(150, 30, 100, 45), "Select"))
                 {
-                    toBeConstructedClone = currentConstruction.CloneMe();
+                    toBeConstructedClone = (IConstruction<Component>)currentConstruction.CloneMe();
                     destroyConsutructionGhost();
                     float[] coord = ConstructionFactory.turnRealVector3CoordIntoIJ(Camera.main.transform.position.x, Camera.main.transform.position.y);
                     coord[0] = Mathf.Round(coord[0]);

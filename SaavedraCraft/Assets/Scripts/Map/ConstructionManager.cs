@@ -9,8 +9,8 @@ using UnityEngine;
 
 public class ConstructionManager : MonoBehaviour, ICameraObserver {
 
-    private List<IConstruction<Component>> constructionAvailable = new List<IConstruction<Component>>();
-    private List<IConstruction<Component>> constructionInMap = new List<IConstruction<Component>>();
+    private List<IObject<Component>> constructionAvailable = new List<IObject<Component>>();
+    private List<IObject<Component>> constructionInMap = new List<IObject<Component>>();
     private List<ConstructionClickable> constructionClickables = new List<ConstructionClickable>();
 
     public Component CasaNS1Molde;
@@ -136,14 +136,14 @@ public class ConstructionManager : MonoBehaviour, ICameraObserver {
         }
 	}
 
-    public List<IConstruction<Component>> GetAvailableConstructions()
+    public List<IObject<Component>> GetAvailableConstructions()
     {
         return constructionAvailable;
     }
 
-    public IConstruction<Component> getConstructionFromTileCoor(float i, float j)
+    public IObject<Component> getConstructionFromTileCoor(float i, float j)
     {
-        IConstruction<Component> contructionToFind = constructionInMap.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
+        IObject<Component> contructionToFind = constructionInMap.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
         if (contructionToFind == null)
         {
             return null;

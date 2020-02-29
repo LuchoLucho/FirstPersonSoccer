@@ -21,9 +21,9 @@ namespace SaavedraCraft.Model.Constructions.Implementations
             return new List<IResource> { initialResource };
         }
 
-        public override IConstruction<T> CloneMe()
+        public override IObject<T> CloneMe()
         {
-            return new CasaWorkerModel<T>(this.name, this.componentMolde, i, j, centralMarket);
+            return new CasaWorkerModel<T>(this.GetName(), this.GetComponentMolde(), this.GetCoordI(), this.GetCoordJ(), centralMarket);
         }
 
         public override string GetConstructionInfo()

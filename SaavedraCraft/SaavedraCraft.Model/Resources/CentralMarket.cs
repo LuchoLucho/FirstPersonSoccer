@@ -131,18 +131,7 @@ namespace SaavedraCraft.Model.Resources
             int squareDistance =  (c1.GetCoordI() - c2.GetCoordI()) * (c1.GetCoordI() - c2.GetCoordI()) +
                 (c1.GetCoordJ()-c2.GetCoordJ())* (c1.GetCoordJ() - c2.GetCoordJ());
             return (int) Math.Sqrt(squareDistance);
-        }
-
-        private List<IResource> clonResourcesAndInactive(List<IResource> list)
-        {
-            List<IResource> toRet = new List<IResource>();
-            foreach (IResource resource in list)
-            {
-                IResource newResource = resource.Clone();
-                toRet.Add(newResource);
-            }
-            return toRet;
-        }
+        }        
 
         public List<Transaction<T>> GetAllTransactions()
         {
@@ -152,8 +141,6 @@ namespace SaavedraCraft.Model.Resources
         public void AddHybrid(IHybridConsumerProducer<T> hybrid)
         {
             hybrids.Add(hybrid);
-            /*AddConsumer(hybrid.GetAsConsumer());
-            AddProducer(hybrid.GetAsProducer());*/
             AddConsumer(hybrid);
             AddProducer(hybrid);
         }

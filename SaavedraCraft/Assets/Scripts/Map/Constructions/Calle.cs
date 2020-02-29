@@ -25,7 +25,7 @@ namespace Assets.Scripts
             this.j = newJ;
         }
 
-        public IConstruction<Component> CloneMe()
+        public IObject<Component> CloneMe()
         {
             return new Calle(name,calleNS1, GetCoordI(), GetCoordJ());
         }
@@ -90,7 +90,7 @@ namespace Assets.Scripts
             componentInstanciaReal = componentReal;
         }
 
-        public IConstruction<Component> SetNewIJ(int v1, int v2)
+        public IObject<Component> SetNewIJ(int v1, int v2)
         {
             this.i = v1;
             this.j = v2;

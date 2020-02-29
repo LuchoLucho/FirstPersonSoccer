@@ -18,7 +18,7 @@ namespace Assets.Scripts.Map.Constructions
 
         public override void SetComponentInstanciaReal(Component componentReal)
         {
-            componentInstanciaReal = componentReal;
+            base.SetComponentInstanciaReal(componentReal);
             ConstructionClickable construcClickable = componentReal.gameObject.GetComponent<ConstructionClickable>();
             if (construcClickable != null)
             {   
@@ -26,9 +26,9 @@ namespace Assets.Scripts.Map.Constructions
             }
         }
 
-        public override IConstruction<Component> CloneMe()
+        public override IObject<Component> CloneMe()
         {
-            return new CampoTomatesMono(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralMarket);
+            return new CampoTomatesMono(this.GetName(), this.GetComponentMolde(), this.GetCoordI(), this.GetCoordJ(), centralMarket);
         }
 
     }

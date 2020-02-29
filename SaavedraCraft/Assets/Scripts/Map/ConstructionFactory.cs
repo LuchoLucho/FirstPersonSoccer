@@ -116,7 +116,7 @@ public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver<C
     {
         float[] realCoordArray = turnIJCoordIntoRealVector3(i, j);
         Vector3 realCoord = new Vector3(realCoordArray[0], realCoordArray[1], realCoordArray[2]);
-        IConstruction<Component> newChildConstruction = constructionManager.getConstructionFromTileCoor(i, j);
+        IObject<Component> newChildConstruction = constructionManager.getConstructionFromTileCoor(i, j);
         Component newChild = null;
         if (newChildConstruction == null)
         {            

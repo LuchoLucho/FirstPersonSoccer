@@ -17,9 +17,9 @@ namespace SaavedraCraft.Model.Constructions.Implementations
             return new List<IResource>() { new SimpleResource(0, "Tomates/s") }; ;
         }
 
-        public override IConstruction<T> CloneMe()
+        public override IObject<T> CloneMe()
         {
-            return new CampoTomates<T>(this.name, this.componentMolde, this.GetCoordI(), this.GetCoordJ(), centralMarket);
+            return new CampoTomates<T>(GetName(), this.GetComponentMolde(), this.GetCoordI(), this.GetCoordJ(), centralMarket);
         }
 
         public override string GetConstructionInfo()
