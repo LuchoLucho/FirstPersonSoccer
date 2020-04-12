@@ -1,0 +1,7 @@
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival\Assets\Libraries\QuarentineSurvival.Model.dll
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival\Assets\Libraries\QuarentineSurvival.Model.pdb
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival.Model\obj\Debug\QuarentineSurvival.Model.csprojAssemblyReference.cache
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival.Model\obj\Debug\QuarentineSurvival.Model.csproj.CoreCompileInputs.cache
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival.Model\obj\Debug\QuarentineSurvival.Model.csproj.CopyComplete
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival.Model\obj\Debug\QuarentineSurvival.Model.dll
+C:\Users\lucho\Desktop\MisProjectos\Unity\git\FirstPersonSoccer\QuarentineSurvival.Model\obj\Debug\QuarentineSurvival.Model.pdb

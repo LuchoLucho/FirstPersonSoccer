@@ -10,7 +10,7 @@ namespace SaavedraCraft.Model.Constructions.Implementations
     {
         public const int MAX_AMOUNT_WORKER = 3;
 
-        public CasaWorkerModel(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
+        public CasaWorkerModel(string aName, T aComponent, float newI, float newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
         }
 
@@ -38,7 +38,7 @@ namespace SaavedraCraft.Model.Constructions.Implementations
             return toRet;
         }
 
-        public override BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj)//, ICentralMarket<T> newCentralCommunicator)
+        public override BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, float newI, float newj)//, ICentralMarket<T> newCentralCommunicator)
         {
             return new Casa<T>(aName, aComponent, newI, newj, null);
         }

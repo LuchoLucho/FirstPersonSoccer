@@ -11,7 +11,7 @@ namespace SaavedraCraft.Model.Constructions
         private List<IResource> producedResources;
         protected ICentralMarket<T> centralMarket;
 
-        public BasicConstrucProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj)
+        public BasicConstrucProducer(string aName, T aComponent, float newI, float newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj)
         {
             centralMarket = newCentralMarket;                        
         }

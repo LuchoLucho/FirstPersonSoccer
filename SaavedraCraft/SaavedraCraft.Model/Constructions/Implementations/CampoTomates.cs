@@ -8,7 +8,7 @@ namespace SaavedraCraft.Model.Constructions.Implementations
 {
     public class CampoTomates<T> : BasicConstrucProducer<T>
     {
-        public CampoTomates(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
+        public CampoTomates(string aName, T aComponent, float newI, float newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
         }
 

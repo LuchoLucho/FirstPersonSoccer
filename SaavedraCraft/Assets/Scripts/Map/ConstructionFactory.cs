@@ -157,7 +157,7 @@ public class ConstructionFactory : MonoBehaviour, IConstructionManagerObserver<C
 		
 	}
 
-    public void NewBuildCreated(IConstruction<Component> constructionToBeRender)
+    public void NewBuildCreated(IObject<Component> constructionToBeRender)
     {
         Vector2 keyToFindAlreadyBuild = new Vector2(constructionToBeRender.GetCoordI(), constructionToBeRender.GetCoordJ());
         if ( ijCoordSprite.ContainsKey(keyToFindAlreadyBuild))

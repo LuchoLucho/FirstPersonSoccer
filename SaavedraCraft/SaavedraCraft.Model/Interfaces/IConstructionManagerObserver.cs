@@ -7,6 +7,6 @@ namespace SaavedraCraft.Model.Interfaces
 {
     public interface IConstructionManagerObserver<T>
     {
-        void NewBuildCreated(IConstruction<T> constructionToBeRender);
+        void NewBuildCreated(IObject<T> constructionToBeRender);
     }
 }

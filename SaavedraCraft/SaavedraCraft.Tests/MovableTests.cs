@@ -1,164 +1,84 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SaavedraCraft.Model;
 using SaavedraCraft.Model.Constructions;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Interfaces.Transportation;
+using SaavedraCraft.Model.Resources;
+using SaavedraCraft.Model.Transportation;
 
 namespace SaavedraCraft.Tests
 {
     [TestClass]
     public class MovableTests
     {
-        [TestMethod]
-        public void MovableSimpleOriginDestinyTest()
+        [TestMethod] 
+        public void MovableSimpleMoveNorthOriginDestinyTest()
         {
-            IMovableMedium<object> streetOrigin = new SimpleStreet("CalleOrigin",null,0,-1);
-            IMovableMedium<object> streetDestiny = new SimpleStreet("CalleDest", null, 0, 0);
-            streetOrigin.SetMovableMediumAtNorth(streetDestiny);
-            IMovable<object> simpleMovable = new SimpleMovable("Transporter",null, 0 , 0 ,streetOrigin);
+            IMovableMedium<object> streetOrigin = new SimpleStreet<object>("CalleOrigin",null,0,-1);
+            IMovableMedium<object> streetDestinyAtNorth = new SimpleStreet<object>("CalleDest", null, 0, 0);
+            streetOrigin.SetMovableMediumAtNorth(streetDestinyAtNorth);
+            IMovable<object> simpleMovable = new SimpleMovable<object>("Simple",null, streetOrigin);
             int[] northDirection = new[] { 0 , 1 };
             simpleMovable.SetDirectionI(northDirection[0]);
             simpleMovable.SetDirectionJ(northDirection[1]);
             simpleMovable.SetVelocity(1.0f);//It will complete the trip in one tick
             simpleMovable.TimeTick(1.0f);
-            Assert.AreEqual(streetDestiny, simpleMovable.GetMedium());
+            Assert.AreEqual(streetDestinyAtNorth, simpleMovable.GetMedium());
+            Assert.AreEqual(streetDestinyAtNorth.GetCoordI() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordI());
+            Assert.AreEqual(streetDestinyAtNorth.GetCoordJ() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordJ());
         }
 
-        public class SimpleStreet : BasicContruction<object>, IMovableMedium<object>
+        [TestMethod]
+        public void MovableSimpleMoveSouthOriginDestinyTest()
         {
-            private IMovableMedium<object> movableMediumAtNorth;
-
-            public SimpleStreet(string aName, object aComponent, int newI, int newj) : base(aName, aComponent, newI, newj)
-            {
-            }
-
-            public override IObject<object> CloneMe()
-            {
-                throw new NotImplementedException();
-            }
-
-            public override string GetConstructionInfo()
-            {
-                throw new NotImplementedException();
-            }
-
-            public IMovableMedium<object> GetMovableMediumAtEast()
-            {
-                throw new NotImplementedException();
-            }
-
-            public IMovableMedium<object> GetMovableMediumAtNorth()
-            {
-                return movableMediumAtNorth;
-            }
-
-            public IMovableMedium<object> GetMovableMediumAtSouth()
-            {
-                throw new NotImplementedException();
-            }
-
-            public IMovableMedium<object> GetMovableMediumAtWest()
-            {
-                throw new NotImplementedException();
-            }
-
-            public float MaxSpeed()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void SetMovableMediumAtNorth(IMovableMedium<object> movableMediumAtNorth)
-            {
-                this.movableMediumAtNorth = movableMediumAtNorth;
-            }
-
-            public override void TimeTick(float timedelta)
-            {
-                throw new NotImplementedException();
-            }
+            IMovableMedium<object> streetOrigin = new SimpleStreet<object>("CalleOrigin", null, 0, 0);
+            IMovableMedium<object> streetDestinyAtSouth = new SimpleStreet<object>("CalleDest", null, 0, -1);
+            streetOrigin.SetMovableMediumAtSouth(streetDestinyAtSouth);
+            IMovable<object> simpleMovable = new SimpleMovable<object>("Simple", null, streetOrigin);
+            int[] direction = new[] { 0, -1 };
+            simpleMovable.SetDirectionI(direction[0]);
+            simpleMovable.SetDirectionJ(direction[1]);
+            simpleMovable.SetVelocity(1.0f);//It will complete the trip in one tick
+            simpleMovable.TimeTick(1.0f);
+            Assert.AreEqual(streetDestinyAtSouth, simpleMovable.GetMedium());
+            Assert.AreEqual(streetDestinyAtSouth.GetCoordI() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordI());
+            Assert.AreEqual(streetDestinyAtSouth.GetCoordJ() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordJ());
         }
 
-        public class SimpleMovable : BasicObject<object>, IMovable<object>
+        [TestMethod]
+        public void MovableSimpleMoveWestOriginDestinyTest()
         {
-            private IMovableMedium<object> currentMovableMedium;
-            private int directionI;
-            private int directionJ;
-            private float velocity;
-            private float distanceI;
+            IMovableMedium<object> streetOrigin = new SimpleStreet<object>("CalleOrigin", null, 0, 0);
+            IMovableMedium<object> streetDestinyAtWest = new SimpleStreet<object>("CalleDest", null, -1, 0);
+            streetOrigin.SetMovableMediumAtWest(streetDestinyAtWest);
+            IMovable<object> simpleMovable = new SimpleMovable<object>("Simple", null, streetOrigin);
+            int[] direction = new[] { -1, 0 };
+            simpleMovable.SetDirectionI(direction[0]);
+            simpleMovable.SetDirectionJ(direction[1]);
+            simpleMovable.SetVelocity(1.0f);//It will complete the trip in one tick
+            simpleMovable.TimeTick(1.0f);
+            Assert.AreEqual(streetDestinyAtWest, simpleMovable.GetMedium());
+            Assert.AreEqual(streetDestinyAtWest.GetCoordI() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordI());
+            Assert.AreEqual(streetDestinyAtWest.GetCoordJ() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordJ());
+        }
 
-            public SimpleMovable(string aName, object aComponent, int newI, int newj, IMovableMedium<object> originMedium) : base(aName, aComponent, newI, newj)
-            {
-                distanceI = 0.5f;
-                currentMovableMedium = originMedium;
-            }
-
-            public override int GetCoordI()
-            {
-                return currentMovableMedium.GetCoordI();
-            }
-
-            public override int GetCoordJ()
-            {
-                return currentMovableMedium.GetCoordJ();
-            }
-
-            public override IObject<object> CloneMe()
-            {
-                throw new NotImplementedException();
-            }
-
-            public int GetDirectionI()
-            {
-                return directionI;
-            }
-            public int GetDirectionJ()
-            {
-                return directionJ;
-            }
-
-            public IMovableMedium<object> GetMedium()
-            {
-                return currentMovableMedium;
-            }
-
-            public float GetVelocity()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void SetDirectionI(int newDirectionI)
-            {
-                directionI = newDirectionI;
-            }
-
-            public void SetDirectionJ(int newDirectionJ)
-            {
-                directionJ = newDirectionJ;
-            }
-
-            public void SetMedium(IMovableMedium<object> newMedium)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void SetVelocity(float newVelocity)
-            {
-                this.velocity = newVelocity;
-            }
-
-            public override void TimeTick(float timedelta)
-            {
-                distanceI += this.GetDirectionJ() * timedelta;
-                if (distanceI >= 1)
-                {
-                    traslateNorth();
-                }
-            }
-
-            private void traslateNorth()
-            {
-                currentMovableMedium = currentMovableMedium.GetMovableMediumAtNorth();
-            }
+        [TestMethod]
+        public void MovableSimpleMoveEastOriginDestinyTest()
+        {
+            IMovableMedium<object> streetOrigin = new SimpleStreet<object>("CalleOrigin", null, 0, 0);
+            IMovableMedium<object> streetDestinyAtEast = new SimpleStreet<object>("CalleDest", null, +1, 0);
+            streetOrigin.SetMovableMediumAtEast(streetDestinyAtEast);
+            IMovable<object> simpleMovable = new SimpleMovable<object>("Simple", null, streetOrigin);
+            int[] direction = new[] { +1, 0 };
+            simpleMovable.SetDirectionI(direction[0]);
+            simpleMovable.SetDirectionJ(direction[1]);
+            simpleMovable.SetVelocity(1.0f);//It will complete the trip in one tick
+            simpleMovable.TimeTick(1.0f);
+            Assert.AreEqual(streetDestinyAtEast, simpleMovable.GetMedium());
+            Assert.AreEqual(streetDestinyAtEast.GetCoordI() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordI());
+            Assert.AreEqual(streetDestinyAtEast.GetCoordJ() + SimpleMovable<object>.MOVABLE_MEDIUM_EDGE_LIMIT / 2, simpleMovable.GetCoordJ());
         }
     }
 }

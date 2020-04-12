@@ -6,14 +6,14 @@ namespace SaavedraCraft.Model.Interfaces
 {
     public interface IMovable<T> : IObject<T>
     {
-        int GetDirectionI();
-        int GetDirectionJ();
+        float GetDirectionI();
+        float GetDirectionJ();
         float GetVelocity();
 
         IMovableMedium<T> GetMedium();
         void SetMedium(IMovableMedium<T> newMedium);
-        void SetDirectionI(int newDirectionI);
-        void SetDirectionJ(int newDirectionI);
+        void SetDirectionI(float newDirectionI);
+        void SetDirectionJ(float newDirectionI);
         void SetVelocity(float newVelocity);
     }
 
@@ -25,5 +25,8 @@ namespace SaavedraCraft.Model.Interfaces
         IMovableMedium<T> GetMovableMediumAtWest();
         IMovableMedium<T> GetMovableMediumAtEast();
         void SetMovableMediumAtNorth(IMovableMedium<T> streetDestiny);
+        void SetMovableMediumAtSouth(IMovableMedium<T> streetDestiny);
+        void SetMovableMediumAtWest(IMovableMedium<T> streetDestinyAtWest);
+        void SetMovableMediumAtEast(IMovableMedium<T> streetDestinyAtEast);
     }
 }

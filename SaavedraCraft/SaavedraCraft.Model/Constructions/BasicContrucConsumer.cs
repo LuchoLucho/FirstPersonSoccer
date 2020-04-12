@@ -10,7 +10,7 @@ namespace SaavedraCraft.Model.Constructions
         private List<IResource> externalResources = new List<IResource>();
         protected ICentralMarket<T> centralMarket;
 
-        public BasicContrucConsumer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator) : base(aName, aComponent, newI, newj)
+        public BasicContrucConsumer(string aName, T aComponent, float newI, float newj, ICentralMarket<T> newCentralCommunicator) : base(aName, aComponent, newI, newj)
         {
             centralMarket = newCentralCommunicator;            
         }        

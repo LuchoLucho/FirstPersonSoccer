@@ -11,12 +11,12 @@ namespace SaavedraCraft.Model.Constructions
     {
         private IResourceConsumer<T> meAsConsumer;
 
-        public BasicConstrucHybridConsumerProducer(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
+        public BasicConstrucHybridConsumerProducer(string aName, T aComponent, float newI, float newj, ICentralMarket<T> newCentralMarket) : base(aName, aComponent, newI, newj, newCentralMarket)
         {
             meAsConsumer = getNewInstanceMeAsConsumer(aName+"-Consumer",aComponent,newI,newj);            
         }
 
-        public abstract BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj);
+        public abstract BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, float newI, float newj);
         /*, ICentralMarket<T> newCentralCommunicator);*/
         //Consumer new instance should not have direct control of the market! 
 

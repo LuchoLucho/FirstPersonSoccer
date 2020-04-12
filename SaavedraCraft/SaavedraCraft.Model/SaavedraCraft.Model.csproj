@@ -56,11 +56,17 @@
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IResourceConsumer.cs" />
     <Compile Include="Interfaces\IResourceProducer.cs" />
+    <Compile Include="Interfaces\Transportation\ICargo.cs" />
+    <Compile Include="Interfaces\Transportation\ICargoTransporter.cs" />
+    <Compile Include="Interfaces\Transportation\IParkingSpot.cs" />
+    <Compile Include="Interfaces\Transportation\IWarehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\CentralMarket.cs" />
     <Compile Include="Resources\SimpleResource.cs" />
     <Compile Include="Resources\Transaction.cs" />
+    <Compile Include="Transportation\SimpleMovable.cs" />
     <Compile Include="Utils\Rectangle.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -9,7 +9,7 @@ namespace SaavedraCraft.Model.Constructions.Interfaces
         void Buy(List<IResource> list);
         List<IResource> getAllExternalResources();
         List<IResource> GetNeeds(List<IResource> resources);
-        BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, int newI, int newj);
+        BasicContrucConsumer<T> getNewInstanceMeAsConsumer(string aName, T aComponent, float newI, float newj);
         List<IResource> GetResourceIntersectionWithProducer(IResourceProducer<T> producer, IResourceConsumer<T> consumerWithTheNeedMethod);
     }
 }

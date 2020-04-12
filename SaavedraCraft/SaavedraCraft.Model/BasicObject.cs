@@ -9,11 +9,11 @@ namespace SaavedraCraft.Model
     {
         private string name;
         private T componentMolde;
-        private int i, j;
+        private float i, j;
         private bool active;
         private T componentInstanciaReal;
 
-        public BasicObject(string aName, T aComponent, int newI, int newj)
+        public BasicObject(string aName, T aComponent, float newI, float newj)
         {
             name = aName;
             componentMolde = aComponent;
@@ -28,12 +28,12 @@ namespace SaavedraCraft.Model
             return componentMolde;
         }
 
-        public virtual int GetCoordI()
+        public virtual float GetCoordI()
         {
             return i;
         }
 
-        public virtual int GetCoordJ()
+        public virtual float GetCoordJ()
         {
             return j;
         }
@@ -68,7 +68,7 @@ namespace SaavedraCraft.Model
             componentInstanciaReal = componentReal;
         }
 
-        public IObject<T> SetNewIJ(int newI, int newJ)
+        public IObject<T> SetNewIJ(float newI, float newJ)
         {
             i = newI;
             j = newJ;

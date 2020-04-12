@@ -8,7 +8,7 @@ namespace SaavedraCraft.Model.Constructions.Implementations
 {
     public class Casa<T> : BasicContrucConsumer<T>
     {
-        public Casa(string aName, T aComponent, int newI, int newj, ICentralMarket<T> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
+        public Casa(string aName, T aComponent, float newI, float newj, ICentralMarket<T> newCentralCommunicator) : base(aName, aComponent, newI, newj, newCentralCommunicator)
         {
         }
 

@@ -126,11 +126,11 @@ namespace SaavedraCraft.Model.Resources
             return new Transaction<T>(consumer,producer, resourceIntersection);
         }
 
-        private int distanceBetweenConstructions(IConstruction<T> c1, IConstruction<T> c2)
+        private float distanceBetweenConstructions(IConstruction<T> c1, IConstruction<T> c2)
         {
-            int squareDistance =  (c1.GetCoordI() - c2.GetCoordI()) * (c1.GetCoordI() - c2.GetCoordI()) +
+            float squareDistance =  (c1.GetCoordI() - c2.GetCoordI()) * (c1.GetCoordI() - c2.GetCoordI()) +
                 (c1.GetCoordJ()-c2.GetCoordJ())* (c1.GetCoordJ() - c2.GetCoordJ());
-            return (int) Math.Sqrt(squareDistance);
+            return (float)Math.Sqrt(squareDistance);
         }        
 
         public List<Transaction<T>> GetAllTransactions()
