@@ -13,7 +13,7 @@ namespace SaavedraCraft.Tests
         [TestMethod]
         public void TransportationPickUpCargoTest()
         {
-            IWarehouse<object> warehouse = new SimpleWareHouse("Warehouse1", null, 0, 0);
+            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0);
             ICargoTransporter<object> simpleTransporter = new SimpleTransporter("MovableTransport", null, warehouse);
             ICargo<object> simpleCargo = new SimpleCargo();
             IResource resource = new SimpleResource(1, "Tomates", 0);
@@ -21,11 +21,11 @@ namespace SaavedraCraft.Tests
             simpleCargo.addResources(resource, destinyOfResources);
             warehouse.addCargo(simpleCargo);
             warehouse.addCargoTransporter(simpleTransporter);
-            Assert.IsTrue(simpleTransporter.showCargo() == null);
-            Assert.AreEqual(1, warehouse.GetAllCargo().Count);
-            warehouse.LoadUnload();
+            Assert.AreEqual(0,simpleTransporter.showCargo().Count);
+            Assert.AreEqual(1, warehouse.ShowAllCargo().Count);
+            warehouse.LoadUnloadAllAvailableCargo();
             Assert.IsTrue(simpleTransporter.showCargo() != null);
-            Assert.AreEqual(0, warehouse.GetAllCargo().Count);
+            Assert.AreEqual(0, warehouse.ShowAllCargo().Count);
         }
 
         [TestMethod]

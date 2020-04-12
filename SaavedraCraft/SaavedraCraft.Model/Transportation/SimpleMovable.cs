@@ -43,53 +43,57 @@ namespace SaavedraCraft.Model.Transportation
             this.singleCargo = singleCargo;
         }
 
-        public ICargo<object> showCargo()
+        public List<ICargo<object>> showCargo()
         {
-            return singleCargo;
+            if (singleCargo == null)
+            {
+                return new List<ICargo<object>>();
+            }
+            return new List<ICargo<object>> { singleCargo };
         }
 
-        public ICargo<object> UnloadCargo()
+        public ICargo<object> UnloadCargo(ICargo<object> cargoToRemove)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class SimpleWareHouse : SimpleStreet<object>, IWarehouse<object>, IParkingSpot<object>
+    public class SimpleWareHouse<T> : SimpleStreet<T>, IWarehouse<T>, IParkingSpot<T>
     {
-        private List<ICargo<object>> allCargo;
-        private List<ICargoTransporter<object>> allCargoTransporters;
+        private List<ICargo<T>> allCargo;
+        private List<ICargoTransporter<T>> allCargoTransporters;
 
-        public SimpleWareHouse(string aName, object aComponent, float newI, float newj) : base(aName, aComponent, newI, newj)
+        public SimpleWareHouse(string aName, T aComponent, float newI, float newj) : base(aName, aComponent, newI, newj)
         {
-            allCargo = new List<ICargo<object>>();
-            allCargoTransporters = new List<ICargoTransporter<object>>();
+            allCargo = new List<ICargo<T>>();
+            allCargoTransporters = new List<ICargoTransporter<T>>();
         }
 
-        public void addCargo(ICargo<object> newCargo)
+        public void addCargo(ICargo<T> newCargo)
         {
             allCargo.Add(newCargo);
         }
 
-        public void addCargoTransporter(ICargoTransporter<object> newCargoTransporter)
+        public void addCargoTransporter(ICargoTransporter<T> newCargoTransporter)
         {
             allCargoTransporters.Add(newCargoTransporter);
         }
 
-        public List<ICargo<object>> GetAllCargo()
+        public List<ICargo<T>> ShowAllCargo()
         {
             return allCargo;
         }
 
-        public void LoadUnload()
+        public void LoadUnloadAllAvailableCargo()
         {
             if ((allCargo.Count == 0) || (allCargoTransporters.Count == 0))
             {
                 return;
             }
-            List<ICargo<object>> cargoThatWasLoadedIntoTransporters = new List<ICargo<object>>();
-            foreach (ICargo<object> currentCargo in allCargo)
+            List<ICargo<T>> cargoThatWasLoadedIntoTransporters = new List<ICargo<T>>();
+            foreach (ICargo<T> currentCargo in allCargo)
             {
-                foreach (ICargoTransporter<object> currentTransporter in allCargoTransporters)
+                foreach (ICargoTransporter<T> currentTransporter in allCargoTransporters)
                 {
                     if (currentTransporter.CanCargoBeLoaded(currentCargo))
                     {
@@ -102,22 +106,45 @@ namespace SaavedraCraft.Model.Transportation
             cargoThatWasLoadedIntoTransporters.ForEach(x => allCargo.Remove(x));
         }
 
-        public void parkMovable(IMovable<object> newMovableToPark)
+        public void LoadCargoFrom(ICargo<T> newCargoToLoad)
+        {
+            foreach (ICargoTransporter<T> currentTransporter in allCargoTransporters)
+            {
+                if (currentTransporter.showCargo() == newCargoToLoad)
+                {
+                    allCargo.Add(newCargoToLoad);
+                }
+            }
+        }
+
+        public void UnloadCargoToCurrentTransporters(ICargo<T> cargoToLoadedIntoTransporter)
+        {
+            foreach (ICargoTransporter<T> currentTransporter in allCargoTransporters)
+            {
+                if (currentTransporter.CanCargoBeLoaded(cargoToLoadedIntoTransporter))
+                {
+                    allCargo.Remove(cargoToLoadedIntoTransporter);
+                    currentTransporter.LoadCargo(cargoToLoadedIntoTransporter);
+                }
+            }
+        }
+
+        public void parkMovable(IMovable<T> newMovableToPark)
         {
             throw new NotImplementedException();
         }
 
-        public void removeCargo(ICargo<object> toRemove)
+        public void removeCargo(ICargo<T> toRemove)
         {
             throw new NotImplementedException();
         }
 
-        public void removeCargoTransporter(ICargoTransporter<object> newCargoTransporter)
+        public void removeCargoTransporter(ICargoTransporter<T> newCargoTransporter)
         {
             throw new NotImplementedException();
         }
 
-        public void unparkMovable(IMovable<object> newMovableToPark)
+        public void unparkMovable(IMovable<T> newMovableToPark)
         {
             throw new NotImplementedException();
         }

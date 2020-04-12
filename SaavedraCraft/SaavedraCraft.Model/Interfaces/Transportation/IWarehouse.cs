@@ -12,7 +12,10 @@ namespace SaavedraCraft.Model.Interfaces.Transportation
         void addCargoTransporter(ICargoTransporter<T> newCargoTransporter);
         void removeCargoTransporter(ICargoTransporter<T> newCargoTransporter);
 
-        void LoadUnload();
-        List<ICargo<T>> GetAllCargo();
+        void LoadUnloadAllAvailableCargo();
+        List<ICargo<T>> ShowAllCargo();
+
+        void LoadCargoFrom(ICargo<T> newCargoToLoad);
+        void UnloadCargoToCurrentTransporters(ICargo<T> cargoToLoadedIntoTransporter);
     }
 }
