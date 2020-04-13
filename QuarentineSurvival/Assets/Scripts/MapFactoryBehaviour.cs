@@ -12,7 +12,7 @@ namespace Assets.Scripts
 {
     public class MapFactoryBehaviour : MonoBehaviour,IConstructionManagerObserver<Component>
     {
-        public const float MAX_TITLE_WIDTH = 4.0f;
+        public const float MAX_TITLE_WIDTH = 6.0f;
 
         private MapManangerBehaviour constructionManager;
         public Component Baldio;

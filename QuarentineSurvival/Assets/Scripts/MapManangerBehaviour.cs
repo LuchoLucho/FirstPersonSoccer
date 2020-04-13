@@ -11,6 +11,7 @@ public class MapManangerBehaviour : MonoBehaviour
 {
     public Component SinglePlayerComponent;
     public Component SimpleRoadComponent;
+    public Component ChestComponent;
 
     private List<IMovableMedium<Component>> movableMediums = new List<IMovableMedium<Component>>();
 
@@ -100,6 +101,16 @@ public class MapManangerBehaviour : MonoBehaviour
                     newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
                 }
             }             
+        } else if ((i==2) && (j==0))
+        {
+            IMovableMedium<Component> newMedium = new SimpleStreet<Component>("Cofre" + i + j, ChestComponent, i, j);
+            movableMediums.Add(newMedium);
+            {
+                newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
+                newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
+                newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
+                newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
+            }
         }
         return movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
     }
