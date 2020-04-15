@@ -7,12 +7,12 @@ using System.Text;
 
 namespace SaavedraCraft.Model.Transportation
 {
-    public class SimpleCargo : ICargo<object>
+    public class SimpleCargo<T> : ICargo<T>
     {
         private IResource resource;
-        private IMovableMedium<object> destination;
+        private IMovableMedium<T> destination;
 
-        public void addResources(IResource newCargo, IMovableMedium<object> destination)
+        public void addResources(IResource newCargo, IMovableMedium<T> destination)
         {
             resource = newCargo;
             this.destination = destination;
@@ -22,51 +22,73 @@ namespace SaavedraCraft.Model.Transportation
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return resource.ToString();
+        }
     }
 
-    public class SimpleTransporter : SimpleMovable<object>, ICargoTransporter<object>
+    public class SimpleTransporter<T> : SimpleMovable<T>, ICargoTransporter<T>
     {
-        private ICargo<object> singleCargo;
+        private List<ICargo<T>> allCargo;
+        private Action<IWarehouse<T>> handlerOnParkinSpaceAvailableFromWarehouse;
 
-        public SimpleTransporter(string aName, object aComponent, IMovableMedium<object> originMedium) : base(aName, aComponent, originMedium)
+        public SimpleTransporter(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium)
         {
+            allCargo = new List<ICargo<T>>();
+            transporterAndWarehouseManager.SubscribeAsCargoTransporter(this);
         }
 
-        public bool CanCargoBeLoaded(ICargo<object> currentCargo)
+        public bool CanCargoBeLoaded(ICargo<T> currentCargo)
         {
             //I transport everything!
-            return singleCargo == null;
+            //return singleCargo == null;
+            return true;
         }
 
-        public void LoadCargo(ICargo<object> singleCargo)
+        public void LoadCargo(ICargo<T> singleCargo)
         {
-            this.singleCargo = singleCargo;
+            allCargo.Add(singleCargo);
         }
 
-        public List<ICargo<object>> showCargo()
+        public virtual void NotifyParkingspaceAvailable(IWarehouse<T> simpleWareHouse)
         {
-            if (singleCargo == null)
+            if (handlerOnParkinSpaceAvailableFromWarehouse != null)
             {
-                return new List<ICargo<object>>();
+                handlerOnParkinSpaceAvailableFromWarehouse(simpleWareHouse);
             }
-            return new List<ICargo<object>> { singleCargo };
         }
 
-        public ICargo<object> UnloadCargo(ICargo<object> cargoToRemove)
+        public void OnParkinSpaceAvailableFromWarehouse(Action<IWarehouse<T>> handlerOnParkinSpaceAvailableFromWarehouse)
         {
-            throw new NotImplementedException();
+            this.handlerOnParkinSpaceAvailableFromWarehouse = handlerOnParkinSpaceAvailableFromWarehouse;
+        }
+
+        public List<ICargo<T>> showCargo()
+        {
+            return allCargo;
+        }
+
+        public ICargo<T> UnloadCargo(ICargo<T> cargoToRemove)
+        {
+            allCargo.Remove(cargoToRemove);
+            return cargoToRemove;
         }
     }
 
-    public class SimpleWareHouse<T> : SimpleStreet<T>, IWarehouse<T>, IParkingSpot<T>
+    public class SimpleWareHouse<T> : SimpleStreet<T>, IWarehouse<T>, IParkingSpotForMovable<T>
     {
         private List<ICargo<T>> allCargo;
         private List<ICargoTransporter<T>> allCargoTransporters;
+        private ITransporterAndWarehouseManager<T> transporterAndWarehouseManager;
 
-        public SimpleWareHouse(string aName, T aComponent, float newI, float newj) : base(aName, aComponent, newI, newj)
+        public SimpleWareHouse(string aName, T aComponent, float newI, float newj,ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, newI, newj)
         {
             allCargo = new List<ICargo<T>>();
             allCargoTransporters = new List<ICargoTransporter<T>>();
+            this.transporterAndWarehouseManager = transporterAndWarehouseManager;
+            transporterAndWarehouseManager.SubscribeAsWarehouse(this);
         }
 
         public void addCargo(ICargo<T> newCargo)
@@ -127,12 +149,7 @@ namespace SaavedraCraft.Model.Transportation
                     currentTransporter.LoadCargo(cargoToLoadedIntoTransporter);
                 }
             }
-        }
-
-        public void parkMovable(IMovable<T> newMovableToPark)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public void removeCargo(ICargo<T> toRemove)
         {
@@ -142,11 +159,22 @@ namespace SaavedraCraft.Model.Transportation
         public void removeCargoTransporter(ICargoTransporter<T> newCargoTransporter)
         {
             throw new NotImplementedException();
-        }
+        }        
 
-        public void unparkMovable(IMovable<T> newMovableToPark)
+        public void parkTransporter(ICargoTransporter<T> newMovableToPark)
         {
             throw new NotImplementedException();
+        }
+
+        public void unparkTransporter(ICargoTransporter<T> newMovableToPark)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void MovableArrived(IMovable<T> newMovable)
+        {
+            base.MovableArrived(newMovable);
+            transporterAndWarehouseManager.NotifyMovableArrivedToWarehouse(this, newMovable);
         }
     }
 
@@ -156,9 +184,11 @@ namespace SaavedraCraft.Model.Transportation
         private IMovableMedium<T> movableMediumAtSouth;
         private IMovableMedium<T> movableMediumAtWest;
         private IMovableMedium<T> movableMediumAtEast;
+        private List<IMovable<T>> movablesInMedium;
 
         public SimpleStreet(string aName, T aComponent, float newI, float newj) : base(aName, aComponent, newI, newj)
         {
+            movablesInMedium = new List<IMovable<T>>();
         }
 
         public override IObject<T> CloneMe()
@@ -191,9 +221,24 @@ namespace SaavedraCraft.Model.Transportation
             return movableMediumAtWest;
         }
 
+        public List<IMovable<T>> GetMovablesOnMedium()
+        {
+            return movablesInMedium;
+        }
+
         public float MaxSpeed()
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void MovableArrived(IMovable<T> newMovable)
+        {
+            movablesInMedium.Add(newMovable);
+        }
+
+        public void MovableLeft(IMovable<T> toRemoveMovable)
+        {
+            movablesInMedium.Remove(toRemoveMovable);
         }
 
         public void SetMovableMediumAtEast(IMovableMedium<T> streetDestinyAtEast)
@@ -236,6 +281,7 @@ namespace SaavedraCraft.Model.Transportation
         {
             deltaI = deltaJ = 0.0f;
             currentMovableMedium = originMedium;
+            currentMovableMedium.MovableArrived(this);
         }
 
         public override float GetCoordI()
@@ -345,7 +391,9 @@ namespace SaavedraCraft.Model.Transportation
         private void traslateEast(float extraDeltaI)
         {
             Log("traslateEast");
+            currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtEast();
+            currentMovableMedium.MovableArrived(this);
             deltaI = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaI += extraDeltaI;
         }
@@ -353,7 +401,9 @@ namespace SaavedraCraft.Model.Transportation
         private void traslateWest(float extraDeltaI)
         {
             Log("traslateWest");
+            currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtWest();
+            currentMovableMedium.MovableArrived(this);
             deltaI = +MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaI += extraDeltaI;
         }
@@ -361,7 +411,9 @@ namespace SaavedraCraft.Model.Transportation
         private void traslateSouth(float extraDeltaJ)
         {
             Log("traslateSouth");
+            currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtSouth();
+            currentMovableMedium.MovableArrived(this);
             deltaJ = +MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaJ += extraDeltaJ;
         }
@@ -369,7 +421,9 @@ namespace SaavedraCraft.Model.Transportation
         private void traslateNorth(float extraDeltaJ)
         {
             Log("traslateNorth");
+            currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtNorth();
+            currentMovableMedium.MovableArrived(this);
             deltaJ = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaJ += extraDeltaJ;
         }

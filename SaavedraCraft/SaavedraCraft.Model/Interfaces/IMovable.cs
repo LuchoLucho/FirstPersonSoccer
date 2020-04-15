@@ -28,5 +28,8 @@ namespace SaavedraCraft.Model.Interfaces
         void SetMovableMediumAtSouth(IMovableMedium<T> streetDestiny);
         void SetMovableMediumAtWest(IMovableMedium<T> streetDestinyAtWest);
         void SetMovableMediumAtEast(IMovableMedium<T> streetDestinyAtEast);
+        void MovableArrived(IMovable<T> newMovable);
+        void MovableLeft(IMovable<T> newMovable);
+        List<IMovable<T>> GetMovablesOnMedium();
     }
 }

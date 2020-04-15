@@ -1,6 +1,7 @@
 ﻿using QuarentineSurvival.Model;
 using SaavedraCraft.Model;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Interfaces.Transportation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Players
 {
-    public class SinglePlayerComp : SinglePlayerModel<Component>
+    public class SinglePlayerComp : QurentinePlayerModel<Component>
     {
-        public SinglePlayerComp(string aName, Component aComponent, IMovableMedium<Component> originMedium) : base(aName, aComponent, originMedium)
+        public SinglePlayerComp(string aName, Component aComponent, IMovableMedium<Component> originMedium, ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
         }
 
@@ -24,6 +25,6 @@ namespace Assets.Scripts.Players
         public override void Log(string message)
         {
             Debug.Log(message);
-        }
+        }        
     }
 }

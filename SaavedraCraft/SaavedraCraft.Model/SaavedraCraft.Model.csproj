@@ -52,6 +52,7 @@
     <Compile Include="Interfaces\IConstruction.cs" />
     <Compile Include="Interfaces\IConstructionManagerObserver.cs" />
     <Compile Include="Interfaces\IMovable.cs" />
+    <Compile Include="Interfaces\ITransporterAndWarehouseManager.cs" />
     <Compile Include="Interfaces\IObject.cs" />
     <Compile Include="Interfaces\IResource.cs" />
     <Compile Include="Interfaces\IResourceConsumer.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Resources\SimpleResource.cs" />
     <Compile Include="Resources\Transaction.cs" />
     <Compile Include="Transportation\SimpleMovable.cs" />
+    <Compile Include="Transportation\TransporterAndWarehouseManager.cs" />
     <Compile Include="Utils\Rectangle.cs" />
   </ItemGroup>
   <ItemGroup />

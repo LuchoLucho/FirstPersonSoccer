@@ -1,6 +1,9 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Players;
+using QuarentineSurvival.Model;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Interfaces.Transportation;
+using SaavedraCraft.Model.Resources;
 using SaavedraCraft.Model.Transportation;
 using System;
 using System.Collections;
@@ -19,12 +22,14 @@ public class MapManangerBehaviour : MonoBehaviour
 
     private Component realInstancePlayer;
     private IConstructionManagerObserver<Component> singleObserver;
+    private ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        transporterAndWarehouseManager = new TransporterAndWarehouseManager<Component>();
         IMovableMedium<Component> medium = getEntityFromTileCoor(0,0);//new SimpleStreet<Component>("Floor", null, 0, 0);
-        IMovable<Component> player = new SinglePlayerComp("Player", SinglePlayerComponent, medium);
+        IMovable<Component> player = new SinglePlayerComp("Player", SinglePlayerComponent, medium, transporterAndWarehouseManager);
         player.SetDirectionI(+0);
         player.SetDirectionJ(+0);
         player.SetVelocity(0.3f);
@@ -103,7 +108,7 @@ public class MapManangerBehaviour : MonoBehaviour
             }             
         } else if ((i==2) && (j==0))
         {
-            IMovableMedium<Component> newMedium = new SimpleStreet<Component>("Cofre" + i + j, ChestComponent, i, j);
+            IWarehouse<Component> newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);
             movableMediums.Add(newMedium);
             {
                 newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
@@ -111,6 +116,11 @@ public class MapManangerBehaviour : MonoBehaviour
                 newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
                 newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
             }
+            ICargo<Component> simpleCargo = new SimpleCargo<Component>();
+            IResource resource = new SimpleResource(1, "Encendedor", 0);
+            IMovableMedium<Component> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            newMedium.addCargo(simpleCargo);
         }
         return movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
     }

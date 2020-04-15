@@ -4,9 +4,9 @@ using System.Text;
 
 namespace SaavedraCraft.Model.Interfaces.Transportation
 {
-    public interface IParkingSpot<T>
+    public interface IParkingSpotForMovable<T>
     {
-        void parkMovable(IMovable<T> newMovableToPark);
-        void unparkMovable(IMovable<T> newMovableToPark);
+        void parkTransporter(ICargoTransporter<T> newMovableToPark);
+        void unparkTransporter(ICargoTransporter<T> newMovableToPark);
     }
 }

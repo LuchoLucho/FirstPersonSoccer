@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SaavedraCraft.Model.Interfaces.Transportation
 {
-    public interface IWarehouse<T> : IMovableMedium<T>, IParkingSpot<T>
+    public interface IWarehouse<T> : IMovableMedium<T>, IParkingSpotForMovable<T>
     {
         void addCargo(ICargo<T> newCargo);
         void removeCargo(ICargo<T> toRemove);

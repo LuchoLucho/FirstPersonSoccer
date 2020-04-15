@@ -13,9 +13,10 @@ namespace SaavedraCraft.Tests
         [TestMethod]
         public void TransportationPickUpCargoTest()
         {
-            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0);
-            ICargoTransporter<object> simpleTransporter = new SimpleTransporter("MovableTransport", null, warehouse);
-            ICargo<object> simpleCargo = new SimpleCargo();
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
+            ICargoTransporter<object> simpleTransporter = new SimpleTransporter<object>("MovableTransport", null, warehouse, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
             IResource resource = new SimpleResource(1, "Tomates", 0);
             IMovableMedium<object> destinyOfResources = new SimpleStreet<object>("Destination", null, 0, 0);
             simpleCargo.addResources(resource, destinyOfResources);

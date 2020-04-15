@@ -36,8 +36,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SinglePlayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SinglePlayerModel.cs" />
+    <Compile Include="WarehouseChest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SaavedraCraft\SaavedraCraft.Model\SaavedraCraft.Model.csproj">
