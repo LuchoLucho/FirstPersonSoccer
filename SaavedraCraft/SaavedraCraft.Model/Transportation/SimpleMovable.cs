@@ -33,6 +33,7 @@ namespace SaavedraCraft.Model.Transportation
     {
         private List<ICargo<T>> allCargo;
         private Action<IWarehouse<T>> handlerOnParkinSpaceAvailableFromWarehouse;
+        private Action<IWarehouse<T>> handlerOnTransporterLeftWarehouse;
 
         public SimpleTransporter(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium)
         {
@@ -54,15 +55,22 @@ namespace SaavedraCraft.Model.Transportation
 
         public virtual void NotifyParkingspaceAvailable(IWarehouse<T> simpleWareHouse)
         {
-            if (handlerOnParkinSpaceAvailableFromWarehouse != null)
-            {
-                handlerOnParkinSpaceAvailableFromWarehouse(simpleWareHouse);
-            }
+            handlerOnParkinSpaceAvailableFromWarehouse?.Invoke(simpleWareHouse);
+        }
+
+        public void NotifyTransportPartFromWarehouse(IWarehouse<T> simpleWareHouse)
+        {
+            handlerOnTransporterLeftWarehouse?.Invoke(simpleWareHouse);
         }
 
         public void OnParkinSpaceAvailableFromWarehouse(Action<IWarehouse<T>> handlerOnParkinSpaceAvailableFromWarehouse)
         {
             this.handlerOnParkinSpaceAvailableFromWarehouse = handlerOnParkinSpaceAvailableFromWarehouse;
+        }
+
+        public void OnTransportPartFromWarehouse(Action<IWarehouse<T>> handlerTransportPartFromWarehouse)
+        {
+            handlerOnTransporterLeftWarehouse = handlerTransportPartFromWarehouse;
         }
 
         public List<ICargo<T>> showCargo()
@@ -176,6 +184,12 @@ namespace SaavedraCraft.Model.Transportation
             base.MovableArrived(newMovable);
             transporterAndWarehouseManager.NotifyMovableArrivedToWarehouse(this, newMovable);
         }
+
+        public override void MovableLeft(IMovable<T> toRemoveMovable)
+        {
+            base.MovableLeft(toRemoveMovable);
+            transporterAndWarehouseManager.NotifyMovablePartFromWarehouse(this, toRemoveMovable);
+        }
     }
 
     public class SimpleStreet<T> : BasicContruction<T>, IMovableMedium<T>
@@ -236,7 +250,7 @@ namespace SaavedraCraft.Model.Transportation
             movablesInMedium.Add(newMovable);
         }
 
-        public void MovableLeft(IMovable<T> toRemoveMovable)
+        public virtual void MovableLeft(IMovable<T> toRemoveMovable)
         {
             movablesInMedium.Remove(toRemoveMovable);
         }

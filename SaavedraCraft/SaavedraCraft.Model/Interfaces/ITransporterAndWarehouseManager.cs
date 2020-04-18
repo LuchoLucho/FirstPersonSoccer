@@ -11,5 +11,6 @@ namespace SaavedraCraft.Model.Interfaces
         void SubscribeAsCargoTransporter(Transportation.ICargoTransporter<T> cargoTransporter);
         void SubscribeAsWarehouse(IWarehouse<T> warehouse);
         void NotifyMovableArrivedToWarehouse(SimpleWareHouse<T> simpleWareHouse, IMovable<T> newMovable);
+        void NotifyMovablePartFromWarehouse(SimpleWareHouse<T> simpleWareHouse, IMovable<T> newMovable);
     }
 }

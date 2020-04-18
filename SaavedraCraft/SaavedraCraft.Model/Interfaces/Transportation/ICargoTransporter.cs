@@ -13,5 +13,7 @@ namespace SaavedraCraft.Model.Interfaces.Transportation
         bool CanCargoBeLoaded(ICargo<T> currentCargo);
         void OnParkinSpaceAvailableFromWarehouse(Action<IWarehouse<T>> handlerOnParkinSpaceAvailableFromWarehouse);
         void NotifyParkingspaceAvailable(IWarehouse<T> simpleWareHouse);
+        void OnTransportPartFromWarehouse(Action<IWarehouse<T>> handlerTransportPartFromWarehouse);
+        void NotifyTransportPartFromWarehouse(IWarehouse<T> simpleWareHouse);
     }
 }

@@ -44,12 +44,39 @@ namespace QuarentineSurvivalTest
             player.SetDirectionJ(0);
             player.SetVelocity(1);
             bool parkinSpaceNotificationReceived = false;
-            Action<IWarehouse<object>> handlerOnParkinSpaceAvailableFromWarehouse = x => { parkinSpaceNotificationReceived = true; };
+            Action<IWarehouse<object>> handlerOnParkinSpaceAvailableFromWarehouse = x => 
+            {
+                parkinSpaceNotificationReceived = true;
+            };
             player.OnParkinSpaceAvailableFromWarehouse(handlerOnParkinSpaceAvailableFromWarehouse);
             Assert.AreEqual(0, warehouse.GetMovablesOnMedium().Count);
             player.TimeTick(1);
             Assert.AreEqual(1, warehouse.GetMovablesOnMedium().Count);
             Assert.IsTrue(parkinSpaceNotificationReceived);
+        }
+
+        [TestMethod]
+        public void OnMovablePartFromWarehouseGetCargoAvailableNotificationTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMedium<object> streetNextToWarehouse = new SimpleStreet<object>("StreetNextToWareHouse", null, 0, 1);
+            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
+            warehouse.SetMovableMediumAtEast(streetNextToWarehouse);
+            streetNextToWarehouse.SetMovableMediumAtWest(warehouse);
+            ICargoTransporter<object> player = new QurentinePlayerModel<object>("Player", null, warehouse, transporterAndWarehouseManager);
+            player.SetDirectionI(+1);
+            player.SetDirectionJ(0);
+            player.SetVelocity(1);
+            bool playerLeftWarehouseNotificationReceived = false;
+            Action<IWarehouse<object>> handlerOnPlayerPartFromWarehouse = x =>
+            {
+                playerLeftWarehouseNotificationReceived = true;
+            };
+            player.OnTransportPartFromWarehouse(handlerOnPlayerPartFromWarehouse);
+            Assert.AreEqual(1, warehouse.GetMovablesOnMedium().Count);
+            player.TimeTick(1);
+            Assert.AreEqual(0, warehouse.GetMovablesOnMedium().Count);
+            Assert.IsTrue(playerLeftWarehouseNotificationReceived);
         }
     }
 }

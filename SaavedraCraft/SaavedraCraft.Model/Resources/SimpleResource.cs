@@ -86,7 +86,7 @@ namespace SaavedraCraft.Model.Resources
 
         public override string ToString()
         {
-            return "Resource: " + GetResourceName() + " (" + GetResourceAmount() + ")";
+            return GetResourceName() + " (" + GetResourceAmount() + ")";
         }
     }
 }

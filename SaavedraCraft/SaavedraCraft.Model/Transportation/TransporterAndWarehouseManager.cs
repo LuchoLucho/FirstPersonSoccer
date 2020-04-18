@@ -28,6 +28,17 @@ namespace SaavedraCraft.Model.Transportation
             cargoTransporterFromMovable.NotifyParkingspaceAvailable(simpleWareHouse);
         }
 
+        public void NotifyMovablePartFromWarehouse(SimpleWareHouse<T> simpleWareHouse, IMovable<T> newMovable)
+        {
+            ICargoTransporter<T> cargoTransporterFromMovable = newMovable as ICargoTransporter<T>;
+            if (cargoTransporterFromMovable == null)
+            {
+                //What ever arrived is not a transporter!!!
+                return;
+            }
+            cargoTransporterFromMovable.NotifyTransportPartFromWarehouse(simpleWareHouse);
+        }
+
         public void SubscribeAsCargoTransporter(ICargoTransporter<T> cargoTransporter)
         {
             cargoTransporters.Add(cargoTransporter);
