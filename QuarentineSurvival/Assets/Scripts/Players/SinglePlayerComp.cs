@@ -25,6 +25,11 @@ namespace Assets.Scripts.Players
         public override void Log(string message)
         {
             Debug.Log(message);
-        }        
+        }
+
+        public override void NotifyParkingspaceAvailable(IWarehouse<Component> simpleWareHouse)
+        {
+            base.NotifyParkingspaceAvailable(simpleWareHouse);
+        }
     }
 }

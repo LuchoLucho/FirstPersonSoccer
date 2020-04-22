@@ -166,7 +166,7 @@ namespace SaavedraCraft.Model.Transportation
 
         public void removeCargoTransporter(ICargoTransporter<T> newCargoTransporter)
         {
-            throw new NotImplementedException();
+            allCargoTransporters.Remove(newCargoTransporter);
         }        
 
         public void parkTransporter(ICargoTransporter<T> newMovableToPark)
@@ -189,6 +189,11 @@ namespace SaavedraCraft.Model.Transportation
         {
             base.MovableLeft(toRemoveMovable);
             transporterAndWarehouseManager.NotifyMovablePartFromWarehouse(this, toRemoveMovable);
+        }
+
+        public List<ICargoTransporter<T>> ShowAllTransporter()
+        {
+            return allCargoTransporters;
         }
     }
 

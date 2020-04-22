@@ -29,12 +29,12 @@ public class MapManangerBehaviour : MonoBehaviour
     {
         transporterAndWarehouseManager = new TransporterAndWarehouseManager<Component>();
         IMovableMedium<Component> medium = getEntityFromTileCoor(0,0);//new SimpleStreet<Component>("Floor", null, 0, 0);
-        IMovable<Component> player = new SinglePlayerComp("Player", SinglePlayerComponent, medium, transporterAndWarehouseManager);
+        ICargoTransporter<Component> player = new SinglePlayerComp("Player", SinglePlayerComponent, medium, transporterAndWarehouseManager);
         player.SetDirectionI(+0);
         player.SetDirectionJ(+0);
         player.SetVelocity(0.3f);
         movablesInMap.Add(player);
-        NewMovable(movablesInMap[0]);
+        NewMovable(movablesInMap[0]);        
     }
 
     // Update is called once per frame
@@ -120,6 +120,13 @@ public class MapManangerBehaviour : MonoBehaviour
             IResource resource = new SimpleResource(1, "Encendedor", 0);
             IMovableMedium<Component> destinyOfResources = null; // The resouce has no fixed destination
             simpleCargo.addResources(resource, destinyOfResources);
+            newMedium.addCargo(simpleCargo);
+            //More cargo
+            simpleCargo = new SimpleCargo<Component>();
+            resource = new SimpleResource(1, "Lavandina", 0);
+            destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            //----
             newMedium.addCargo(simpleCargo);
         }
         return movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);

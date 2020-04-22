@@ -270,11 +270,11 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.18f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
-    <Reference Include="SaavedraCraft.Model">
-      <HintPath>C:/Users/lucho/Desktop/MisProjectos/Unity/git/FirstPersonSoccer/QuarentineSurvival/Assets/Libraries/SaavedraCraft.Model.dll</HintPath>
-    </Reference>
     <Reference Include="QuarentineSurvival.Model">
       <HintPath>C:/Users/lucho/Desktop/MisProjectos/Unity/git/FirstPersonSoccer/QuarentineSurvival/Assets/Libraries/QuarentineSurvival.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="SaavedraCraft.Model">
+      <HintPath>C:/Users/lucho/Desktop/MisProjectos/Unity/git/FirstPersonSoccer/QuarentineSurvival/Assets/Libraries/SaavedraCraft.Model.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.18f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
