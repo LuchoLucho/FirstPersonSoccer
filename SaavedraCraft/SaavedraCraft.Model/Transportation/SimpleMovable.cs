@@ -204,6 +204,8 @@ namespace SaavedraCraft.Model.Transportation
         private IMovableMedium<T> movableMediumAtWest;
         private IMovableMedium<T> movableMediumAtEast;
         private List<IMovable<T>> movablesInMedium;
+        private Action<IMovableMedium<T>> onMovableArrivedAlsoCustomAction;
+        private Action<IMovableMedium<T>> onMovableLeftAlsoCustomAction;
 
         public SimpleStreet(string aName, T aComponent, float newI, float newj) : base(aName, aComponent, newI, newj)
         {
@@ -253,11 +255,23 @@ namespace SaavedraCraft.Model.Transportation
         public virtual void MovableArrived(IMovable<T> newMovable)
         {
             movablesInMedium.Add(newMovable);
+            onMovableArrivedAlsoCustomAction?.Invoke(this);
         }
 
         public virtual void MovableLeft(IMovable<T> toRemoveMovable)
         {
             movablesInMedium.Remove(toRemoveMovable);
+            onMovableLeftAlsoCustomAction?.Invoke(this);
+        }
+
+        public void OnMovableArrivedAlsoDo(Action<IMovableMedium<T>> onMovableArrivedAlsoCustomAction)
+        {
+            this.onMovableArrivedAlsoCustomAction = onMovableArrivedAlsoCustomAction;
+        }
+
+        public void OnMovableLeftAlsoDo(Action<IMovableMedium<T>> onMovableLeftAlsoCustomAction)
+        {
+            this.onMovableLeftAlsoCustomAction = onMovableLeftAlsoCustomAction;
         }
 
         public void SetMovableMediumAtEast(IMovableMedium<T> streetDestinyAtEast)
@@ -371,6 +385,7 @@ namespace SaavedraCraft.Model.Transportation
                 {
                     Log("Collision at NORTH!");
                     this.SetVelocity(0);
+                    deltaJ = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
                     return;
                 }
                 traslateNorth(deltaJ-(MOVABLE_MEDIUM_EDGE_LIMIT / 2));
@@ -380,6 +395,7 @@ namespace SaavedraCraft.Model.Transportation
                 {
                     Log("Collision at SOUTH!");
                     this.SetVelocity(0);
+                    deltaJ = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
                     return;
                 }
                 traslateSouth(deltaJ - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
@@ -391,6 +407,7 @@ namespace SaavedraCraft.Model.Transportation
                 {
                     Log("Collision at EAST!");
                     this.SetVelocity(0);
+                    deltaI = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
                     return;
                 }
                 traslateEast(deltaI - (MOVABLE_MEDIUM_EDGE_LIMIT / 2));
@@ -401,6 +418,7 @@ namespace SaavedraCraft.Model.Transportation
                 {
                     Log("Collision at WEST!");
                     this.SetVelocity(0);
+                    deltaI = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
                     return;
                 }
                 traslateWest(deltaI - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));

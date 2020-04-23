@@ -24,6 +24,9 @@ public class MapManangerBehaviour : MonoBehaviour
     private IConstructionManagerObserver<Component> singleObserver;
     private ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager;
 
+    public Camera mainCamera;
+    public Camera chestCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +37,9 @@ public class MapManangerBehaviour : MonoBehaviour
         player.SetDirectionJ(+0);
         player.SetVelocity(0.3f);
         movablesInMap.Add(player);
-        NewMovable(movablesInMap[0]);        
+        NewMovable(movablesInMap[0]);
+        mainCamera.enabled = true;
+        chestCamera.enabled = false;
     }
 
     // Update is called once per frame
@@ -92,21 +97,7 @@ public class MapManangerBehaviour : MonoBehaviour
         {
             return entitiesInMap[0];
         }*/
-        if ((Math.Abs(i)<=1) && (Math.Abs(j) <= 1))
-        {
-            if (movableMediums.Find(x=>x.GetCoordI() == i && x.GetCoordJ() == j) == null)
-            {
-                IMovableMedium<Component> newMedium = new SimpleStreet<Component>("Street" + i + j, SimpleRoadComponent, i, j);
-                movableMediums.Add(newMedium);
-               // if (i == 0 && j == 0)
-                {
-                    newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
-                    newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
-                    newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
-                    newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
-                }
-            }             
-        } else if ((i==2) && (j==0))
+        if ((i==2) && (j==0))
         {
             IWarehouse<Component> newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);
             movableMediums.Add(newMedium);
@@ -128,7 +119,36 @@ public class MapManangerBehaviour : MonoBehaviour
             simpleCargo.addResources(resource, destinyOfResources);
             //----
             newMedium.addCargo(simpleCargo);
-        }
+            //----
+            newMedium.OnMovableArrivedAlsoDo(medium => 
+            {
+                mainCamera.enabled = false;
+                chestCamera.enabled = true;
+            }
+            );
+        }  else if ((Math.Abs(i) <= 1) && (Math.Abs(j) <= 1))
+        {
+            if (movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j) == null)
+            {
+                IMovableMedium<Component> newMedium = new SimpleStreet<Component>("Street" + i + j, SimpleRoadComponent, i, j);
+                movableMediums.Add(newMedium);
+                // if (i == 0 && j == 0)
+                {
+                    newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
+                    newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
+                    newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
+                    newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
+                }
+                if ((i == 1) && (j == 0))
+                {
+                    newMedium.OnMovableArrivedAlsoDo(medium =>
+                    {
+                        mainCamera.enabled = true;
+                        chestCamera.enabled = false;
+                    });
+                }
+            }
+        }        
         return movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
     }
 

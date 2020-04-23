@@ -31,5 +31,7 @@ namespace SaavedraCraft.Model.Interfaces
         void MovableArrived(IMovable<T> newMovable);
         void MovableLeft(IMovable<T> newMovable);
         List<IMovable<T>> GetMovablesOnMedium();
+        void OnMovableArrivedAlsoDo(Action<IMovableMedium<T>> onMovableArrivedAlsoCustomAction);
+        void OnMovableLeftAlsoDo(Action<IMovableMedium<T>> onMovableLeftAlsoCustomAction);
     }
 }

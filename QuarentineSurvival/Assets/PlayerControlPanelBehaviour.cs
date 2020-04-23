@@ -124,16 +124,19 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
             int i, j, cargoIndex = 0;
             GUI.Box(new Rect(30, 20, 360, 200), chestTexture);
             GUI.Label(new Rect(200,20,80,50),"Chest");
+            List<ICargo<Component>> toTransferToPlayer = new List<ICargo<Component>>();
             currentWarehouse.ShowAllCargo().ForEach(currentCargo =>
             {
                 i = cargoIndex % CHEST_ITEMS_INTERFACE;
                 j = cargoIndex / CHEST_ITEMS_INTERFACE;
                 if (GUI.Button(new Rect(50 + i * (0 + 160), 50 + j * 50, 150, 45), currentCargo.ToString()))
                 {
-                    currentWarehouse.UnloadCargoToCurrentTransporters(currentCargo);
+                    //currentWarehouse.UnloadCargoToCurrentTransporters(currentCargo); Do not modiy the colleciton inside the iteration!
+                    toTransferToPlayer.Add(currentCargo);
                 }
                 cargoIndex++;
             });
+            toTransferToPlayer.ForEach(cargoToSent=> currentWarehouse.UnloadCargoToCurrentTransporters(cargoToSent));
             i = 0;
             j = CHEST_ITEMS_INTERFACE;
             inventoryOpen = true; //If chest is open, show inventory too!
