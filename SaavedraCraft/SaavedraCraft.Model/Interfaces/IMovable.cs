@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SaavedraCraft.Model.Transportation;
 
 namespace SaavedraCraft.Model.Interfaces
 {
@@ -15,6 +16,13 @@ namespace SaavedraCraft.Model.Interfaces
         void SetDirectionI(float newDirectionI);
         void SetDirectionJ(float newDirectionI);
         void SetVelocity(float newVelocity);
+        void OnColissionAt(float movableDeltaI, float movableDeltaJ);
+        void traslateNorth(float newDeltaJ);
+        void traslateSouth(float newDeltaJ);
+        void traslateEast(float v);
+        void traslateWest(float v);
+        void tralateInsideMediumI(float movableDeltaI);
+        void tralateInsideMediumJ(float movableDeltaJ);
     }
 
     public interface IMovableMedium<T> : IObject<T> //Una calla, el mar, el aire...
@@ -33,5 +41,6 @@ namespace SaavedraCraft.Model.Interfaces
         List<IMovable<T>> GetMovablesOnMedium();
         void OnMovableArrivedAlsoDo(Action<IMovableMedium<T>> onMovableArrivedAlsoCustomAction);
         void OnMovableLeftAlsoDo(Action<IMovableMedium<T>> onMovableLeftAlsoCustomAction);
+        void OnMovableMoving(IMovable<T> simpleMovable, float timedelta);
     }
 }

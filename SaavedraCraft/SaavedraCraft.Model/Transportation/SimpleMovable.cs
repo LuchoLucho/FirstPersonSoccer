@@ -199,6 +199,8 @@ namespace SaavedraCraft.Model.Transportation
 
     public class SimpleStreet<T> : BasicContruction<T>, IMovableMedium<T>
     {
+        public const float MOVABLE_MEDIUM_EDGE_LIMIT = 1;
+
         private IMovableMedium<T> movableMediumAtNorth;
         private IMovableMedium<T> movableMediumAtSouth;
         private IMovableMedium<T> movableMediumAtWest;
@@ -274,6 +276,73 @@ namespace SaavedraCraft.Model.Transportation
             this.onMovableLeftAlsoCustomAction = onMovableLeftAlsoCustomAction;
         }
 
+        public void OnMovableMoving(IMovable<T> simpleMovable, float timedelta)
+        {
+            float movableDeltaI;
+            float movableDeltaJ;
+            movableDeltaI = simpleMovable.GetCoordI() - (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT / 2) ;
+            movableDeltaJ = simpleMovable.GetCoordJ() - (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT / 2) ;
+            //----MoveToBe:
+            movableDeltaI += simpleMovable.GetDirectionI() * simpleMovable.GetVelocity() * timedelta;
+            movableDeltaJ += simpleMovable.GetDirectionJ() * simpleMovable.GetVelocity() * timedelta;
+            //----            
+            if (movableDeltaJ > MOVABLE_MEDIUM_EDGE_LIMIT / 2)
+            {
+                if (GetMovableMediumAtNorth() == null)
+                {
+                    //Log("Collision at NORTH!");
+                    //this.SetVelocity(0);
+                    movableDeltaJ = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+                    simpleMovable.OnColissionAt(movableDeltaI,movableDeltaJ);
+                    return;
+                }
+                simpleMovable.traslateNorth(movableDeltaJ - (MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+            }
+            else if (movableDeltaJ < -MOVABLE_MEDIUM_EDGE_LIMIT / 2)
+            {
+                if (GetMovableMediumAtSouth() == null)
+                {
+                    //Log("Collision at SOUTH!");
+                    //this.SetVelocity(0);
+                    movableDeltaJ = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
+                    return;
+                }
+                simpleMovable.traslateSouth(movableDeltaJ - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+            } else
+            {
+                simpleMovable.tralateInsideMediumJ(movableDeltaJ);
+            }
+            //----
+            if (movableDeltaI > MOVABLE_MEDIUM_EDGE_LIMIT / 2)
+            {
+                if (GetMovableMediumAtEast() == null)
+                {
+                    //Log("Collision at EAST!");
+                    //this.SetVelocity(0);
+                    movableDeltaI = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+                    return;
+                }
+                simpleMovable.traslateEast(movableDeltaI - (MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+            }
+            else if (movableDeltaI < -MOVABLE_MEDIUM_EDGE_LIMIT / 2)
+            {
+                if (GetMovableMediumAtWest() == null)
+                {
+                    //Log("Collision at WEST!");
+                    //this.SetVelocity(0);
+                    movableDeltaI = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
+                    return;
+                }
+                simpleMovable.traslateWest(movableDeltaI - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+            }
+            else
+            {
+                simpleMovable.tralateInsideMediumI(movableDeltaI);
+            }
+        }        
+
         public void SetMovableMediumAtEast(IMovableMedium<T> streetDestinyAtEast)
         {
             movableMediumAtEast = streetDestinyAtEast;
@@ -301,8 +370,7 @@ namespace SaavedraCraft.Model.Transportation
     }
 
     public class SimpleMovable<T> : BasicObject<T>, IMovable<T>
-    {
-        public const float MOVABLE_MEDIUM_EDGE_LIMIT = 1;
+    {        
 
         private IMovableMedium<T> currentMovableMedium;
         private float directionI;
@@ -319,12 +387,12 @@ namespace SaavedraCraft.Model.Transportation
 
         public override float GetCoordI()
         {
-            return currentMovableMedium.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT/2 + deltaI;
+            return currentMovableMedium.GetCoordI() + SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2 + deltaI;
         }
 
         public override float GetCoordJ()
         {
-            return currentMovableMedium.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT / 2 + deltaJ;
+            return currentMovableMedium.GetCoordJ() + SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2 + deltaJ;
         }
 
         public override IObject<T> CloneMe()
@@ -377,97 +445,72 @@ namespace SaavedraCraft.Model.Transportation
             {
                 return;
             }
-            deltaI += this.GetDirectionI() * timedelta * this.GetVelocity();
-            deltaJ += this.GetDirectionJ() * timedelta * this.GetVelocity();            
-            if (deltaJ > MOVABLE_MEDIUM_EDGE_LIMIT/2)
-            {
-                if (currentMovableMedium.GetMovableMediumAtNorth() == null)
-                {
-                    Log("Collision at NORTH!");
-                    this.SetVelocity(0);
-                    deltaJ = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    return;
-                }
-                traslateNorth(deltaJ-(MOVABLE_MEDIUM_EDGE_LIMIT / 2));
-            } else if (deltaJ < -MOVABLE_MEDIUM_EDGE_LIMIT / 2)
-            {
-                if (currentMovableMedium.GetMovableMediumAtSouth() == null)
-                {
-                    Log("Collision at SOUTH!");
-                    this.SetVelocity(0);
-                    deltaJ = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    return;
-                }
-                traslateSouth(deltaJ - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
-            }
-            //----
-            if (deltaI > MOVABLE_MEDIUM_EDGE_LIMIT / 2)
-            {
-                if (currentMovableMedium.GetMovableMediumAtEast() == null)
-                {
-                    Log("Collision at EAST!");
-                    this.SetVelocity(0);
-                    deltaI = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    return;
-                }
-                traslateEast(deltaI - (MOVABLE_MEDIUM_EDGE_LIMIT / 2));
-            }
-            else if(deltaI < -MOVABLE_MEDIUM_EDGE_LIMIT / 2)
-            {
-                if (currentMovableMedium.GetMovableMediumAtWest() == null)
-                {
-                    Log("Collision at WEST!");
-                    this.SetVelocity(0);
-                    deltaI = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    return;
-                }
-                traslateWest(deltaI - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
-            }
+            //deltaI += this.GetDirectionI() * timedelta * this.GetVelocity();
+            //deltaJ += this.GetDirectionJ() * timedelta * this.GetVelocity();            
+            currentMovableMedium.OnMovableMoving(this,timedelta);            
         }
 
-        private void traslateEast(float extraDeltaI)
+        public void traslateEast(float extraDeltaI)
         {
             Log("traslateEast");
             currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtEast();
             currentMovableMedium.MovableArrived(this);
-            deltaI = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
+            deltaI = -SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaI += extraDeltaI;
         }
 
-        private void traslateWest(float extraDeltaI)
+        public void traslateWest(float extraDeltaI)
         {
             Log("traslateWest");
             currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtWest();
             currentMovableMedium.MovableArrived(this);
-            deltaI = +MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
+            deltaI = +SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaI += extraDeltaI;
         }
 
-        private void traslateSouth(float extraDeltaJ)
+        public void traslateSouth(float extraDeltaJ)
         {
             Log("traslateSouth");
             currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtSouth();
             currentMovableMedium.MovableArrived(this);
-            deltaJ = +MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
+            deltaJ = +SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaJ += extraDeltaJ;
         }
 
-        private void traslateNorth(float extraDeltaJ)
+        public void traslateNorth(float extraDeltaJ)
         {
             Log("traslateNorth");
             currentMovableMedium.MovableLeft(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtNorth();
             currentMovableMedium.MovableArrived(this);
-            deltaJ = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
+            deltaJ = -SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
             deltaJ += extraDeltaJ;
         }
 
         public virtual void Log(string message)
         {
             //NOTTHING
+        }
+
+        public void OnColissionAt(float movableDeltaI, float movableDeltaJ)
+        {
+            Log("Collision!");
+            this.SetVelocity(0);
+            this.deltaI = movableDeltaI;
+            this.deltaJ = movableDeltaJ;
+        }
+
+        public void tralateInsideMediumI(float movableDeltaI)
+        {
+            this.deltaI = movableDeltaI;
+        }
+
+        public void tralateInsideMediumJ(float movableDeltaJ)
+        {
+            this.deltaJ = movableDeltaJ;
         }
     }
 }
