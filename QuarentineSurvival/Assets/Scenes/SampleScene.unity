@@ -380,8 +380,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333359422}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.7637548, y: 0.31, z: 14.39}
-  m_LocalScale: {x: 5, y: 10, z: 2}
+  m_LocalPosition: {x: -2.7637548, y: 5, z: 14.39}
+  m_LocalScale: {x: 5, y: 20, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -455,7 +455,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505287631}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1505287633
 Camera:
   m_ObjectHideFlags: 0
@@ -682,6 +682,8 @@ MonoBehaviour:
   SimpleRoadComponent: {fileID: 3563570916379822733, guid: 2f9dcd4b51c8008419ea82339388fcf6,
     type: 3}
   ChestComponent: {fileID: 4251071459937115280, guid: 7ff5ac26e3344a147bf39e4013dd6a99,
+    type: 3}
+  ActionableMediumWithDoor: {fileID: 3581974060890837398, guid: 7170f61954cb8664ab455bbd89ebe06b,
     type: 3}
   mainCamera: {fileID: 963194227}
   chestCamera: {fileID: 1505287633}

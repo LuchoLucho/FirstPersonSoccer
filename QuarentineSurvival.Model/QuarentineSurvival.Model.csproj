@@ -38,13 +38,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionStreet.cs" />
+    <Compile Include="Interface\IHolder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleDoor.cs" />
     <Compile Include="SinglePlayerModel.cs" />
     <Compile Include="WarehouseChest.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interface\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SaavedraCraft\SaavedraCraft.Model\SaavedraCraft.Model.csproj">
       <Project>{E44ADCEC-0365-4270-A368-E7B4951B2ED1}</Project>

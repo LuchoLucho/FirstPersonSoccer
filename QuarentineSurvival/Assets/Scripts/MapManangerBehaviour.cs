@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.MapObjects;
 using Assets.Scripts.Players;
 using QuarentineSurvival.Model;
+using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using SaavedraCraft.Model.Resources;
@@ -15,12 +17,20 @@ public class MapManangerBehaviour : MonoBehaviour
     public Component SinglePlayerComponent;
     public Component SimpleRoadComponent;
     public Component ChestComponent;
+    public Component ActionableMediumWithDoor;
 
     private List<IMovableMedium<Component>> movableMediums = new List<IMovableMedium<Component>>();
 
     private List<IMovable<Component>> movablesInMap = new List<IMovable<Component>>();
 
     private Component realInstancePlayer;
+    private SimpleDoorComp realInstanceDoor;
+
+    public SimpleDoorComp GetSingleDoor()
+    {
+        return realInstanceDoor;
+    }
+
     private IConstructionManagerObserver<Component> singleObserver;
     private ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager;
 
@@ -131,14 +141,6 @@ public class MapManangerBehaviour : MonoBehaviour
             if (movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j) == null)
             {
                 IMovableMedium<Component> newMedium = new SimpleStreet<Component>("Street" + i + j, SimpleRoadComponent, i, j);
-                movableMediums.Add(newMedium);
-                // if (i == 0 && j == 0)
-                {
-                    newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
-                    newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
-                    newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
-                    newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
-                }
                 if ((i == 1) && (j == 0))
                 {
                     newMedium.OnMovableArrivedAlsoDo(medium =>
@@ -147,6 +149,18 @@ public class MapManangerBehaviour : MonoBehaviour
                         chestCamera.enabled = false;
                     });
                 }
+                if ((i == 0) && (j == -1))
+                {
+                    newMedium = new ActionStreet<Component>("ActionStreet"+i+j, ActionableMediumWithDoor, i,j);
+                    IEnvironment<Component> pisoActionable = (IEnvironment<Component>)newMedium;
+                    realInstanceDoor = new SimpleDoorComp("Puerta", null, pisoActionable);
+                    pisoActionable.addActionable(realInstanceDoor);
+                }
+                movableMediums.Add(newMedium);
+                newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
+                newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
+                newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
+                newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
             }
         }        
         return movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);

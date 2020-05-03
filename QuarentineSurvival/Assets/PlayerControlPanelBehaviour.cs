@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Players;
+using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using System;
 using System.Collections;
@@ -188,6 +189,17 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
         if (GUI.Button(new Rect(200, 30, 150, 45), "Inventory"))
         {
             inventoryOpen = !inventoryOpen;
+        }
+        if (player.ShowAvailableActions().Count > 0)
+        {
+            foreach (IAction<Component> currentAction in player.ShowAvailableActions())
+            {
+                if (GUI.Button(new Rect(200, 30 + 50, 150, 45), currentAction.ToString()))
+                {
+                    Debug.Log("Action!");
+                    currentAction.execute(player, null, null);
+                }
+            }
         }
         if (newPlayerDirection!=0)
         {
