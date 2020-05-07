@@ -17,10 +17,10 @@ namespace SaavedraCraft.Model.Interfaces
         void SetDirectionJ(float newDirectionI);
         void SetVelocity(float newVelocity);
         void OnColissionAt(float movableDeltaI, float movableDeltaJ);
-        void traslateNorth(float newDeltaJ);
-        void traslateSouth(float newDeltaJ);
-        void traslateEast(float v);
-        void traslateWest(float v);
+        void traslateNorth(float newDeltaJ, float remainingDeltaTime);
+        void traslateSouth(float newDeltaJ, float remainingDeltaTime);
+        void traslateEast(float v, float remainingDeltaTime);
+        void traslateWest(float v, float remainingDeltaTime);
         void tralateInsideMediumI(float movableDeltaI);
         void tralateInsideMediumJ(float movableDeltaJ);
     }
@@ -37,7 +37,7 @@ namespace SaavedraCraft.Model.Interfaces
         void SetMovableMediumAtWest(IMovableMedium<T> streetDestinyAtWest);
         void SetMovableMediumAtEast(IMovableMedium<T> streetDestinyAtEast);
         void MovableArrived(IMovable<T> newMovable);
-        void MovableLeft(IMovable<T> newMovable);
+        void MovablePart(IMovable<T> newMovable);
         List<IMovable<T>> GetMovablesOnMedium();
         void OnMovableArrivedAlsoDo(Action<IMovableMedium<T>> onMovableArrivedAlsoCustomAction);
         void OnMovableLeftAlsoDo(Action<IMovableMedium<T>> onMovableLeftAlsoCustomAction);

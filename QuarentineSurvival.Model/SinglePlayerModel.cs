@@ -10,11 +10,11 @@ namespace QuarentineSurvival.Model
 {
     public class QurentinePlayerModel<T> : SimpleTransporter<T>, IActionExecutor<T>
     {
-        private List<IActionable<T>> allActionables;
+        private List<IActionable<T>> allActionables = new List<IActionable<T>>();
 
         public QurentinePlayerModel(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
-            allActionables = new List<IActionable<T>>();
+            
         }
 
         public void addActionable(IActionable<T> actionableToAdd)

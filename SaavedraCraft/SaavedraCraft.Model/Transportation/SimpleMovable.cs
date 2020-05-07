@@ -185,9 +185,9 @@ namespace SaavedraCraft.Model.Transportation
             transporterAndWarehouseManager.NotifyMovableArrivedToWarehouse(this, newMovable);
         }
 
-        public override void MovableLeft(IMovable<T> toRemoveMovable)
+        public override void MovablePart(IMovable<T> toRemoveMovable)
         {
-            base.MovableLeft(toRemoveMovable);
+            base.MovablePart(toRemoveMovable);
             transporterAndWarehouseManager.NotifyMovablePartFromWarehouse(this, toRemoveMovable);
         }
 
@@ -260,7 +260,7 @@ namespace SaavedraCraft.Model.Transportation
             onMovableArrivedAlsoCustomAction?.Invoke(this);
         }
 
-        public virtual void MovableLeft(IMovable<T> toRemoveMovable)
+        public virtual void MovablePart(IMovable<T> toRemoveMovable)
         {
             movablesInMedium.Remove(toRemoveMovable);
             onMovableLeftAlsoCustomAction?.Invoke(this);
@@ -276,7 +276,7 @@ namespace SaavedraCraft.Model.Transportation
             this.onMovableLeftAlsoCustomAction = onMovableLeftAlsoCustomAction;
         }
 
-        public void OnMovableMoving(IMovable<T> simpleMovable, float timedelta)
+        public virtual void OnMovableMoving(IMovable<T> simpleMovable, float timedelta)
         {
             float movableDeltaI;
             float movableDeltaJ;
@@ -296,7 +296,10 @@ namespace SaavedraCraft.Model.Transportation
                     simpleMovable.OnColissionAt(movableDeltaI,movableDeltaJ);
                     return;
                 }
-                simpleMovable.traslateNorth(movableDeltaJ - (MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+                float distanceUntilBoudery = (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT) - simpleMovable.GetCoordJ();
+                float verticalVelocityNorth = simpleMovable.GetDirectionJ() * simpleMovable.GetVelocity();
+                float remainingTime = timedelta- Math.Abs(distanceUntilBoudery/ verticalVelocityNorth);//timeDelta - timeTookToHitEndOfMedium
+                simpleMovable.traslateNorth(movableDeltaJ - (MOVABLE_MEDIUM_EDGE_LIMIT / 2), remainingTime);
             }
             else if (movableDeltaJ < -MOVABLE_MEDIUM_EDGE_LIMIT / 2)
             {
@@ -308,7 +311,10 @@ namespace SaavedraCraft.Model.Transportation
                     simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
                     return;
                 }
-                simpleMovable.traslateSouth(movableDeltaJ - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+                float distanceUntilBoudery = simpleMovable.GetCoordJ() - this.GetCoordJ();
+                float verticalVelocitySouth = simpleMovable.GetDirectionJ() * simpleMovable.GetVelocity();
+                float remainingTime = timedelta - Math.Abs(distanceUntilBoudery / verticalVelocitySouth);//timeDelta - timeTookToHitEndOfMedium
+                simpleMovable.traslateSouth(movableDeltaJ - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2), remainingTime);
             } else
             {
                 simpleMovable.tralateInsideMediumJ(movableDeltaJ);
@@ -323,7 +329,10 @@ namespace SaavedraCraft.Model.Transportation
                     movableDeltaI = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
                     return;
                 }
-                simpleMovable.traslateEast(movableDeltaI - (MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+                float distanceUntilBoudery = (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT) - simpleMovable.GetCoordI();
+                float verticalVelocityEast = simpleMovable.GetDirectionI() * simpleMovable.GetVelocity();
+                float remainingTime = timedelta - Math.Abs(distanceUntilBoudery / verticalVelocityEast);//timeDelta - timeTookToHitEndOfMedium
+                simpleMovable.traslateEast(movableDeltaI - (MOVABLE_MEDIUM_EDGE_LIMIT / 2), remainingTime);
             }
             else if (movableDeltaI < -MOVABLE_MEDIUM_EDGE_LIMIT / 2)
             {
@@ -335,7 +344,10 @@ namespace SaavedraCraft.Model.Transportation
                     simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
                     return;
                 }
-                simpleMovable.traslateWest(movableDeltaI - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2));
+                float distanceUntilBoudery = simpleMovable.GetCoordI() - this.GetCoordI();
+                float verticalVelocityWest = simpleMovable.GetDirectionI() * simpleMovable.GetVelocity();
+                float remainingTime = timedelta - Math.Abs(distanceUntilBoudery / verticalVelocityWest);//timeDelta - timeTookToHitEndOfMedium
+                simpleMovable.traslateWest(movableDeltaI - (-MOVABLE_MEDIUM_EDGE_LIMIT / 2), remainingTime);
             }
             else
             {
@@ -444,50 +456,64 @@ namespace SaavedraCraft.Model.Transportation
             if (Math.Abs(this.GetVelocity())<0.000001)
             {
                 return;
-            }
-            //deltaI += this.GetDirectionI() * timedelta * this.GetVelocity();
-            //deltaJ += this.GetDirectionJ() * timedelta * this.GetVelocity();            
+            }                     
             currentMovableMedium.OnMovableMoving(this,timedelta);            
         }
 
-        public void traslateEast(float extraDeltaI)
+        public void traslateEast(float extraDeltaI, float remainingDeltaTime)
         {
             Log("traslateEast");
-            currentMovableMedium.MovableLeft(this);
+            currentMovableMedium.MovablePart(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtEast();
             currentMovableMedium.MovableArrived(this);
             deltaI = -SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
-            deltaI += extraDeltaI;
+            //deltaI += extraDeltaI; I will replace this with the other medium to calculate for me.
+            if (remainingDeltaTime > 0.001)
+            {
+                currentMovableMedium.OnMovableMoving(this, remainingDeltaTime);
+            }
         }
 
-        public void traslateWest(float extraDeltaI)
+        public void traslateWest(float extraDeltaI, float remainingDeltaTime)
         {
             Log("traslateWest");
-            currentMovableMedium.MovableLeft(this);
+            currentMovableMedium.MovablePart(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtWest();
             currentMovableMedium.MovableArrived(this);
             deltaI = +SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
-            deltaI += extraDeltaI;
+            //deltaI += extraDeltaI;
+            if (remainingDeltaTime > 0.001)
+            {
+                currentMovableMedium.OnMovableMoving(this, remainingDeltaTime);
+            }
         }
 
-        public void traslateSouth(float extraDeltaJ)
+        public void traslateSouth(float extraDeltaJ, float remainingDeltaTime)
         {
             Log("traslateSouth");
-            currentMovableMedium.MovableLeft(this);
+            currentMovableMedium.MovablePart(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtSouth();
             currentMovableMedium.MovableArrived(this);
             deltaJ = +SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
-            deltaJ += extraDeltaJ;
+            //deltaJ += extraDeltaJ;
+            if (remainingDeltaTime > 0.001)
+            {
+                currentMovableMedium.OnMovableMoving(this, remainingDeltaTime);
+            }
         }
 
-        public void traslateNorth(float extraDeltaJ)
+        public void traslateNorth(float extraDeltaJ, float remainingDeltaTime)
         {
             Log("traslateNorth");
-            currentMovableMedium.MovableLeft(this);
+            currentMovableMedium.MovablePart(this);
             currentMovableMedium = currentMovableMedium.GetMovableMediumAtNorth();
             currentMovableMedium.MovableArrived(this);
             deltaJ = -SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;//Now you are at the EDGE of the new north medium.
-            deltaJ += extraDeltaJ;
+            //deltaJ += extraDeltaJ;
+            if (remainingDeltaTime > 0.001)
+            {
+                currentMovableMedium.OnMovableMoving(this, remainingDeltaTime);
+            }
         }
 
         public virtual void Log(string message)

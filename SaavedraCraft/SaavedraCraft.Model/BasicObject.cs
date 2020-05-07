@@ -38,9 +38,9 @@ namespace SaavedraCraft.Model
             return j;
         }
 
-        public int GetHeigh()
+        public float GetHeigh()
         {
-            return 1;
+            return 0.1f;
         }
 
         public string GetName()
@@ -48,9 +48,9 @@ namespace SaavedraCraft.Model
             return name;
         }
 
-        public int GetWidh()
+        public float GetWidh()
         {
-            return 1;
+            return 0.1f;
         }
 
         public bool isActive()

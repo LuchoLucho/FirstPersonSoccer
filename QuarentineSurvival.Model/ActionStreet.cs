@@ -64,9 +64,9 @@ namespace QuarentineSurvival.Model
             }
         }
 
-        public override void MovableLeft(IMovable<T> toRemoveMovable)
+        public override void MovablePart(IMovable<T> toRemoveMovable)
         {
-            base.MovableLeft(toRemoveMovable);
+            base.MovablePart(toRemoveMovable);
             IActionExecutor<T> movableLeavingAsExecutor = toRemoveMovable as IActionExecutor<T>;
             if (movableLeavingAsExecutor != null)
             {
