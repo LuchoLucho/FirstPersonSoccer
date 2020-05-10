@@ -96,5 +96,10 @@ namespace SaavedraCraft.Model
         {
             return this.name + "(" + this.i + "," + this.j + ")";
         }
+
+        public virtual void Log(string message)
+        {
+            //Todo
+        }
     }
 }

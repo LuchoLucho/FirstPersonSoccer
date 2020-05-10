@@ -38,7 +38,7 @@ namespace SaavedraCraft.Model.Transportation
         public SimpleTransporter(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium)
         {
             allCargo = new List<ICargo<T>>();
-            transporterAndWarehouseManager.SubscribeAsCargoTransporter(this);
+            transporterAndWarehouseManager.SubscribeAsCargoTransporter(this);            
         }
 
         public bool CanCargoBeLoaded(ICargo<T> currentCargo)
@@ -82,7 +82,7 @@ namespace SaavedraCraft.Model.Transportation
         {
             allCargo.Remove(cargoToRemove);
             return cargoToRemove;
-        }
+        }       
     }
 
     public class SimpleWareHouse<T> : SimpleStreet<T>, IWarehouse<T>, IParkingSpotForMovable<T>
@@ -280,9 +280,9 @@ namespace SaavedraCraft.Model.Transportation
         {
             float movableDeltaI;
             float movableDeltaJ;
-            movableDeltaI = simpleMovable.GetCoordI() - (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT / 2) ;
-            movableDeltaJ = simpleMovable.GetCoordJ() - (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT / 2) ;
-            //----MoveToBe:
+            movableDeltaI = simpleMovable.GetDeltaI();//simpleMovable.GetCoordI() - (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT / 2) ;
+            movableDeltaJ = simpleMovable.GetDeltaJ();//simpleMovable.GetCoordJ() - (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT / 2) ;
+            //----MoveToBe:            
             movableDeltaI += simpleMovable.GetDirectionI() * simpleMovable.GetVelocity() * timedelta;
             movableDeltaJ += simpleMovable.GetDirectionJ() * simpleMovable.GetVelocity() * timedelta;
             //----            
@@ -523,7 +523,7 @@ namespace SaavedraCraft.Model.Transportation
 
         public void OnColissionAt(float movableDeltaI, float movableDeltaJ)
         {
-            Log("Collision!");
+            Log("Collision! Previous Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";"+ this.GetDirectionJ()+") Position: (" + this.GetCoordI()+";"+this.GetCoordJ()+")");
             this.SetVelocity(0);
             this.deltaI = movableDeltaI;
             this.deltaJ = movableDeltaJ;
@@ -531,12 +531,26 @@ namespace SaavedraCraft.Model.Transportation
 
         public void tralateInsideMediumI(float movableDeltaI)
         {
+            Log("PRE tralateInsideMediumI Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaI="+ movableDeltaI + "CurrentDeltaI=" + this.deltaI);
             this.deltaI = movableDeltaI;
+            Log("POS tralateInsideMediumI Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaI=" + movableDeltaI + "CurrentDeltaI=" + this.deltaI);
         }
 
         public void tralateInsideMediumJ(float movableDeltaJ)
         {
+            Log("PRE tralateInsideMediumJ Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaJ="+movableDeltaJ + "CurrentDeltaJ=" + this.deltaJ);
             this.deltaJ = movableDeltaJ;
+            Log("POS tralateInsideMediumJ Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaJ=" + movableDeltaJ + "CurrentDeltaJ=" + this.deltaJ);
+        }
+
+        public float GetDeltaI()
+        {
+            return deltaI;
+        }
+
+        public float GetDeltaJ()
+        {
+            return deltaJ;
         }
     }
 }

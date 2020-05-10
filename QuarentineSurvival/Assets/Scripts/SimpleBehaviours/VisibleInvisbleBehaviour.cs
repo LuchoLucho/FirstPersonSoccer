@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.MapObjects;
+using QuarentineSurvival.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Assets.Scripts.SimpleBehaviours
     {
         private bool areValuesInitiated = false;
         private MapManangerBehaviour constructionManager;
-        private SimpleDoorComp door;
+        private SimpleDoor<Component> door;
 
 
         public VisibleInvisbleBehaviour()

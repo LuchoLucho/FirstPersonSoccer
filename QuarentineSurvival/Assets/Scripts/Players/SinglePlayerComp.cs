@@ -1,4 +1,5 @@
 ﻿using QuarentineSurvival.Model;
+using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Players
 {
     public class SinglePlayerComp : QurentinePlayerModel<Component>
     {
-        public SinglePlayerComp(string aName, Component aComponent, IMovableMedium<Component> originMedium, ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
+        public SinglePlayerComp(string aName, Component aComponent, IMovableMediumCollisionAware<Component> originMedium, ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
         }
 

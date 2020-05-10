@@ -39,10 +39,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionStreet.cs" />
+    <Compile Include="CollisionableMediumAware.cs" />
+    <Compile Include="CollisionEngine\CageBox.cs" />
+    <Compile Include="CollisionEngine\Edge.cs" />
+    <Compile Include="CollisionEngine\Vertex2d.cs" />
     <Compile Include="Interface\IHolder.cs" />
+    <Compile Include="Interface\ICollisionable.cs" />
+    <Compile Include="Interface\IMovableMediumCollisionAware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleDoor.cs" />
-    <Compile Include="SinglePlayerModel.cs" />
+    <Compile Include="QurentinePlayerModel.cs" />
+    <Compile Include="SimpleTransporterCollisionable.cs" />
     <Compile Include="WarehouseChest.cs" />
   </ItemGroup>
   <ItemGroup />

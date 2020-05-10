@@ -23,6 +23,8 @@ namespace SaavedraCraft.Model.Interfaces
         void traslateWest(float v, float remainingDeltaTime);
         void tralateInsideMediumI(float movableDeltaI);
         void tralateInsideMediumJ(float movableDeltaJ);
+        float GetDeltaI();
+        float GetDeltaJ();
     }
 
     public interface IMovableMedium<T> : IObject<T> //Una calla, el mar, el aire...

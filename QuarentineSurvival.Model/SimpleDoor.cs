@@ -7,14 +7,14 @@ using System.Text;
 
 namespace QuarentineSurvival.Model
 {
-    public class SimpleDoor<T> : SimpleMovable<T>, IActionable<T>
+    public class SimpleDoor<T> : SimpleTransporterCollisionable<T>, IActionable<T>
     {
         private bool isOpen = false;
-        private IEnvironment<T> environment;
+        private IMovableMediumCollisionAware<T> environment;
 
-        public SimpleDoor(string aName, T aComponent, IEnvironment<T> environmenMedium) : base(aName, aComponent, environmenMedium)
+        public SimpleDoor(string aName, T aComponent, IMovableMediumCollisionAware<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
-            this.environment = environmenMedium;
+            this.environment = originMedium;
         }
 
         public virtual void NotifyRefreshActions(IHolder<T> holder)

@@ -19,14 +19,14 @@ public class MapManangerBehaviour : MonoBehaviour
     public Component ChestComponent;
     public Component ActionableMediumWithDoor;
 
-    private List<IMovableMedium<Component>> movableMediums = new List<IMovableMedium<Component>>();
+    private List<IMovableMediumCollisionAware<Component>> movableMediums = new List<IMovableMediumCollisionAware<Component>>();
 
     private List<IMovable<Component>> movablesInMap = new List<IMovable<Component>>();
 
     private Component realInstancePlayer;
-    private SimpleDoorComp realInstanceDoor;
+    private SimpleDoor<Component> realInstanceDoor;
 
-    public SimpleDoorComp GetSingleDoor()
+    public SimpleDoor<Component> GetSingleDoor()
     {
         return realInstanceDoor;
     }
@@ -41,7 +41,7 @@ public class MapManangerBehaviour : MonoBehaviour
     void Start()
     {
         transporterAndWarehouseManager = new TransporterAndWarehouseManager<Component>();
-        IMovableMedium<Component> medium = getEntityFromTileCoor(0,0);//new SimpleStreet<Component>("Floor", null, 0, 0);
+        IMovableMediumCollisionAware<Component> medium = getEntityFromTileCoor(0,0);//new SimpleStreet<Component>("Floor", null, 0, 0);
         ICargoTransporter<Component> player = new SinglePlayerComp("Player", SinglePlayerComponent, medium, transporterAndWarehouseManager);
         player.SetDirectionI(+0);
         player.SetDirectionJ(+0);
@@ -72,7 +72,7 @@ public class MapManangerBehaviour : MonoBehaviour
         singleObserver = newObserver;
     }
 
-    public void NewMovableMedium(IMovableMedium<Component> toBeConstructedClone)
+    public void NewMovableMedium(IMovableMediumCollisionAware<Component> toBeConstructedClone)
     {
         movableMediums.Add(toBeConstructedClone);
         singleObserver.NewBuildCreated(toBeConstructedClone);
@@ -95,7 +95,7 @@ public class MapManangerBehaviour : MonoBehaviour
         realInstancePlayer = newChild; // Temporal storage, this should the work of the FACTORY to save this...!
     }
 
-    public IMovableMedium<Component> getEntityFromTileCoor(float i, float j)
+    public IMovableMediumCollisionAware<Component> getEntityFromTileCoor(float i, float j)
     {
         /*IObject<Component> contructionToFind = constructionInMap.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
         if (contructionToFind == null)
@@ -109,7 +109,7 @@ public class MapManangerBehaviour : MonoBehaviour
         }*/
         if ((i==2) && (j==0))
         {
-            IWarehouse<Component> newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);
+            WarehouseChest<Component> newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);
             movableMediums.Add(newMedium);
             {
                 newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
@@ -140,21 +140,21 @@ public class MapManangerBehaviour : MonoBehaviour
         {
             if (movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j) == null)
             {
-                IMovableMedium<Component> newMedium = new SimpleStreet<Component>("Street" + i + j, SimpleRoadComponent, i, j);
+                IMovableMediumCollisionAware<Component> newMedium = new ActionCollisionableMediumAware<Component>("Street" + i + j, SimpleRoadComponent, i, j);
                 if ((i == 1) && (j == 0))
                 {
                     newMedium.OnMovableArrivedAlsoDo(medium =>
                     {
-                        mainCamera.enabled = true;
+                        mainCamera.enabled = true; 
                         chestCamera.enabled = false;
                     });
                 }
                 if ((i == 0) && (j == -1))
                 {
-                    newMedium = new ActionStreet<Component>("ActionStreet"+i+j, ActionableMediumWithDoor, i,j);
-                    IEnvironment<Component> pisoActionable = (IEnvironment<Component>)newMedium;
-                    realInstanceDoor = new SimpleDoorComp("Puerta", null, pisoActionable);
-                    pisoActionable.addActionable(realInstanceDoor);
+                    newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i+j, ActionableMediumWithDoor, i,j);
+                    IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
+                    realInstanceDoor = new SimpleDoorComp("Puerta", null, pisoActionable, transporterAndWarehouseManager);
+                    pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
                 }
                 movableMediums.Add(newMedium);
                 newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North

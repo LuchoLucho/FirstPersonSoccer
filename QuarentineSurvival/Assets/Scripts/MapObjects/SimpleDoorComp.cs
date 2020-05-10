@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.SimpleBehaviours;
 using QuarentineSurvival.Model;
 using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,9 @@ using UnityEngine;
 namespace Assets.Scripts.MapObjects
 {
     public class SimpleDoorComp : SimpleDoor<Component>
-    {        
-        
-        public SimpleDoorComp(string aName, Component aComponent, IEnvironment<Component> environmenMedium) : base(aName, aComponent, environmenMedium)
+    {
+        public SimpleDoorComp(string aName, Component aComponent, IMovableMediumCollisionAware<Component> originMedium, ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
-            
         }
 
         public override void NotifyRefreshActions(IHolder<Component> holder)

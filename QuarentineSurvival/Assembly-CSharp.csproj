@@ -65,6 +65,7 @@
     <Compile Include="Assets\PlayerControlPanelBehaviour.cs" />
     <Compile Include="Assets\Scripts\MapFactoryBehaviour.cs" />
     <Compile Include="Assets\Scripts\MapManangerBehaviour.cs" />
+    <Compile Include="Assets\Scripts\MapObjects\QuerentineFloor.cs" />
     <Compile Include="Assets\Scripts\MapObjects\SimpleDoorComp.cs" />
     <Compile Include="Assets\Scripts\Players\SinglePlayerComp.cs" />
     <Compile Include="Assets\Scripts\SimpleBehaviours\VisibleInvisbleBehaviour.cs" />

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QuarentineSurvival.Model;
+using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model;
 using SaavedraCraft.Model.Constructions;
 using SaavedraCraft.Model.Interfaces;
@@ -16,8 +18,8 @@ namespace SaavedraCraft.Tests
         [TestMethod] 
         public void MovableSimpleMoveNorthOriginDestinyTest()
         {
-            IMovableMedium<object> streetOrigin = new SimpleStreet<object>("CalleOrigin",null,0,-1);
-            IMovableMedium<object> streetDestinyAtNorth = new SimpleStreet<object>("CalleDest", null, 0, 0);
+            IMovableMediumCollisionAware<object> streetOrigin = new ActionCollisionableMediumAware<object>("CalleOrigin",null,0,-1);
+            IMovableMediumCollisionAware<object> streetDestinyAtNorth = new ActionCollisionableMediumAware<object>("CalleDest", null, 0, 0);
             streetOrigin.SetMovableMediumAtNorth(streetDestinyAtNorth);
             IMovable<object> simpleMovable = new SimpleMovable<object>("Simple",null, streetOrigin);
             int[] northDirection = new[] { 0 , 1 };

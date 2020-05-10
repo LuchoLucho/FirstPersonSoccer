@@ -18,5 +18,6 @@ namespace SaavedraCraft.Model.Interfaces
         void TimeTick(float timedelta);     
         bool isActive();
         void SetActive(bool newValue);
+        void Log(String message);
     }
 }

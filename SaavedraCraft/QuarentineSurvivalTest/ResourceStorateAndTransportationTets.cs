@@ -17,7 +17,7 @@ namespace QuarentineSurvivalTest
         public void ResourcePickupTest()
         {
             ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
-            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
+            WarehouseChest<object> warehouse = new WarehouseChest<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
             ICargoTransporter<object> player = new QurentinePlayerModel<object>("Player", null, warehouse, transporterAndWarehouseManager);
             ICargo<object> simpleCargo = new SimpleCargo<object>();
             IResource resource = new SimpleResource(1, "Encendedor", 0);
@@ -35,8 +35,8 @@ namespace QuarentineSurvivalTest
         public void OnMovableArriveToWarehouseGetCargoAvailableNotificationTest()
         {
             ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
-            IMovableMedium<object> streetNextToWarehouse = new SimpleStreet<object>("StreetNextToWareHouse", null, 0, 1);
-            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
+            ActionCollisionableMediumAware<object> streetNextToWarehouse = new ActionCollisionableMediumAware<object>("StreetNextToWareHouse", null, 0, 1);
+            WarehouseChest<object> warehouse = new WarehouseChest<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
             warehouse.SetMovableMediumAtEast(streetNextToWarehouse);
             streetNextToWarehouse.SetMovableMediumAtWest(warehouse);            
             ICargoTransporter<object> player = new QurentinePlayerModel<object>("Player", null, streetNextToWarehouse, transporterAndWarehouseManager);
@@ -60,7 +60,7 @@ namespace QuarentineSurvivalTest
         {
             ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
             IMovableMedium<object> streetNextToWarehouse = new SimpleStreet<object>("StreetNextToWareHouse", null, 0, 1);
-            IWarehouse<object> warehouse = new SimpleWareHouse<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
+            WarehouseChest<object> warehouse = new WarehouseChest<object>("Warehouse1", null, 0, 0, transporterAndWarehouseManager);
             warehouse.SetMovableMediumAtEast(streetNextToWarehouse);
             streetNextToWarehouse.SetMovableMediumAtWest(warehouse);
             ICargoTransporter<object> player = new QurentinePlayerModel<object>("Player", null, warehouse, transporterAndWarehouseManager);

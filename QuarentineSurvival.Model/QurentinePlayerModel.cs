@@ -1,4 +1,5 @@
-﻿using QuarentineSurvival.Model.Interface;
+﻿using QuarentineSurvival.Model.CollisionEngine;
+using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using SaavedraCraft.Model.Transportation;
@@ -8,11 +9,11 @@ using System.Text;
 
 namespace QuarentineSurvival.Model
 {
-    public class QurentinePlayerModel<T> : SimpleTransporter<T>, IActionExecutor<T>
+    public class QurentinePlayerModel<T> : SimpleTransporterCollisionable<T>, IActionExecutor<T>
     {
         private List<IActionable<T>> allActionables = new List<IActionable<T>>();
 
-        public QurentinePlayerModel(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
+        public QurentinePlayerModel(string aName, T aComponent, IMovableMediumCollisionAware<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
             
         }
@@ -20,7 +21,7 @@ namespace QuarentineSurvival.Model
         public void addActionable(IActionable<T> actionableToAdd)
         {
             allActionables.Add(actionableToAdd);
-        }
+        }             
 
         public void NotifyArribeToEnvironment(IEnvironment<T> newEnvironment)
         {
@@ -52,6 +53,6 @@ namespace QuarentineSurvival.Model
             List<IAction<T>> allActions = new List<IAction<T>>();
             ShowAllActionables().ForEach(x => allActions.AddRange(x.ShowAvailableActions()));
             return allActions;
-        }
+        }                
     }
 }
