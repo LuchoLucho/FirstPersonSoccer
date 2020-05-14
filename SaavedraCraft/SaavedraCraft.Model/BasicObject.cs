@@ -12,6 +12,8 @@ namespace SaavedraCraft.Model
         private float i, j;
         private bool active;
         private T componentInstanciaReal;
+        private float width;
+        private float heigh;
 
         public BasicObject(string aName, T aComponent, float newI, float newj)
         {
@@ -19,6 +21,7 @@ namespace SaavedraCraft.Model
             componentMolde = aComponent;
             i = newI;
             j = newj;
+            width = heigh = 0.1f;
         }
 
         public abstract IObject<T> CloneMe();
@@ -38,9 +41,19 @@ namespace SaavedraCraft.Model
             return j;
         }
 
+        public void SetWidh(float newWidth)
+        {
+            this.width = newWidth;
+        }
+
+        public void SetHeigh(float newHeigh)
+        {
+            this.heigh = newHeigh;
+        }
+
         public float GetHeigh()
         {
-            return 0.1f;
+            return heigh;
         }
 
         public string GetName()
@@ -50,7 +63,7 @@ namespace SaavedraCraft.Model
 
         public float GetWidh()
         {
-            return 0.1f;
+            return width;
         }
 
         public bool isActive()

@@ -11,6 +11,8 @@ namespace SaavedraCraft.Model.Interfaces
         float GetCoordJ();
         float GetWidh();
         float GetHeigh();
+        void SetWidh(float newWidth);
+        void SetHeigh(float newHeigh);
         T GetComponentMolde();
         void SetComponentInstanciaReal(T componentReal);
         IObject<T> CloneMe();

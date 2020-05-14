@@ -156,6 +156,13 @@ public class MapManangerBehaviour : MonoBehaviour
                     realInstanceDoor = new SimpleDoorComp("Puerta", null, pisoActionable, transporterAndWarehouseManager);
                     pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
                 }
+                if ((i == -1) && (j == -1))
+                {
+                    newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware2" + i + j, ActionableMediumWithDoor, i, j);
+                    IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
+                    realInstanceDoor = new SimpleDoorComp("Puerta2", null, pisoActionable, transporterAndWarehouseManager);
+                    pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
+                }
                 movableMediums.Add(newMedium);
                 newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
                 newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));

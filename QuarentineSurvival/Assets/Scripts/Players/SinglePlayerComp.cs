@@ -32,5 +32,11 @@ namespace Assets.Scripts.Players
         {
             base.NotifyParkingspaceAvailable(simpleWareHouse);
         }
+
+        public override void OnColissionAt(float movableDeltaI, float movableDeltaJ)
+        {
+            base.OnColissionAt(movableDeltaI, movableDeltaJ);
+            Log(this.ToString());
+        }
     }
 }

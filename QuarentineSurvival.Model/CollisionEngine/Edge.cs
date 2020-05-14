@@ -16,7 +16,7 @@ namespace QuarentineSurvival.Model.CollisionEngine
 
         private ICollisionable<T> parent;
 
-        public Edge(ICollisionable<T> parent, int[] normal, float size)
+        public Edge(ICollisionable<T> parent, int[] normal, float width, float heigh)
         {
             p0 = new Vertex2d<T>(0,0,parent);
             p1 = new Vertex2d<T>(0, 0, parent);
@@ -24,28 +24,33 @@ namespace QuarentineSurvival.Model.CollisionEngine
             this.Normal = normal;
             if (Normal[0] == 0 && Normal[1] == 1)//North
             {
-                p0 = new Vertex2d<T>(-size / 2, size / 2, parent);
-                p1 = new Vertex2d<T>(+size / 2, size / 2, parent);
+                p0 = new Vertex2d<T>(-width / 2, heigh / 2, parent);
+                p1 = new Vertex2d<T>(+width / 2, heigh / 2, parent);
             }
             else if (Normal[0] == 1 && Normal[1] == 0)//East
             {
-                p0 = new Vertex2d<T>(+size / 2, size / 2, parent);
-                p1 = new Vertex2d<T>(+size / 2, -size / 2, parent);
+                p0 = new Vertex2d<T>(+width / 2, heigh / 2, parent);
+                p1 = new Vertex2d<T>(+width / 2, -heigh / 2, parent);
             }
             else if (Normal[0] == 0 && Normal[1] == -1)//South
             {
-                p0 = new Vertex2d<T>(-size / 2, -size / 2, parent);
-                p1 = new Vertex2d<T>(+size / 2, -size / 2, parent);
+                p0 = new Vertex2d<T>(-width / 2, -heigh / 2, parent);
+                p1 = new Vertex2d<T>(+width / 2, -heigh / 2, parent);
             }
             else if (Normal[0] == -1 && Normal[1] == 0)//West
             {
-                p0 = new Vertex2d<T>(-size / 2, +size / 2, parent);
-                p1 = new Vertex2d<T>(-size / 2, -size / 2, parent);
+                p0 = new Vertex2d<T>(-width / 2, +heigh / 2, parent);
+                p1 = new Vertex2d<T>(-width / 2, -heigh / 2, parent);
             }
             else
             {
                 throw new Exception("Normal but be modulus 1!");
             }
+        }
+
+        public override string ToString()
+        {
+            return P0.ToString() + "--" + P1.ToString() + "Parent=" + parent.GetName();
         }
     }
 }

@@ -10,14 +10,14 @@ namespace QuarentineSurvival.Model.CollisionEngine
         private ICollisionable<T> parent;
         private Edge<T>[] edges;
 
-        public CageBox(ICollisionable<T> parent, float size)
+        public CageBox(ICollisionable<T> parent, float width, float heigh)
         {
             this.parent = parent;
             edges = new Edge<T>[4] {
-                    new Edge<T>(parent,new[] { 0,1 },size),
-                    new Edge<T>(parent,new[] { 1,0 },size),
-                    new Edge<T>(parent,new[] { 0,-1 },size),
-                    new Edge<T>(parent,new[] { -1,0 },size)
+                    new Edge<T>(parent,new[] { 0,1 },width,heigh),
+                    new Edge<T>(parent,new[] { 1,0 },width,heigh),
+                    new Edge<T>(parent,new[] { 0,-1 },width,heigh),
+                    new Edge<T>(parent,new[] { -1,0 },width,heigh)
                 };
         }
 

@@ -14,7 +14,16 @@ namespace QuarentineSurvival.Model
 
         public SimpleTransporterCollisionable(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
-            cageBox = new CageBox<T>(this, this.GetWidh());//I'm just reading the width to calculate size of CAGE!
+            //cageBox = new CageBox<T>(this, this.GetWidh(),this.GetHeigh());//I'm just reading the width to calculate size of CAGE!
+        }
+
+        private CageBox<T> getCageBox()
+        {
+            if (cageBox == null)
+            {
+                cageBox = new CageBox<T>(this, this.GetWidh(), this.GetHeigh());//I'm just reading the width to calculate size of CAGE!
+            }
+            return cageBox;
         }
 
         #region SimpleMovableCollisionable
@@ -46,13 +55,15 @@ namespace QuarentineSurvival.Model
             velocityInverseVector[1] = velocityInverseVector[1] / module;
             List<Edge<T>> edgesThatMayCollide = GetEdgesWhoseNormalsAngleBetweenVectorAreLessThan90(fixedCol, velocityInverseVector);
             List<float> collissionTime = new List<float>();
+            Log("GetCollisionBetweenMovableAndFix----INIT"+movableCol + " & " + fixedCol);
             for (int i = 0; i < movableCol.ShowCorners().Length; i++)
             {
                 Vertex2d<T> currentVertex = movableCol.ShowCorners()[i];
                 edgesThatMayCollide.ForEach(e => collissionTime.Add(GetCollisionTimeBetweenEdgeAndPoint(e, currentVertex)));
             }
+            Log("GetCollisionBetweenMovableAndFix----END");
             collissionTime.Sort();
-            Log("GetCollisionBetweenMovableAndFix : " + collissionTime[0]);
+            //Log("GetCollisionBetweenMovableAndFix : " + collissionTime[0]);
             return collissionTime[0];
         }
 
@@ -91,13 +102,18 @@ namespace QuarentineSurvival.Model
                 if (v[1] == 0)
                 {
                     return float.MaxValue;
-                }
+                }                
                 t = (lambda * (p1y - p0y) + p0y - q0y) / v[1];
             }
             else
             {
                 t = (lambda * (p1x - p0x) + p0x - q0x) / v[0];
             }
+            if (t<0)
+            {
+                return float.MaxValue;
+            }
+            Log("Lambda = " + lambda + " Time = " + t + " Edge " + e + " and Vertex " + currentVertex);
             return t;
         }
 
@@ -125,13 +141,24 @@ namespace QuarentineSurvival.Model
 
         public Vertex2d<T>[] ShowCorners()
         {
-            return cageBox.ShowCorners();
+            return getCageBox().ShowCorners();
         }
 
         public Edge<T>[] ShowEdges()
         {
-            return cageBox.ShowEdges();
+            return getCageBox().ShowEdges();
         }
         #endregion
+
+        public override string ToString()
+        {
+            string ret = this.GetName() + "Pos = (" + GetCoordI() + ","+ GetCoordJ()+")-(";
+            for (int i = 0; i < this.getCageBox().ShowCorners().Length;i++)
+            {
+                ret += getCageBox().ShowCorners()[i].ToString() + ",";
+            }
+            ret += ") Width = " + this.GetWidh() + " Heigh = " + this.GetHeigh();
+            return ret;
+        }
     }
 }

@@ -521,26 +521,26 @@ namespace SaavedraCraft.Model.Transportation
             //NOTTHING
         }
 
-        public void OnColissionAt(float movableDeltaI, float movableDeltaJ)
-        {
-            Log("Collision! Previous Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";"+ this.GetDirectionJ()+") Position: (" + this.GetCoordI()+";"+this.GetCoordJ()+")");
+        public virtual void OnColissionAt(float movableDeltaI, float movableDeltaJ)
+        {   
             this.SetVelocity(0);
             this.deltaI = movableDeltaI;
             this.deltaJ = movableDeltaJ;
+            Log("Collision! Previous Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ")");
         }
 
         public void tralateInsideMediumI(float movableDeltaI)
         {
-            Log("PRE tralateInsideMediumI Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaI="+ movableDeltaI + "CurrentDeltaI=" + this.deltaI);
+            //Log("PRE tralateInsideMediumI Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaI="+ movableDeltaI + "CurrentDeltaI=" + this.deltaI);
             this.deltaI = movableDeltaI;
-            Log("POS tralateInsideMediumI Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaI=" + movableDeltaI + "CurrentDeltaI=" + this.deltaI);
+           // Log("POS tralateInsideMediumI Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaI=" + movableDeltaI + "CurrentDeltaI=" + this.deltaI);
         }
 
         public void tralateInsideMediumJ(float movableDeltaJ)
         {
-            Log("PRE tralateInsideMediumJ Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaJ="+movableDeltaJ + "CurrentDeltaJ=" + this.deltaJ);
+            //Log("PRE tralateInsideMediumJ Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaJ="+movableDeltaJ + "CurrentDeltaJ=" + this.deltaJ);
             this.deltaJ = movableDeltaJ;
-            Log("POS tralateInsideMediumJ Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaJ=" + movableDeltaJ + "CurrentDeltaJ=" + this.deltaJ);
+            //Log("POS tralateInsideMediumJ Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ") movableDeltaJ=" + movableDeltaJ + "CurrentDeltaJ=" + this.deltaJ);
         }
 
         public float GetDeltaI()

@@ -10,7 +10,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
 {
     public const int TOTAL_ANIMATION_TIME = 40;
     public const int CHEST_ITEMS_INTERFACE = 2;
-    public const float PLAYER_VELOCITY = 0.9f;
+    public const float PLAYER_VELOCITY = 0.45f;
 
     public Texture chestTexture;
 
