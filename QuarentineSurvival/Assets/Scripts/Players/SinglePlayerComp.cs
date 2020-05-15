@@ -36,7 +36,7 @@ namespace Assets.Scripts.Players
         public override void OnColissionAt(float movableDeltaI, float movableDeltaJ)
         {
             base.OnColissionAt(movableDeltaI, movableDeltaJ);
-            Log(this.ToString());
+            //Log(this.ToString());
         }
     }
 }

@@ -55,13 +55,13 @@ namespace QuarentineSurvival.Model
             velocityInverseVector[1] = velocityInverseVector[1] / module;
             List<Edge<T>> edgesThatMayCollide = GetEdgesWhoseNormalsAngleBetweenVectorAreLessThan90(fixedCol, velocityInverseVector);
             List<float> collissionTime = new List<float>();
-            Log("GetCollisionBetweenMovableAndFix----INIT"+movableCol + " & " + fixedCol);
+            //Log("GetCollisionBetweenMovableAndFix----INIT"+movableCol + " & " + fixedCol);
             for (int i = 0; i < movableCol.ShowCorners().Length; i++)
             {
                 Vertex2d<T> currentVertex = movableCol.ShowCorners()[i];
                 edgesThatMayCollide.ForEach(e => collissionTime.Add(GetCollisionTimeBetweenEdgeAndPoint(e, currentVertex)));
             }
-            Log("GetCollisionBetweenMovableAndFix----END");
+            //Log("GetCollisionBetweenMovableAndFix----END");
             collissionTime.Sort();
             //Log("GetCollisionBetweenMovableAndFix : " + collissionTime[0]);
             return collissionTime[0];
@@ -113,7 +113,7 @@ namespace QuarentineSurvival.Model
             {
                 return float.MaxValue;
             }
-            Log("Lambda = " + lambda + " Time = " + t + " Edge " + e + " and Vertex " + currentVertex);
+            //Log("Lambda = " + lambda + " Time = " + t + " Edge " + e + " and Vertex " + currentVertex);
             return t;
         }
 

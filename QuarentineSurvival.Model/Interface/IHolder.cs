@@ -37,5 +37,6 @@ namespace QuarentineSurvival.Model.Interface
     {
         bool canExecute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable);
         void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable);
+        IActionable<T> getSourceActionable();
     }
 }

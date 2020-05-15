@@ -66,6 +66,11 @@ namespace QuarentineSurvival.Model
         {
             return "Abrir";
         }
+
+        public IActionable<T> getSourceActionable()
+        {
+            return puerta;
+        }
     }
 
     public class CerrarPuerta<T> : IAction<T>
@@ -85,6 +90,11 @@ namespace QuarentineSurvival.Model
         public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
         {
             puerta.SetOpen(false);
+        }
+
+        public IActionable<T> getSourceActionable()
+        {
+            return puerta;
         }
 
         public override string ToString()

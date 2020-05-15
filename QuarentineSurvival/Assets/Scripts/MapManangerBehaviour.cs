@@ -24,12 +24,6 @@ public class MapManangerBehaviour : MonoBehaviour
     private List<IMovable<Component>> movablesInMap = new List<IMovable<Component>>();
 
     private Component realInstancePlayer;
-    private SimpleDoor<Component> realInstanceDoor;
-
-    public SimpleDoor<Component> GetSingleDoor()
-    {
-        return realInstanceDoor;
-    }
 
     private IConstructionManagerObserver<Component> singleObserver;
     private ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager;
@@ -153,14 +147,21 @@ public class MapManangerBehaviour : MonoBehaviour
                 {
                     newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i+j, ActionableMediumWithDoor, i,j);
                     IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
-                    realInstanceDoor = new SimpleDoorComp("Puerta", null, pisoActionable, transporterAndWarehouseManager);
+                    SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
                     pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
                 }
                 if ((i == -1) && (j == -1))
                 {
                     newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware2" + i + j, ActionableMediumWithDoor, i, j);
                     IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
-                    realInstanceDoor = new SimpleDoorComp("Puerta2", null, pisoActionable, transporterAndWarehouseManager);
+                    SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta2", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
+                    pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
+                }
+                if ((i == 0) && (j == 1))
+                {
+                    newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i + j, ActionableMediumWithDoor, i, j);
+                    IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
+                    SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
                     pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
                 }
                 movableMediums.Add(newMedium);

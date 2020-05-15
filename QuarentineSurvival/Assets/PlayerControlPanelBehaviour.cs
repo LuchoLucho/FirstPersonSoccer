@@ -196,7 +196,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
             {
                 if (GUI.Button(new Rect(200, 30 + 50, 150, 45), currentAction.ToString()))
                 {
-                    Debug.Log("Action!");
+                    Debug.Log("Action! Actionable source=" + currentAction.getSourceActionable());
                     currentAction.execute(player, null, null);
                 }
             }

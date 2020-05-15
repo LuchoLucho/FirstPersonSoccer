@@ -23,6 +23,24 @@ namespace QuarentineSurvivalTest
         }
 
         [TestMethod]
+        public void ExecutorLeavesEnvironmentActionsShouldBeCleanedTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            IMovableMediumCollisionAware<object> pisoWithNoActionable = new ActionCollisionableMediumAware<object>("NoActionStreet", null, 0, 1);
+            piso.SetMovableMediumAtNorth(pisoWithNoActionable);
+            IActionable<object> puerta = new SimpleDoor<object>("Puerta", null, piso, transporterAndWarehouseManager);
+            piso.addActionable(puerta);
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
+            player.SetVelocity(1);
+            player.SetDirectionI(0);
+            player.SetDirectionJ(1);
+            Assert.AreEqual(1, player.ShowAvailableActions().Count);
+            player.TimeTick(1000);
+            Assert.AreEqual(0, player.ShowAvailableActions().Count);
+        }
+
+        [TestMethod]
         public void ExecutorOpensDoorAndCloseDoorActionIsTheOnlyAvailableTest()
         {
             ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();

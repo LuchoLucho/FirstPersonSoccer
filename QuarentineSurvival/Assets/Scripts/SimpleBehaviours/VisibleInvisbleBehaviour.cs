@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.MapObjects;
 using QuarentineSurvival.Model;
+using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Assets.Scripts.SimpleBehaviours
     public class VisibleInvisbleBehaviour : MonoBehaviour
     {
         private bool areValuesInitiated = false;
-        private MapManangerBehaviour constructionManager;
+        private ComponentModelAware modelAware;
         private SimpleDoor<Component> door;
 
 
@@ -29,10 +30,17 @@ namespace Assets.Scripts.SimpleBehaviours
         {
             if (!areValuesInitiated)
             {
-                constructionManager = GetComponentInParent<MapManangerBehaviour>();
-                if (constructionManager != null)
+                modelAware = GetComponent<ComponentModelAware>();
+                if (modelAware != null)
                 {
-                    door = constructionManager.GetSingleDoor();
+                    IMovableMedium<Component> floorHoldingDoor = modelAware.GetQuarentineModel() as IMovableMedium<Component>;
+                    floorHoldingDoor.GetMovablesOnMedium().ForEach(x => 
+                    {
+                        if (x is SimpleDoor<Component>)
+                        {
+                            door = (SimpleDoor<Component>) x;
+                        }
+                    });                    
                     if (door != null)
                     {                        
                         areValuesInitiated = true;

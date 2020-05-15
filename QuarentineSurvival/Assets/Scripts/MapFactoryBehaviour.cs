@@ -85,6 +85,14 @@ namespace Assets.Scripts
                 newChild = Instantiate(newChildComponentMolde, realCoord, Quaternion.identity);
                 newChildConstruction.SetComponentInstanciaReal(newChild);
                 newChildConstruction.SetActive(true);
+                if (newChild.GetComponents<ComponentModelAware>().Any())//The UI need to be aware of the model!
+                {
+                    newChild.GetComponents<ComponentModelAware>().ToList().ForEach(x => x.SetQuarentineModel(newChildConstruction));
+                }
+                if (newChild.GetComponentsInChildren<ComponentModelAware>().Any())//The UI need to be aware of the model!
+                {
+                    newChild.GetComponentsInChildren<ComponentModelAware>().ToList().ForEach(x => x.SetQuarentineModel(newChildConstruction));
+                }
             }
             newChild.transform.parent = this.transform;
             /*ConstructionClickable consClickable = newChild.GetComponent<ConstructionClickable>();
