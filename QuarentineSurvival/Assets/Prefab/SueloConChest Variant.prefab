@@ -65,7 +65,7 @@ PrefabInstance:
     - target: {fileID: 4830831946560437148, guid: 2f9dcd4b51c8008419ea82339388fcf6,
         type: 3}
       propertyPath: m_Name
-      value: SueloConChest
+      value: SueloConChest Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f9dcd4b51c8008419ea82339388fcf6, type: 3}
@@ -95,7 +95,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 790acd731a3cdb64d82a8a7b0516d3f4,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 12.07
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 790acd731a3cdb64d82a8a7b0516d3f4,
         type: 3}

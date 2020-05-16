@@ -552,5 +552,15 @@ namespace SaavedraCraft.Model.Transportation
         {
             return deltaJ;
         }
+
+        public void SetDeltaI(float newDeltaI)
+        {
+            deltaI = newDeltaI;
+        }
+
+        public void SetDeltaJ(float newDeltaJ)
+        {
+            deltaJ = newDeltaJ;
+        }
     }
 }

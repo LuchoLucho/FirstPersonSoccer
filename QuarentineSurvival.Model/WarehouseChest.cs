@@ -9,51 +9,74 @@ namespace QuarentineSurvival.Model
 {
     public class WarehouseChest<T> : SimpleWareHouse<T>, IMovableMediumCollisionAware<T>
     {
-        private IMovableMediumCollisionAware<T> movableMediumCollisionAware;
-
         public WarehouseChest(string aName, T aComponent, float newI, float newj, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, newI, newj, transporterAndWarehouseManager)
         {
-            movableMediumCollisionAware = new ActionCollisionableMediumAware<T>(aName, aComponent, newI, newj);
         }
 
         public void addActionable(IActionable<T> actionableToAdd)
         {
-            movableMediumCollisionAware.addActionable(actionableToAdd);
+            throw new NotImplementedException();
         }
 
         public float GetCollisionTime(ICollisionable<T> other)
         {
-            return movableMediumCollisionAware.GetCollisionTime(other);
+            return ActionCollisionableMediumAware<T>.GetCollisionTimeToBeReUsed(this, other);
+        }
+
+        //I copied it from CollisanbleMediumAware since there is no other way to invoke the BASE class!
+        public override void OnMovableMoving(IMovable<T> simpleMovable, float timedelta)
+        {
+            ICollisionable<T> simpleMovableAsCollisionable = simpleMovable as ICollisionable<T>;
+            if (simpleMovableAsCollisionable != null)
+            {
+                float nextCollisionTime = GetCollisionTime(simpleMovableAsCollisionable);
+                //Log("ActionCollisionableMediumAware.NextCollisionTime = " + nextCollisionTime);
+                if ((nextCollisionTime > ActionCollisionableMediumAware<T>.EPSILON) && (nextCollisionTime <= timedelta))
+                {
+                    //I need to reduce a little bit the collision time since otherwise it will be RIGHT next to the CAGE
+                    nextCollisionTime -= ActionCollisionableMediumAware<T>.EPSILON * 2;
+                    //----
+                    base.OnMovableMoving(simpleMovable, nextCollisionTime);//ProcessNormally with a delta = to the time of collission
+                    timedelta -= nextCollisionTime;
+                    float movableDeltaI;
+                    float movableDeltaJ;
+                    movableDeltaI = simpleMovable.GetDeltaI();//simpleMovable.GetCoordI() - (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT / 2);
+                    movableDeltaJ = simpleMovable.GetDeltaJ();//simpleMovable.GetCoordJ() - (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT / 2);
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
+                    return;
+                }
+            }
+            base.OnMovableMoving(simpleMovable, timedelta);
         }
 
         public void NotifyExecutorInEnvironmentRefreshActions()
         {
-            movableMediumCollisionAware.NotifyExecutorInEnvironmentRefreshActions();
+            throw new NotImplementedException();
         }
 
         public void NotifyRefreshActions(IHolder<T> receiber)
         {
-            movableMediumCollisionAware.NotifyRefreshActions(receiber);
+            throw new NotImplementedException();
         }
 
         public void OnActionExecutorArrived(IActionExecutor<T> arrivingExecutor)
         {
-            movableMediumCollisionAware.OnActionExecutorArrived(arrivingExecutor);
+            throw new NotImplementedException();
         }
 
         public void OnActionExecutorLeave(IActionExecutor<T> leavingExecutor)
         {
-            movableMediumCollisionAware.OnActionExecutorLeave(leavingExecutor);
+            throw new NotImplementedException();
         }
 
         public void removeActionable(IActionable<T> actionableToRemove)
         {
-            movableMediumCollisionAware.removeActionable(actionableToRemove);
+            throw new NotImplementedException();
         }
 
         public List<IActionable<T>> ShowAllActionables()
         {
-            return movableMediumCollisionAware.ShowAllActionables();
+            throw new NotImplementedException();
         }
     }
 }

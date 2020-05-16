@@ -13,10 +13,10 @@ namespace QuarentineSurvival.Model
         {
         }
 
-        private List<ICollisionable<T>> ShowAllCollisionables()
+        public static List<ICollisionable<T>> ShowAllCollisionables(IMovableMediumCollisionAware<T> medium)
         {
             List<ICollisionable<T>> ret = new List<ICollisionable<T>>();
-            foreach (IMovable<T> currentMovable in this.GetMovablesOnMedium())
+            foreach (IMovable<T> currentMovable in medium.GetMovablesOnMedium())
             {
                 ICollisionable<T> collisionableCandidate = currentMovable as ICollisionable<T>;
                 ret.Add(collisionableCandidate);
@@ -24,9 +24,9 @@ namespace QuarentineSurvival.Model
             return ret;
         }
 
-        public float GetCollisionTime(ICollisionable<T> other)
+        public static float GetCollisionTimeToBeReUsed(IMovableMediumCollisionAware<T> thisMedium, ICollisionable<T> other)
         {
-            List<ICollisionable<T>> otherToCollideWith = ShowAllCollisionables();
+            List<ICollisionable<T>> otherToCollideWith = ShowAllCollisionables(thisMedium);
             float nextCollision = float.MaxValue;
             foreach (ICollisionable<T> currentCollisionable in otherToCollideWith)
             {
@@ -40,6 +40,11 @@ namespace QuarentineSurvival.Model
                 }
             }
             return nextCollision;
+        }        
+
+        public float GetCollisionTime(ICollisionable<T> other)
+        {
+            return GetCollisionTimeToBeReUsed(this,other);
         }
 
         public override void OnMovableMoving(IMovable<T> simpleMovable, float timedelta)

@@ -22,6 +22,8 @@ public class MapManangerBehaviour : MonoBehaviour
     private List<IMovableMediumCollisionAware<Component>> movableMediums = new List<IMovableMediumCollisionAware<Component>>();
 
     private List<IMovable<Component>> movablesInMap = new List<IMovable<Component>>();
+    private ICollisionable<Component> chestCollision;
+    private ICargoTransporter<Component> player;
 
     private Component realInstancePlayer;
 
@@ -36,10 +38,10 @@ public class MapManangerBehaviour : MonoBehaviour
     {
         transporterAndWarehouseManager = new TransporterAndWarehouseManager<Component>();
         IMovableMediumCollisionAware<Component> medium = getEntityFromTileCoor(0,0);//new SimpleStreet<Component>("Floor", null, 0, 0);
-        ICargoTransporter<Component> player = new SinglePlayerComp("Player", SinglePlayerComponent, medium, transporterAndWarehouseManager);
+        player = new SinglePlayerComp("Player", SinglePlayerComponent, medium, transporterAndWarehouseManager);
         player.SetDirectionI(+0);
         player.SetDirectionJ(+0);
-        player.SetVelocity(0.3f);
+        player.SetVelocity(0.5f);
         movablesInMap.Add(player);
         NewMovable(movablesInMap[0]);
         mainCamera.enabled = true;
@@ -126,10 +128,17 @@ public class MapManangerBehaviour : MonoBehaviour
             //----
             newMedium.OnMovableArrivedAlsoDo(medium => 
             {
-                mainCamera.enabled = false;
-                chestCamera.enabled = true;
+                if (medium.GetMovablesOnMedium().Contains(player))
+                {
+                    mainCamera.enabled = false;
+                    chestCamera.enabled = true;
+                }
             }
             );
+            chestCollision = new SimpleTransporterCollisionable<Component>("Obstaculo", null, newMedium, transporterAndWarehouseManager);
+            chestCollision.SetWidh(0.6f);
+            chestCollision.SetHeigh(0.25f);
+            chestCollision.SetDeltaJ(0.25f);
         }  else if ((Math.Abs(i) <= 1) && (Math.Abs(j) <= 1))
         {
             if (movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j) == null)
