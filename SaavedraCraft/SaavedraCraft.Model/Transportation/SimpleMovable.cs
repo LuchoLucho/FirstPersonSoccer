@@ -562,5 +562,15 @@ namespace SaavedraCraft.Model.Transportation
         {
             deltaJ = newDeltaJ;
         }
+
+        public override IObject<T> SetNewIJ(float newI, float newJ)
+        {
+            //currentMovableMedium.GetCoordI() + SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2 + deltaI;
+            newI = (newI - currentMovableMedium.GetCoordI()) - SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+            newJ = (newJ - currentMovableMedium.GetCoordJ()) - SimpleStreet<T>.MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+            SetDeltaI(newI);
+            SetDeltaJ(newJ);
+            return this;
+        }
     }
 }

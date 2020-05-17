@@ -86,5 +86,58 @@ namespace QuarentineSurvivalTest
             Assert.AreEqual(0, movable.GetVelocity());
             Assert.IsTrue(movable.GetCoordI() < puerta.GetCoordI());
         }
+
+        [TestMethod]
+        public void MovableHitsAgainsActionableDoorAtNorthAndItOpensItTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> pisoOrigen = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            IMovableMediumCollisionAware<object> pisoDestinoAlNorteConPuerta = new ActionCollisionableMediumAware<object>("NorthActionStreet", null, 0, 1);
+            pisoOrigen.SetMovableMediumAtNorth(pisoDestinoAlNorteConPuerta);
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("ToColideAgainsDoor", null, pisoOrigen, transporterAndWarehouseManager);
+            SimpleDoor<object> puerta = new SimpleDoor<object>("Puerta", null, pisoDestinoAlNorteConPuerta, transporterAndWarehouseManager);
+            pisoDestinoAlNorteConPuerta.addActionable(puerta);
+            int[] directionNorth = new[] { 0, 1 };
+            player.SetDirectionI(directionNorth[0]);
+            player.SetDirectionJ(directionNorth[1]);
+            player.SetVelocity(10.0f);//It will complete the trip in one tick
+            player.TimeTick(1.0f);
+            Assert.AreEqual(pisoDestinoAlNorteConPuerta, player.GetMedium());
+            Assert.AreEqual(0, player.GetVelocity());
+            Assert.IsTrue(player.GetCoordJ() < puerta.GetCoordJ());
+            //Open Zezame!
+            IAction<object> uniqueAction = player.ShowAvailableActions()[0];
+            uniqueAction.execute(player, pisoDestinoAlNorteConPuerta, puerta);            
+            player.SetVelocity(10.0f);
+            player.TimeTick(1.0f);
+            Assert.IsTrue(player.GetCoordJ() > puerta.GetCoordJ());
+        }
+
+        [TestMethod]
+        public void MovableHitsAgainsMultipleObjectsInTheSameMediumTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            ICollisionable<object> player = new QurentinePlayerModel<object>("ToCollide", null, piso, transporterAndWarehouseManager);
+            player.SetNewIJ(0.5f,-0.4f);
+            ICollisionable<object> obstaculo1 = new SimpleTransporterCollisionable<object>("Obstaculo1", null, piso, transporterAndWarehouseManager);
+            obstaculo1.SetNewIJ(0.5f,+0.3f);
+            ICollisionable<object> obstaculo2 = new SimpleTransporterCollisionable<object>("Obstaculo2", null, piso, transporterAndWarehouseManager);
+            obstaculo2.SetNewIJ(0.9f, +0.15f);
+            int[] directionNorth = new[] { 0, 1 };
+            player.SetDirectionI(directionNorth[0]);
+            player.SetDirectionJ(directionNorth[1]);
+            player.SetVelocity(10.0f);//It will complete the trip in one tick
+            player.TimeTick(1.0f);
+            Assert.AreEqual(0, player.GetVelocity());
+            Assert.IsTrue(player.GetCoordJ() < obstaculo1.GetCoordJ());
+            int[] directionEast = new[] { 1, 0 };
+            player.SetDirectionI(directionEast[0]);
+            player.SetDirectionJ(directionEast[1]);
+            player.SetVelocity(10.0f);//It will complete the trip in one tick
+            player.TimeTick(1.0f);
+            Assert.AreEqual(0, player.GetVelocity());
+            Assert.IsTrue(player.GetCoordI()+player.GetWidh()/2<obstaculo2.GetCoordI()-obstaculo2.GetWidh()/2);
+        }
     }
 }

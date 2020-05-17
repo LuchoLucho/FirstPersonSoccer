@@ -41,6 +41,15 @@ namespace QuarentineSurvival.Model
             isOpen = newOpenStatus;
             NotifyRefreshActions(environment);//Now the actions change> if the door is open, it should notify that the new action is close!
         }
+
+        public override float GetCollisionTime(ICollisionable<T> other)
+        {
+            if (isOpen)
+            {
+                return float.MaxValue;//Door open then no collision!!!
+            }
+            return base.GetCollisionTime(other);
+        }
     }
 
     public class AbrirPuerta<T> : IAction<T>

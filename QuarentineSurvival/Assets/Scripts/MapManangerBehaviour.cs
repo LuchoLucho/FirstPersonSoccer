@@ -152,27 +152,22 @@ public class MapManangerBehaviour : MonoBehaviour
                         chestCamera.enabled = false;
                     });
                 }
-                if ((i == 0) && (j == -1))
+                if ( ((i == 0) && (j == -1)) || ((i == -1) && (j == -1)) || ((i == 0) && (j == 1)) )
                 {
                     newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i+j, ActionableMediumWithDoor, i,j);
                     IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
                     SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
                     pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
-                }
-                if ((i == -1) && (j == -1))
-                {
-                    newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware2" + i + j, ActionableMediumWithDoor, i, j);
-                    IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
-                    SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta2", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
-                    pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
-                }
-                if ((i == 0) && (j == 1))
-                {
-                    newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i + j, ActionableMediumWithDoor, i, j);
-                    IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
-                    SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
-                    pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
-                }
+                    ICollisionable<Component> paredDerecha = new SimpleTransporterCollisionable<Component>("Obstaculo1", null, pisoActionable, transporterAndWarehouseManager);
+                    paredDerecha.SetWidh(0.25f);
+                    paredDerecha.SetHeigh(0.1f); 
+                    //paredDerecha.SetNewIJ(i-0.25f, j+0.5f); //Don't use IJ since they're absolute, deltas are relatives!
+                    paredDerecha.SetDeltaI(-0.375f);
+                    ICollisionable<Component> paredIzq = new SimpleTransporterCollisionable<Component>("Obstaculo2", null, pisoActionable, transporterAndWarehouseManager);
+                    paredIzq.SetWidh(0.25f);
+                    paredIzq.SetHeigh(0.1f);
+                    paredIzq.SetDeltaI(+0.375f);
+                }                
                 movableMediums.Add(newMedium);
                 newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
                 newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));

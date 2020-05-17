@@ -81,7 +81,7 @@ namespace SaavedraCraft.Model
             componentInstanciaReal = componentReal;
         }
 
-        public IObject<T> SetNewIJ(float newI, float newJ)
+        public virtual IObject<T> SetNewIJ(float newI, float newJ)
         {
             i = newI;
             j = newJ;

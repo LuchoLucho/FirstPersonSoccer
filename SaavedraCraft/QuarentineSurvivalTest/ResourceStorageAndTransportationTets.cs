@@ -11,7 +11,7 @@ using SaavedraCraft.Model.Transportation;
 namespace QuarentineSurvivalTest
 {
     [TestClass]
-    public class ResourceStorateAndTransportationTets
+    public class ResourceStorageAndTransportationTets
     {
         [TestMethod]
         public void ResourcePickupTest()

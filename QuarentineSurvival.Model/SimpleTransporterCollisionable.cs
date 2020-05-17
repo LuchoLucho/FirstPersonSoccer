@@ -13,8 +13,7 @@ namespace QuarentineSurvival.Model
         private CageBox<T> cageBox;
 
         public SimpleTransporterCollisionable(string aName, T aComponent, IMovableMedium<T> originMedium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
-        {
-            //cageBox = new CageBox<T>(this, this.GetWidh(),this.GetHeigh());//I'm just reading the width to calculate size of CAGE!
+        {            
         }
 
         private CageBox<T> getCageBox()
@@ -27,7 +26,7 @@ namespace QuarentineSurvival.Model
         }
 
         #region SimpleMovableCollisionable
-        public float GetCollisionTime(ICollisionable<T> other)
+        public virtual float GetCollisionTime(ICollisionable<T> other)
         {
             if (GetVelocity() > 0 && other.GetVelocity() > 0)
             {
@@ -152,7 +151,9 @@ namespace QuarentineSurvival.Model
 
         public override string ToString()
         {
-            string ret = this.GetName() + "Pos = (" + GetCoordI() + ","+ GetCoordJ()+")-(";
+            string ret = this.GetName() + "Pos = (" + GetCoordI() + "," + GetCoordJ() + ")";
+            ret += "Delta(" + GetDeltaI() + "," + GetDeltaJ() + ")";
+            ret += "-Cage(";
             for (int i = 0; i < this.getCageBox().ShowCorners().Length;i++)
             {
                 ret += getCageBox().ShowCorners()[i].ToString() + ",";
