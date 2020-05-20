@@ -1,6 +1,7 @@
 ﻿using QuarentineSurvival.Model;
 using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model;
+using SaavedraCraft.Model.CollisionEngine;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using System;
@@ -33,9 +34,9 @@ namespace Assets.Scripts.Players
             base.NotifyParkingspaceAvailable(simpleWareHouse);
         }
 
-        public override void OnColissionAt(float movableDeltaI, float movableDeltaJ)
+        public override void OnColissionAt(float movableDeltaI, float movableDeltaJ, QuarentineCollision<Component> quarentineCollision)
         {
-            base.OnColissionAt(movableDeltaI, movableDeltaJ);
+            base.OnColissionAt(movableDeltaI, movableDeltaJ, quarentineCollision);
             //Log(this.ToString());
         }
     }

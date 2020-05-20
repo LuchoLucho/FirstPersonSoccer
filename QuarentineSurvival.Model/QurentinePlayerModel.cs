@@ -1,5 +1,6 @@
-﻿using QuarentineSurvival.Model.CollisionEngine;
-using QuarentineSurvival.Model.Interface;
+﻿using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using SaavedraCraft.Model.Transportation;
@@ -53,6 +54,14 @@ namespace QuarentineSurvival.Model
             List<IAction<T>> allActions = new List<IAction<T>>();
             ShowAllActionables().ForEach(x => allActions.AddRange(x.ShowAvailableActions()));
             return allActions;
-        }                
+        }
+        
+        public override void OnColissionAt(float movableDeltaI, float movableDeltaJ, QuarentineCollision<T> quarentineCollision)
+        {
+            //base.OnColissionAt(movableDeltaI, movableDeltaJ, quarentineCollision);
+            this.SetDeltaI(movableDeltaI);
+            this.SetDeltaJ(movableDeltaJ);
+            quarentineCollision.GetActionOnBodyFromCollision(this).execute(this, null, null);
+        }
     }
 }

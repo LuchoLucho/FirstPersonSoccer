@@ -1,5 +1,5 @@
-﻿using QuarentineSurvival.Model.CollisionEngine;
-using QuarentineSurvival.Model.Interface;
+﻿using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Transportation;
 using System;
@@ -26,7 +26,7 @@ namespace QuarentineSurvival.Model
         }
 
         #region SimpleMovableCollisionable
-        public virtual float GetCollisionTime(ICollisionable<T> other)
+        public virtual QuarentineCollision<T> GetCollision(ICollisionable<T> other)
         {
             if (GetVelocity() > 0 && other.GetVelocity() > 0)
             {
@@ -40,14 +40,11 @@ namespace QuarentineSurvival.Model
             {
                 return GetCollisionBetweenMovableAndFix(other, this);
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
 
-        private float GetCollisionBetweenMovableAndFix(ICollisionable<T> movableCol, ICollisionable<T> fixedCol)
-        {
+        private QuarentineCollision<T> GetCollisionBetweenMovableAndFix(ICollisionable<T> movableCol, ICollisionable<T> fixedCol)
+        {            
             double[] velocityInverseVector = new[] { (double)-movableCol.GetDirectionI() * movableCol.GetVelocity(), (double)-movableCol.GetDirectionJ() * movableCol.GetVelocity() };
             double module = Math.Sqrt(velocityInverseVector[0] * velocityInverseVector[0] + velocityInverseVector[1] * velocityInverseVector[1]);
             velocityInverseVector[0] = velocityInverseVector[0] / module;
@@ -63,7 +60,7 @@ namespace QuarentineSurvival.Model
             //Log("GetCollisionBetweenMovableAndFix----END");
             collissionTime.Sort();
             //Log("GetCollisionBetweenMovableAndFix : " + collissionTime[0]);
-            return collissionTime[0];
+            return new HardCollision<T>(new List<IMovable<T>> { movableCol, fixedCol }, collissionTime[0]);
         }
 
         private float GetCollisionTimeBetweenEdgeAndPoint(Edge<T> e, Vertex2d<T> currentVertex)
@@ -133,7 +130,7 @@ namespace QuarentineSurvival.Model
             return edgesThatMayCollide;
         }
 
-        private float GetCollisionFromBothMovable(ICollisionable<T> simpleMovableCollisionable, ICollisionable<T> other)
+        private QuarentineCollision<T> GetCollisionFromBothMovable(ICollisionable<T> simpleMovableCollisionable, ICollisionable<T> other)
         {
             throw new NotImplementedException();
         }

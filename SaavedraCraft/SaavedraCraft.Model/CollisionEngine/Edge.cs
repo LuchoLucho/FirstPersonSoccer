@@ -1,9 +1,9 @@
-﻿using QuarentineSurvival.Model.Interface;
+﻿using SaavedraCraft.Model.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuarentineSurvival.Model.CollisionEngine
+namespace SaavedraCraft.Model.CollisionEngine
 {
     public class Edge<T>
     {

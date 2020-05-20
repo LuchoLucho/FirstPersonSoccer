@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuarentineSurvival.Model.Interface
+namespace SaavedraCraft.Model.Interface
 {
     public interface IHolder<T>
     {

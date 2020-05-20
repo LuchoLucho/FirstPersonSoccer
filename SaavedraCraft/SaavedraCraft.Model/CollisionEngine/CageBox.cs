@@ -1,9 +1,9 @@
-﻿using QuarentineSurvival.Model.Interface;
-using System;
+﻿
+using SaavedraCraft.Model.Interface;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuarentineSurvival.Model.CollisionEngine
+namespace SaavedraCraft.Model.CollisionEngine
 {
     public class CageBox<T>
     {

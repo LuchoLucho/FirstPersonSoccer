@@ -1,4 +1,6 @@
 ﻿using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Transportation;
 using System;
@@ -42,13 +44,13 @@ namespace QuarentineSurvival.Model
             NotifyRefreshActions(environment);//Now the actions change> if the door is open, it should notify that the new action is close!
         }
 
-        public override float GetCollisionTime(ICollisionable<T> other)
+        public override QuarentineCollision<T> GetCollision(ICollisionable<T> other)
         {
             if (isOpen)
             {
-                return float.MaxValue;//Door open then no collision!!!
+                return new HardCollision<T>(new List<IMovable<T>>() { this, other}, float.MaxValue);//Door open then no collision!!!
             }
-            return base.GetCollisionTime(other);
+            return base.GetCollision(other);
         }
     }
 

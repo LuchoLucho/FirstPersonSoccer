@@ -1,4 +1,6 @@
-﻿using SaavedraCraft.Model.Constructions;
+﻿using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Constructions;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using System;
@@ -285,7 +287,9 @@ namespace SaavedraCraft.Model.Transportation
             //----MoveToBe:            
             movableDeltaI += simpleMovable.GetDirectionI() * simpleMovable.GetVelocity() * timedelta;
             movableDeltaJ += simpleMovable.GetDirectionJ() * simpleMovable.GetVelocity() * timedelta;
-            //----            
+            //----
+            QuarentineCollision<T> hardCollision = new HardCollision<T>(new List<IMovable<T>> {simpleMovable }, timedelta);
+            //----
             if (movableDeltaJ > MOVABLE_MEDIUM_EDGE_LIMIT / 2)
             {
                 if (GetMovableMediumAtNorth() == null)
@@ -293,7 +297,7 @@ namespace SaavedraCraft.Model.Transportation
                     //Log("Collision at NORTH!");
                     //this.SetVelocity(0);
                     movableDeltaJ = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    simpleMovable.OnColissionAt(movableDeltaI,movableDeltaJ);
+                    simpleMovable.OnColissionAt(movableDeltaI,movableDeltaJ, hardCollision);
                     return;
                 }
                 float distanceUntilBoudery = (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT) - simpleMovable.GetCoordJ();
@@ -308,7 +312,7 @@ namespace SaavedraCraft.Model.Transportation
                     //Log("Collision at SOUTH!");
                     //this.SetVelocity(0);
                     movableDeltaJ = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ, hardCollision);
                     return;
                 }
                 float distanceUntilBoudery = simpleMovable.GetCoordJ() - this.GetCoordJ();
@@ -327,6 +331,7 @@ namespace SaavedraCraft.Model.Transportation
                     //Log("Collision at EAST!");
                     //this.SetVelocity(0);
                     movableDeltaI = MOVABLE_MEDIUM_EDGE_LIMIT / 2;
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ, hardCollision);
                     return;
                 }
                 float distanceUntilBoudery = (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT) - simpleMovable.GetCoordI();
@@ -341,7 +346,7 @@ namespace SaavedraCraft.Model.Transportation
                     //Log("Collision at WEST!");
                     //this.SetVelocity(0);
                     movableDeltaI = -MOVABLE_MEDIUM_EDGE_LIMIT / 2;
-                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ, hardCollision);
                     return;
                 }
                 float distanceUntilBoudery = simpleMovable.GetCoordI() - this.GetCoordI();
@@ -521,9 +526,9 @@ namespace SaavedraCraft.Model.Transportation
             //NOTTHING
         }
 
-        public virtual void OnColissionAt(float movableDeltaI, float movableDeltaJ)
-        {   
-            this.SetVelocity(0);
+        public virtual void OnColissionAt(float movableDeltaI, float movableDeltaJ, QuarentineCollision<T> collision)
+        {
+            this.SetVelocity(0);// the collision will tell us what to do IN NEXT CLASSES!           
             this.deltaI = movableDeltaI;
             this.deltaJ = movableDeltaJ;
             Log("Collision! Previous Velocity = " + this.GetVelocity() + " Direction: (" + this.GetDirectionI() + ";" + this.GetDirectionJ() + ") Position: (" + this.GetCoordI() + ";" + this.GetCoordJ() + ")");

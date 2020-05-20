@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SaavedraCraft.Model.CollisionEngine;
 using SaavedraCraft.Model.Transportation;
 
 namespace SaavedraCraft.Model.Interfaces
@@ -16,7 +17,7 @@ namespace SaavedraCraft.Model.Interfaces
         void SetDirectionI(float newDirectionI);
         void SetDirectionJ(float newDirectionI);
         void SetVelocity(float newVelocity);
-        void OnColissionAt(float movableDeltaI, float movableDeltaJ);
+        void OnColissionAt(float movableDeltaI, float movableDeltaJ, QuarentineCollision<T> collision);
         void traslateNorth(float newDeltaJ, float remainingDeltaTime);
         void traslateSouth(float newDeltaJ, float remainingDeltaTime);
         void traslateEast(float v, float remainingDeltaTime);

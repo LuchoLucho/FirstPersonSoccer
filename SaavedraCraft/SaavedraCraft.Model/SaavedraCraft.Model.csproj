@@ -41,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicObject.cs" />
+    <Compile Include="CollisionEngine\CageBox.cs" />
+    <Compile Include="CollisionEngine\Edge.cs" />
+    <Compile Include="CollisionEngine\QuarentineCollision.cs" />
+    <Compile Include="CollisionEngine\Vertex2d.cs" />
     <Compile Include="Constructions\BasicConstrucHybridConsumerProducer.cs" />
     <Compile Include="Constructions\BasicConstrucProducer.cs" />
     <Compile Include="Constructions\BasicContrucConsumer.cs" />
@@ -51,8 +55,10 @@
     <Compile Include="Constructions\Implementations\Casa.cs" />
     <Compile Include="Interfaces\ICameraController.cs" />
     <Compile Include="Interfaces\ICentralMarket.cs" />
+    <Compile Include="Interfaces\ICollisionable.cs" />
     <Compile Include="Interfaces\IConstruction.cs" />
     <Compile Include="Interfaces\IConstructionManagerObserver.cs" />
+    <Compile Include="Interfaces\IHolder.cs" />
     <Compile Include="Interfaces\IMovable.cs" />
     <Compile Include="Interfaces\ITransporterAndWarehouseManager.cs" />
     <Compile Include="Interfaces\IObject.cs" />

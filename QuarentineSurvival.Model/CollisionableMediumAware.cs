@@ -1,4 +1,6 @@
 ﻿using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,16 +26,17 @@ namespace QuarentineSurvival.Model
             return ret;
         }
 
-        public static float GetCollisionTimeToBeReUsed(IMovableMediumCollisionAware<T> thisMedium, ICollisionable<T> other)
+        public static QuarentineCollision<T> GetCollisionTimeToBeReUsed(IMovableMediumCollisionAware<T> thisMedium, ICollisionable<T> other)
         {
             List<ICollisionable<T>> otherToCollideWith = ShowAllCollisionables(thisMedium);
-            float nextCollision = float.MaxValue;
+            QuarentineCollision<T> nullCollision = new HardCollision<T>(new List<IMovable<T>> { null, other }, float.MaxValue);
+            QuarentineCollision<T> nextCollision = nullCollision;
             foreach (ICollisionable<T> currentCollisionable in otherToCollideWith)
             {
                 if (currentCollisionable != other)
                 {
-                    float currentPossibleCollision = currentCollisionable.GetCollisionTime(other);
-                    if (nextCollision > currentPossibleCollision)
+                    QuarentineCollision<T> currentPossibleCollision = currentCollisionable.GetCollision(other);
+                    if (nextCollision.GetTimeOfCollision() > currentPossibleCollision.GetTimeOfCollision())
                     {
                         nextCollision = currentPossibleCollision;
                     }
@@ -42,7 +45,7 @@ namespace QuarentineSurvival.Model
             return nextCollision;
         }        
 
-        public float GetCollisionTime(ICollisionable<T> other)
+        public QuarentineCollision<T> GetCollisionTime(ICollisionable<T> other)
         {
             return GetCollisionTimeToBeReUsed(this,other);
         }
@@ -52,20 +55,20 @@ namespace QuarentineSurvival.Model
             ICollisionable<T> simpleMovableAsCollisionable = simpleMovable as ICollisionable<T>;
             if (simpleMovableAsCollisionable != null)
             {
-                float nextCollisionTime = GetCollisionTime(simpleMovableAsCollisionable);
+                QuarentineCollision<T> nextCollision = GetCollisionTime(simpleMovableAsCollisionable);
                 //Log("ActionCollisionableMediumAware.NextCollisionTime = " + nextCollisionTime);
-                if ((nextCollisionTime> EPSILON) && (nextCollisionTime <= timedelta))
-                {                    
+                if ((nextCollision.GetTimeOfCollision()> EPSILON) && (nextCollision.GetTimeOfCollision() <= timedelta))
+                {
                     //I need to reduce a little bit the collision time since otherwise it will be RIGHT next to the CAGE
-                    nextCollisionTime -= EPSILON*2;
+                    float collisionTime = nextCollision.GetTimeOfCollision()-(EPSILON * 2);
                     //----
-                    base.OnMovableMoving(simpleMovable, nextCollisionTime);//ProcessNormally with a delta = to the time of collission
-                    timedelta -= nextCollisionTime;
+                    base.OnMovableMoving(simpleMovable, collisionTime);//ProcessNormally with a delta = to the time of collission
+                    timedelta -= collisionTime;
                     float movableDeltaI;
                     float movableDeltaJ;
                     movableDeltaI = simpleMovable.GetDeltaI();//simpleMovable.GetCoordI() - (this.GetCoordI() + MOVABLE_MEDIUM_EDGE_LIMIT / 2);
                     movableDeltaJ = simpleMovable.GetDeltaJ();//simpleMovable.GetCoordJ() - (this.GetCoordJ() + MOVABLE_MEDIUM_EDGE_LIMIT / 2);
-                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ);
+                    simpleMovable.OnColissionAt(movableDeltaI, movableDeltaJ,nextCollision);
                     return;
                 }
             }

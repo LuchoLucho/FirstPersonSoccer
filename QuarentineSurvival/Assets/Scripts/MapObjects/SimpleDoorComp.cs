@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.SimpleBehaviours;
 using QuarentineSurvival.Model;
 using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
 ﻿using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Transportation;
 using System;

@@ -1,15 +1,15 @@
-﻿using QuarentineSurvival.Model.CollisionEngine;
+﻿using SaavedraCraft.Model.CollisionEngine;
 using SaavedraCraft.Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuarentineSurvival.Model.Interface
+namespace SaavedraCraft.Model.Interface
 {
     public interface ICollisionable<T> : IMovable<T>
     {
         Edge<T>[] ShowEdges();
         Vertex2d<T>[] ShowCorners();
-        float GetCollisionTime(ICollisionable<T> other);        
+        QuarentineCollision<T> GetCollision(ICollisionable<T> other);        
     }
 }

@@ -3,6 +3,7 @@ using Assets.Scripts.MapObjects;
 using Assets.Scripts.Players;
 using QuarentineSurvival.Model;
 using QuarentineSurvival.Model.Interface;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using SaavedraCraft.Model.Resources;
@@ -18,6 +19,7 @@ public class MapManangerBehaviour : MonoBehaviour
     public Component SimpleRoadComponent;
     public Component ChestComponent;
     public Component ActionableMediumWithDoor;
+    public Component BedComponent;
 
     private List<IMovableMediumCollisionAware<Component>> movableMediums = new List<IMovableMediumCollisionAware<Component>>();
 
@@ -152,7 +154,7 @@ public class MapManangerBehaviour : MonoBehaviour
                         chestCamera.enabled = false;
                     });
                 }
-                if ( ((i == 0) && (j == -1)) || ((i == -1) && (j == -1)) || ((i == 0) && (j == 1)) )
+                if ( ((i == 0) && (j == -1)) || ((i == -1) && (j == -1)) )
                 {
                     newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i+j, ActionableMediumWithDoor, i,j);
                     IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
@@ -167,7 +169,14 @@ public class MapManangerBehaviour : MonoBehaviour
                     paredIzq.SetWidh(0.25f);
                     paredIzq.SetHeigh(0.1f);
                     paredIzq.SetDeltaI(+0.375f);
-                }                
+                }
+                else if ((i == 0) && (j == 1))
+                {
+                    newMedium = new QuerentineFloor("Bed" + i + j, BedComponent, i, j);
+                    ICollisionable<Component> obstaculo = new SimpleTransporterCollisionable<Component>("ObstaculoCama1", null, newMedium, transporterAndWarehouseManager);
+                    obstaculo.SetWidh(0.5f);
+                    obstaculo.SetHeigh(0.8f);                    
+                }
                 movableMediums.Add(newMedium);
                 newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
                 newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
