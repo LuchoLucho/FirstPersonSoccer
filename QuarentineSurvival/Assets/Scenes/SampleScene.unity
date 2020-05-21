@@ -287,13 +287,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.20673802, y: 0.67620957, z: -0.20673802, w: 0.67620957}
-  m_LocalPosition: {x: -16.95, y: 13, z: 9}
+  m_LocalRotation: {x: 0.15130903, y: 0.8756984, z: -0.21555738, w: 0.40471342}
+  m_LocalPosition: {x: -6.5, y: 11, z: 24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 34, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 132, z: 6}
 --- !u!1 &1369794541
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +493,7 @@ Light:
   serializedVersion: 9
   m_Type: 2
   m_Color: {r: 1, g: 0.7215328, b: 0.5803922, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1.2
   m_Range: 50
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -592,6 +592,8 @@ MonoBehaviour:
   ChestComponent: {fileID: 4251071459937115280, guid: 7ff5ac26e3344a147bf39e4013dd6a99,
     type: 3}
   ActionableMediumWithDoor: {fileID: 3581974060890837398, guid: 7170f61954cb8664ab455bbd89ebe06b,
+    type: 3}
+  BedComponent: {fileID: 6488188465173448737, guid: b159effa2d755ca4bbbfd2983a96cb9c,
     type: 3}
   mainCamera: {fileID: 963194227}
   chestCamera: {fileID: 1505287633}

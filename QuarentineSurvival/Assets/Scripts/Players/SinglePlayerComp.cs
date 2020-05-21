@@ -36,8 +36,16 @@ namespace Assets.Scripts.Players
 
         public override void OnColissionAt(float movableDeltaI, float movableDeltaJ, QuarentineCollision<Component> quarentineCollision)
         {
+            Log("------------------------");
+            Log("OnColissionAt type" + quarentineCollision.GetType() + "time = " + quarentineCollision.GetTimeOfCollision());
+            quarentineCollision.ShowInvolveMovablesInCollision().ForEach(x =>
+            {
+                Log("OnColissionAt movable involved = " + x);
+            });            
+            Log("OnColissionAt Pre Vel = "+ this.GetVelocity() + this.ToString());
             base.OnColissionAt(movableDeltaI, movableDeltaJ, quarentineCollision);
-            //Log(this.ToString());
+            Log("OnColissionAt Pos Vel = " + this.GetVelocity() + this.ToString());
+            Log("------------------------");
         }
     }
 }

@@ -2,6 +2,7 @@
 using Assets.Scripts.MapObjects;
 using Assets.Scripts.Players;
 using QuarentineSurvival.Model;
+using QuarentineSurvival.Model.Actions;
 using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
@@ -34,6 +35,9 @@ public class MapManangerBehaviour : MonoBehaviour
 
     public Camera mainCamera;
     public Camera chestCamera;
+
+    private StepOnActionable<Component> stepOnActionableChestCamera;
+    private StepOnActionable<Component> stepOnActionableBeforeChestCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -95,96 +99,94 @@ public class MapManangerBehaviour : MonoBehaviour
 
     public IMovableMediumCollisionAware<Component> getEntityFromTileCoor(float i, float j)
     {
-        /*IObject<Component> contructionToFind = constructionInMap.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
-        if (contructionToFind == null)
+        IMovableMediumCollisionAware<Component> newMedium = movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
+        if (newMedium!=null)
         {
-            return null;
+            return newMedium;
         }
-        return contructionToFind;*/
-        /*if (i == 0 && j == 0)
+        if ((i == 0) && (j == 0))
         {
-            return entitiesInMap[0];
-        }*/
-        if ((i==2) && (j==0))
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+        } else if ((i==2) && (j==0))
         {
-            WarehouseChest<Component> newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);
-            movableMediums.Add(newMedium);
-            {
-                newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
-                newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
-                newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
-                newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
-            }
+            newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);            
             ICargo<Component> simpleCargo = new SimpleCargo<Component>();
             IResource resource = new SimpleResource(1, "Encendedor", 0);
             IMovableMedium<Component> destinyOfResources = null; // The resouce has no fixed destination
             simpleCargo.addResources(resource, destinyOfResources);
-            newMedium.addCargo(simpleCargo);
+            ((WarehouseChest<Component>)newMedium).addCargo(simpleCargo);
             //More cargo
             simpleCargo = new SimpleCargo<Component>();
             resource = new SimpleResource(1, "Lavandina", 0);
             destinyOfResources = null; // The resouce has no fixed destination
             simpleCargo.addResources(resource, destinyOfResources);
             //----
-            newMedium.addCargo(simpleCargo);
-            //----
-            newMedium.OnMovableArrivedAlsoDo(medium => 
-            {
-                if (medium.GetMovablesOnMedium().Contains(player))
+            ((WarehouseChest<Component>)newMedium).addCargo(simpleCargo);            
+            stepOnActionableChestCamera = new StepOnActionableComp("StepOnMeChestCamera", null, newMedium, transporterAndWarehouseManager);
+            stepOnActionableChestCamera.SetWidh(0.9f);
+            stepOnActionableChestCamera.SetHeigh(0.9f);
+            stepOnActionableChestCamera.SetAutoAction(new AutoAction<Component>(x => {
+                if (x == player)
                 {
                     mainCamera.enabled = false;
                     chestCamera.enabled = true;
+                    stepOnActionableChestCamera.SwitchOn = true;
+                    stepOnActionableBeforeChestCamera.SwitchOn = false;
                 }
-            }
-            );
+            }));
+            //----
             chestCollision = new SimpleTransporterCollisionable<Component>("Obstaculo", null, newMedium, transporterAndWarehouseManager);
             chestCollision.SetWidh(0.6f);
             chestCollision.SetHeigh(0.25f);
             chestCollision.SetDeltaJ(0.25f);
-        }  else if ((Math.Abs(i) <= 1) && (Math.Abs(j) <= 1))
+        }  else if ( ((i == 1) && (j == 0)) || ((i == 0) && (j == 0)))
         {
-            if (movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j) == null)
-            {
-                IMovableMediumCollisionAware<Component> newMedium = new ActionCollisionableMediumAware<Component>("Street" + i + j, SimpleRoadComponent, i, j);
-                if ((i == 1) && (j == 0))
+            newMedium = new ActionCollisionableMediumAware<Component>("Street" + i + j, SimpleRoadComponent, i, j);
+            stepOnActionableBeforeChestCamera = new StepOnActionableComp("StepOnMeBeforeChestCamera", null, newMedium, transporterAndWarehouseManager);
+            stepOnActionableBeforeChestCamera.SetWidh(0.9f);
+            stepOnActionableBeforeChestCamera.SetHeigh(0.9f);
+            stepOnActionableBeforeChestCamera.SetAutoAction(new AutoAction<Component>(x => {
+                if (x == player)
                 {
-                    newMedium.OnMovableArrivedAlsoDo(medium =>
-                    {
-                        mainCamera.enabled = true; 
-                        chestCamera.enabled = false;
-                    });
+                    mainCamera.enabled = true;
+                    chestCamera.enabled = false;
+                    stepOnActionableBeforeChestCamera.SwitchOn = true;
+                    stepOnActionableChestCamera.SwitchOn = false;
                 }
-                if ( ((i == 0) && (j == -1)) || ((i == -1) && (j == -1)) )
-                {
-                    newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i+j, ActionableMediumWithDoor, i,j);
-                    IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
-                    SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
-                    pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
-                    ICollisionable<Component> paredDerecha = new SimpleTransporterCollisionable<Component>("Obstaculo1", null, pisoActionable, transporterAndWarehouseManager);
-                    paredDerecha.SetWidh(0.25f);
-                    paredDerecha.SetHeigh(0.1f); 
-                    //paredDerecha.SetNewIJ(i-0.25f, j+0.5f); //Don't use IJ since they're absolute, deltas are relatives!
-                    paredDerecha.SetDeltaI(-0.375f);
-                    ICollisionable<Component> paredIzq = new SimpleTransporterCollisionable<Component>("Obstaculo2", null, pisoActionable, transporterAndWarehouseManager);
-                    paredIzq.SetWidh(0.25f);
-                    paredIzq.SetHeigh(0.1f);
-                    paredIzq.SetDeltaI(+0.375f);
-                }
-                else if ((i == 0) && (j == 1))
-                {
-                    newMedium = new QuerentineFloor("Bed" + i + j, BedComponent, i, j);
-                    ICollisionable<Component> obstaculo = new SimpleTransporterCollisionable<Component>("ObstaculoCama1", null, newMedium, transporterAndWarehouseManager);
-                    obstaculo.SetWidh(0.5f);
-                    obstaculo.SetHeigh(0.8f);                    
-                }
-                movableMediums.Add(newMedium);
-                newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
-                newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
-                newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
-                newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
-            }
-        }        
-        return movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
+            }));
+        } else if ((i == 0) && (j == -1))
+        {
+            newMedium = new QuerentineFloor("ActionStreetCollisionableMediumAware" + i + j, ActionableMediumWithDoor, i, j);
+            IMovableMediumCollisionAware<Component> pisoActionable = (IMovableMediumCollisionAware<Component>)newMedium;
+            SimpleDoorComp realInstanceDoor = new SimpleDoorComp("Puerta", ActionableMediumWithDoor, pisoActionable, transporterAndWarehouseManager);
+            pisoActionable.addActionable((IActionable<Component>)realInstanceDoor);
+            ICollisionable<Component> paredDerecha = new SimpleTransporterCollisionable<Component>("Obstaculo1", null, pisoActionable, transporterAndWarehouseManager);
+            paredDerecha.SetWidh(0.25f);
+            paredDerecha.SetHeigh(0.1f);
+            //paredDerecha.SetNewIJ(i-0.25f, j+0.5f); //Don't use IJ since they're absolute, deltas are relatives!
+            paredDerecha.SetDeltaI(-0.375f);
+            ICollisionable<Component> paredIzq = new SimpleTransporterCollisionable<Component>("Obstaculo2", null, pisoActionable, transporterAndWarehouseManager);
+            paredIzq.SetWidh(0.25f);
+            paredIzq.SetHeigh(0.1f);
+            paredIzq.SetDeltaI(+0.375f);
+        }
+        else if ((i == 0) && (j == 1))
+        {
+            newMedium = new QuerentineFloor("Bed" + i + j, BedComponent, i, j);
+            ICollisionable<Component> obstaculo = new SimpleTransporterCollisionable<Component>("ObstaculoCama1", null, newMedium, transporterAndWarehouseManager);
+            obstaculo.SetWidh(0.5f);
+            obstaculo.SetHeigh(0.8f);
+        }  
+        if (newMedium == null)
+        {
+            return null;
+        }
+        movableMediums.Add(newMedium);
+        newMedium.SetMovableMediumAtNorth(getEntityFromTileCoor(i, j + 1));//Add North
+        newMedium.SetMovableMediumAtSouth(getEntityFromTileCoor(i, j - 1));
+        newMedium.SetMovableMediumAtWest(getEntityFromTileCoor(i - 1, j));
+        newMedium.SetMovableMediumAtEast(getEntityFromTileCoor(i + 1, j));
+        return newMedium;
     }
 
     public SinglePlayerComp GetPlayer()
