@@ -39,7 +39,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionStreet.cs" />
+    <Compile Include="Actions\AutoAction.cs" />
+    <Compile Include="Actions\StepOnActionable.cs" />
     <Compile Include="CollisionableMediumAware.cs" />
+    <Compile Include="Collision\SoftCollision.cs" />
     <Compile Include="Interface\IMovableMediumCollisionAware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleDoor.cs" />

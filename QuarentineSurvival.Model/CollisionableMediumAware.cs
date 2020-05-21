@@ -57,7 +57,7 @@ namespace QuarentineSurvival.Model
             {
                 QuarentineCollision<T> nextCollision = GetCollisionTime(simpleMovableAsCollisionable);
                 //Log("ActionCollisionableMediumAware.NextCollisionTime = " + nextCollisionTime);
-                if ((nextCollision.GetTimeOfCollision()> EPSILON) && (nextCollision.GetTimeOfCollision() <= timedelta))
+                if ((nextCollision.GetTimeOfCollision() > EPSILON) && (nextCollision.GetTimeOfCollision() <= timedelta))
                 {
                     //I need to reduce a little bit the collision time since otherwise it will be RIGHT next to the CAGE
                     float collisionTime = nextCollision.GetTimeOfCollision()-(EPSILON * 2);

@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\MapManangerBehaviour.cs" />
     <Compile Include="Assets\Scripts\MapObjects\QuerentineFloor.cs" />
     <Compile Include="Assets\Scripts\MapObjects\SimpleDoorComp.cs" />
+    <Compile Include="Assets\Scripts\MapObjects\StepOnActionableComp.cs" />
     <Compile Include="Assets\Scripts\Players\SinglePlayerComp.cs" />
     <Compile Include="Assets\Scripts\SimpleBehaviours\ComponentModelAware.cs" />
     <Compile Include="Assets\Scripts\SimpleBehaviours\VisibleInvisbleBehaviour.cs" />

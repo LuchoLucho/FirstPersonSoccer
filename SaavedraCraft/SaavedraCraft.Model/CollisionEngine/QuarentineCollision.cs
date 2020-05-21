@@ -22,7 +22,12 @@ namespace SaavedraCraft.Model.CollisionEngine
         public float GetTimeOfCollision()
         {
             return timeOfCollision;
-        }        
+        }
+
+        public List<IMovable<T>> ShowInvolveMovablesInCollision()
+        {
+            return involveInCollision;
+        }
     }
 
     public class HardCollision<T> : QuarentineCollision<T>
