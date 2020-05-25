@@ -15,6 +15,7 @@ namespace Assets.Scripts.Players
 {
     public class SinglePlayerComp : QurentinePlayerModel<Component>
     {
+
         public SinglePlayerComp(string aName, Component aComponent, IMovableMediumCollisionAware<Component> originMedium, ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager) : base(aName, aComponent, originMedium, transporterAndWarehouseManager)
         {
         }
@@ -46,6 +47,6 @@ namespace Assets.Scripts.Players
             base.OnColissionAt(movableDeltaI, movableDeltaJ, quarentineCollision);
             Log("OnColissionAt Pos Vel = " + this.GetVelocity() + this.ToString());
             Log("------------------------");
-        }
+        }        
     }
 }

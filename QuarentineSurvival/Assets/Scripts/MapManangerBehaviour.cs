@@ -52,6 +52,7 @@ public class MapManangerBehaviour : MonoBehaviour
         NewMovable(movablesInMap[0]);
         mainCamera.enabled = true;
         chestCamera.enabled = false;
+        mainCamera.transform.parent = GetRealInstancePlayer().transform; // Camera is child of PLAYER<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
     // Update is called once per frame
@@ -99,15 +100,28 @@ public class MapManangerBehaviour : MonoBehaviour
 
     public IMovableMediumCollisionAware<Component> getEntityFromTileCoor(float i, float j)
     {
+        if ((Mathf.Abs(i)>=MapFactoryBehaviour.MAX_TITLE_WIDTH/2) || (Mathf.Abs(j) >= MapFactoryBehaviour.MAX_TITLE_WIDTH / 2))
+        {
+            return null;
+        }
         IMovableMediumCollisionAware<Component> newMedium = movableMediums.Find(x => x.GetCoordI() == i && x.GetCoordJ() == j);
         if (newMedium!=null)
         {
             return newMedium;
         }
-        if ((i == 0) && (j == 0))
+        if (j<=-2)
         {
             newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
-        } else if ((i==2) && (j==0))
+        }
+        else if ((i == 0) && (j == 0))
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+        }
+        else if ((i ==1) && (j == 1))
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+        }
+        else if ((i==2) && (j==0))
         {
             newMedium = new WarehouseChest<Component>("Cofre" + i + j, ChestComponent, i, j, transporterAndWarehouseManager);            
             ICargo<Component> simpleCargo = new SimpleCargo<Component>();
@@ -174,9 +188,21 @@ public class MapManangerBehaviour : MonoBehaviour
         {
             newMedium = new QuerentineFloor("Bed" + i + j, BedComponent, i, j);
             ICollisionable<Component> obstaculo = new SimpleTransporterCollisionable<Component>("ObstaculoCama1", null, newMedium, transporterAndWarehouseManager);
-            obstaculo.SetWidh(0.5f);
+            obstaculo.SetWidh(0.8f);
             obstaculo.SetHeigh(0.8f);
-        }  
+        }
+        else if ((i == 0) && (j == -2))
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+        }
+        else if (j == -3)
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+        }
+        else if ((i == 0) && (j == -4))
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+        }
         if (newMedium == null)
         {
             return null;

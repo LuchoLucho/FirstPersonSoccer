@@ -1,0 +1,38 @@
+# Blender MTL File: 'x.blend'
+# Material Count: 3
+
+newmtl Material.001
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.204225 0.204225 0.204225
+Ke 0.160000 0.160000 0.160000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd colchonDif.png
+map_Bump ragNormal.jpg
+
+newmtl Material.001_baked01.jpg
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.204225 0.204225 0.204225
+Ke 0.160000 0.160000 0.160000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd bakeColchonHi.jpg
+map_Bump ragNormal.jpg
+
+newmtl Material.002
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd camaEstrutura.png
+map_Bump -bm 0.200000 ragNormal.jpg

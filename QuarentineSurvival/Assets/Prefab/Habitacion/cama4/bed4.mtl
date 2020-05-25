@@ -1,0 +1,26 @@
+# Blender MTL File: 'bed4.blend'
+# Material Count: 2
+
+newmtl ColchonBaked.Hi
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.077465 0.077465 0.077465
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd bakeColchonHi_Normal.jpg
+map_Bump -bm 0.400000 bakeColchonHi_Normal.jpg
+
+newmtl Material.002
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd C:\Users\lucho\Desktop\MyBlender\borrar\quad.png
+map_Bump -bm 0.400000 C:\\Users\\lucho\\Desktop\\MyBlender\\Bed_Cosas\\export3\\ragNormal.jpg

@@ -12,7 +12,7 @@ namespace Assets.Scripts
 {
     public class MapFactoryBehaviour : MonoBehaviour,IConstructionManagerObserver<Component>
     {
-        public const float MAX_TITLE_WIDTH = 6.0f;
+        public const float MAX_TITLE_WIDTH = 12.0f;
 
         private MapManangerBehaviour constructionManager;
         public Component Baldio;
@@ -77,6 +77,7 @@ namespace Assets.Scripts
             Component newChild = null;
             if (newChildConstruction == null)
             {
+                return; //NO VALDIO!!!
                 newChild = Instantiate(Baldio, realCoord, Quaternion.identity);
             }
             else
@@ -104,9 +105,13 @@ namespace Assets.Scripts
         }
 
         public static float[] turnIJCoordIntoRealVector3(float i, float j)
-        {
-            
+        {            
             return new[] { 15*i, -1, 15*j };
+        }
+
+        public static float[] turnRealIntoIJ(Vector3 realCoord)
+        {
+            return new[] { realCoord.x/15, realCoord.z/15};
         }
     }
 }
