@@ -40,7 +40,12 @@
   <ItemGroup>
     <Compile Include="ActionStreet.cs" />
     <Compile Include="Actions\AutoAction.cs" />
+    <Compile Include="Actions\CombinableActionableResource.cs" />
+    <Compile Include="Actions\CombinableIntoActionableResource.cs" />
+    <Compile Include="Actions\CombineAction.cs" />
     <Compile Include="Actions\StepOnActionable.cs" />
+    <Compile Include="Actions\TransformableActionableResource.cs" />
+    <Compile Include="Actions\TransformAction.cs" />
     <Compile Include="CollisionableMediumAware.cs" />
     <Compile Include="Collision\SoftCollision.cs" />
     <Compile Include="Interface\IMovableMediumCollisionAware.cs" />

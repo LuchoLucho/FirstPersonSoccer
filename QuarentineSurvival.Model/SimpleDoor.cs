@@ -68,7 +68,7 @@ namespace QuarentineSurvival.Model
             return !puerta.IsOpen();
         }
 
-        public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
+        public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable, object param = null)
         {
             puerta.SetOpen(true);
         }
@@ -81,7 +81,7 @@ namespace QuarentineSurvival.Model
         public IActionable<T> getSourceActionable()
         {
             return puerta;
-        }
+        }        
     }
 
     public class CerrarPuerta<T> : IAction<T>
@@ -96,9 +96,9 @@ namespace QuarentineSurvival.Model
         public bool canExecute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
         {
             return puerta.IsOpen();
-        }
+        }        
 
-        public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
+        public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable, object param = null)
         {
             puerta.SetOpen(false);
         }

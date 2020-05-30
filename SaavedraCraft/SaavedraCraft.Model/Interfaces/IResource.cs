@@ -15,4 +15,11 @@ namespace SaavedraCraft.Model.Interfaces
         void Add(int toAdd);
         void Subtract(int toSubtract);        
     }
+
+    public interface ICombinableResource : IResource
+    {
+        bool CanCombineWith(IResource other);
+        IResource CombineWith(IResource other);
+        void OnDestroyResource();
+    }
 }

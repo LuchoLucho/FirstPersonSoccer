@@ -48,7 +48,7 @@ namespace SaavedraCraft.Model.CollisionEngine
                 return true;
             }
 
-            public void execute(IActionExecutor<T2> executor, IHolder<T2> holder, IActionable<T2> impactedActionable)
+            public void execute(IActionExecutor<T2> executor, IHolder<T2> holder, IActionable<T2> impactedActionable, object param = null)
             {
                 ((ICollisionable<T2>)executor).SetVelocity(0);
             }

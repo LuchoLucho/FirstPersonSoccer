@@ -27,7 +27,7 @@ namespace SaavedraCraft.Model.Interface
         void NotifyLeaveEnvironment(IEnvironment<T> newEnvironment);
     }
 
-    public interface IActionable<T>: IMovable<T>
+    public interface IActionable<T>
     {
         List<IAction<T>> ShowAvailableActions();
         void NotifyRefreshActions(IHolder<T> receiber);//Cuando abro una puerta, la accion abrir desaparece y aparece la accion cerrar.
@@ -36,7 +36,7 @@ namespace SaavedraCraft.Model.Interface
     public interface IAction<T>
     {
         bool canExecute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable);
-        void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable);
+        void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable, object param = null);
         IActionable<T> getSourceActionable();
     }
 }

@@ -67,6 +67,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SueloConChest Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8540198779492616542, guid: 2f9dcd4b51c8008419ea82339388fcf6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bc84a9ca3af04be4c8cf095cbb4feeea, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f9dcd4b51c8008419ea82339388fcf6, type: 3}
 --- !u!4 &4251071459937115280 stripped

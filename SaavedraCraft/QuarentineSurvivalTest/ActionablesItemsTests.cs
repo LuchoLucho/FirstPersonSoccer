@@ -7,6 +7,8 @@ using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model.CollisionEngine;
 using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Interfaces.Transportation;
+using SaavedraCraft.Model.Resources;
 using SaavedraCraft.Model.Transportation;
 
 namespace QuarentineSurvivalTest
@@ -131,5 +133,82 @@ namespace QuarentineSurvivalTest
             float thridI = player.GetCoordI();
             Assert.IsTrue(thridI > secondI);
         }
+
+        [TestMethod]
+        public void ExecutorPickupActioanbleResourcesTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            IResource resource = new ActionableResource<object>(1, "Linterna", new EncenderLinternaAction<object>() , 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            player.LoadCargo(simpleCargo);
+            Assert.AreEqual(1, player.ShowAvailableActions().Count);
+        }
+
+        [TestMethod]
+        public void ExecutorDropActioanbleResourcesTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            IResource resource = new ActionableResource<object>(1, "Linterna", new EncenderLinternaAction<object>(), 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            player.LoadCargo(simpleCargo);
+            Assert.AreEqual(1, player.ShowAvailableActions().Count);
+            player.UnloadCargo(simpleCargo);
+            Assert.AreEqual(0, player.ShowAvailableActions().Count);
+        }
+
+        [TestMethod]
+        public void ExecutorTransformActionableResourceTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            IResource resource = new TransformableActionableResource<object>(1, "ToTransform", 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            player.LoadCargo(simpleCargo);            
+            IActionable<object> currentActionable = player.ShowAllActionables()[0];
+            Assert.AreEqual("ToTransform", ((SimpleResource)currentActionable).GetResourceName());
+            currentActionable.ShowAvailableActions()[0].execute(player, player, currentActionable);
+            Assert.AreEqual(1, player.ShowAvailableActions().Count);
+            currentActionable = player.ShowAllActionables()[0];
+            Assert.AreEqual("NewTransformed!", ((SimpleResource)currentActionable).GetResourceName());
+        }
+
+        [TestMethod]
+        public void ExecutorCombineResourceTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            IResource resource = new CombinableIntoActionableResource<object>(1, "Sock", "Scissors", "SocketMask", new WearResourceAction<object>(), 0);
+            IResource otherResourceToCombine = new CombinableIntoActionableResource<object>(1, "Scissors", "Sock", "SocketMask", new WearResourceAction<object>(), 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            player.LoadCargo(simpleCargo);
+            simpleCargo = new SimpleCargo<object>();
+            simpleCargo.addResources(otherResourceToCombine, destinyOfResources);
+            player.LoadCargo(simpleCargo);
+            int cargoCount = player.showCargo().Count;
+            IActionable<object> currentActionable = player.ShowAllActionables()[0];
+            Assert.AreEqual("Sock", ((SimpleResource)currentActionable).GetResourceName());
+            Assert.AreEqual(2, cargoCount);
+            currentActionable.ShowAvailableActions()[0].execute(player, player, currentActionable, otherResourceToCombine);
+            cargoCount = player.showCargo().Count;
+            Assert.AreEqual(1, player.ShowAvailableActions().Count);
+            currentActionable = player.ShowAllActionables()[0];
+            Assert.AreEqual("SocketMask", ((SimpleResource)currentActionable).GetResourceName());
+            Assert.AreEqual(1, cargoCount);
+        }    
+
     }
 }

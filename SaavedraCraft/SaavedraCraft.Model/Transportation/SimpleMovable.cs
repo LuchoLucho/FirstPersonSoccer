@@ -25,6 +25,11 @@ namespace SaavedraCraft.Model.Transportation
             throw new NotImplementedException();
         }
 
+        public IResource ShowResource()
+        {
+            return resource;
+        }
+
         public override string ToString()
         {
             return resource.ToString();
@@ -50,7 +55,7 @@ namespace SaavedraCraft.Model.Transportation
             return true;
         }
 
-        public void LoadCargo(ICargo<T> singleCargo)
+        public virtual void LoadCargo(ICargo<T> singleCargo)
         {
             allCargo.Add(singleCargo);
         }
@@ -80,7 +85,7 @@ namespace SaavedraCraft.Model.Transportation
             return allCargo;
         }
 
-        public ICargo<T> UnloadCargo(ICargo<T> cargoToRemove)
+        public virtual ICargo<T> UnloadCargo(ICargo<T> cargoToRemove)
         {
             allCargo.Remove(cargoToRemove);
             return cargoToRemove;

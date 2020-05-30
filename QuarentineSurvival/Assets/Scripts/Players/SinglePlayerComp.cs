@@ -2,6 +2,7 @@
 using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model;
 using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using System;
@@ -47,6 +48,17 @@ namespace Assets.Scripts.Players
             base.OnColissionAt(movableDeltaI, movableDeltaJ, quarentineCollision);
             Log("OnColissionAt Pos Vel = " + this.GetVelocity() + this.ToString());
             Log("------------------------");
-        }        
+        }
+
+        public override void LoadCargo(ICargo<Component> singleCargo)
+        {
+            base.LoadCargo(singleCargo);           
+        }
+
+        public override void addActionable(IActionable<Component> actionableToAdd)
+        {
+            base.addActionable(actionableToAdd);
+        }
+
     }
 }

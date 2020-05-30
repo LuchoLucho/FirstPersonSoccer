@@ -23,17 +23,17 @@ namespace QuarentineSurvival.Model.Actions
         public bool canExecute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
         {
             return true;
-        }
-
-        public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
-        {
-            actionToExecute(executor);
-            wasExecuted = true;
-        }
+        }        
 
         public IActionable<T> getSourceActionable()
         {
             throw new NotImplementedException();
+        }
+
+        void IAction<T>.execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable, object param)
+        {
+            actionToExecute(executor);
+            wasExecuted = true;
         }
     }
 }

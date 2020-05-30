@@ -21,6 +21,7 @@ public class MapManangerBehaviour : MonoBehaviour
     public Component ChestComponent;
     public Component ActionableMediumWithDoor;
     public Component BedComponent;
+    public Component BedroomFloorComponent;
 
     private List<IMovableMediumCollisionAware<Component>> movableMediums = new List<IMovableMediumCollisionAware<Component>>();
 
@@ -115,11 +116,11 @@ public class MapManangerBehaviour : MonoBehaviour
         }
         else if ((i == 0) && (j == 0))
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
         }
         else if ((i ==1) && (j == 1))
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
         }
         else if ((i==2) && (j==0))
         {
@@ -134,8 +135,17 @@ public class MapManangerBehaviour : MonoBehaviour
             resource = new SimpleResource(1, "Lavandina", 0);
             destinyOfResources = null; // The resouce has no fixed destination
             simpleCargo.addResources(resource, destinyOfResources);
-            //----
-            ((WarehouseChest<Component>)newMedium).addCargo(simpleCargo);            
+            ((WarehouseChest<Component>)newMedium).addCargo(simpleCargo);
+            //More cargo (Combinable this time)
+            IResource resourceToCombine = new CombinableIntoActionableResource<Component>(1, "Sock", "Scissors", "SocketMask", new WearResourceAction<Component>(), 0);
+            IResource otherResourceToCombine = new CombinableIntoActionableResource<Component>(1, "Scissors", "Sock", "SocketMask", new WearResourceAction<Component>(), 0);
+            simpleCargo = new SimpleCargo<Component>();
+            simpleCargo.addResources(resourceToCombine, destinyOfResources);
+            ((WarehouseChest<Component>)newMedium).addCargo(simpleCargo);
+            simpleCargo = new SimpleCargo<Component>();
+            simpleCargo.addResources(otherResourceToCombine, destinyOfResources);
+            ((WarehouseChest<Component>)newMedium).addCargo(simpleCargo);
+            //----                    
             stepOnActionableChestCamera = new StepOnActionableComp("StepOnMeChestCamera", null, newMedium, transporterAndWarehouseManager);
             stepOnActionableChestCamera.SetWidh(0.9f);
             stepOnActionableChestCamera.SetHeigh(0.9f);
@@ -155,7 +165,7 @@ public class MapManangerBehaviour : MonoBehaviour
             chestCollision.SetDeltaJ(0.25f);
         }  else if ( ((i == 1) && (j == 0)) || ((i == 0) && (j == 0)))
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("Street" + i + j, SimpleRoadComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("Street" + i + j, BedroomFloorComponent, i, j);
             stepOnActionableBeforeChestCamera = new StepOnActionableComp("StepOnMeBeforeChestCamera", null, newMedium, transporterAndWarehouseManager);
             stepOnActionableBeforeChestCamera.SetWidh(0.9f);
             stepOnActionableBeforeChestCamera.SetHeigh(0.9f);
@@ -193,15 +203,15 @@ public class MapManangerBehaviour : MonoBehaviour
         }
         else if ((i == 0) && (j == -2))
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
         }
         else if (j == -3)
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
         }
         else if ((i == 0) && (j == -4))
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
         }
         if (newMedium == null)
         {

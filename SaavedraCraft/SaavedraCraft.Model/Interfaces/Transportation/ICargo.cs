@@ -8,5 +8,6 @@ namespace SaavedraCraft.Model.Interfaces.Transportation
     {
         void addResources(IResource newCargo, IMovableMedium<T> destination);
         List<IResource> removeResources();
+        IResource ShowResource();
     }
 }

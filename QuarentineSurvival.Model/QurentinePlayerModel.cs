@@ -19,7 +19,7 @@ namespace QuarentineSurvival.Model
             
         }
 
-        public void addActionable(IActionable<T> actionableToAdd)
+        public virtual void addActionable(IActionable<T> actionableToAdd)
         {
             allActionables.Add(actionableToAdd);
         }             
@@ -62,6 +62,28 @@ namespace QuarentineSurvival.Model
             this.SetDeltaI(movableDeltaI);
             this.SetDeltaJ(movableDeltaJ);
             quarentineCollision.GetActionOnBodyFromCollision(this).execute(this, null, null);
+        }
+
+        public override void LoadCargo(ICargo<T> singleCargo)
+        {
+            base.LoadCargo(singleCargo);
+            IResource singleResource = singleCargo.ShowResource();
+            IActionable<T> actionableResource = singleResource as IActionable<T>;
+            if (actionableResource != null)
+            {
+                addActionable(actionableResource);
+            }
+        }
+
+        public override ICargo<T> UnloadCargo(ICargo<T> cargoToRemove)
+        {
+            IResource singleResource = cargoToRemove.ShowResource();
+            IActionable<T> actionableResource = singleResource as IActionable<T>;
+            if (actionableResource != null)
+            {
+                removeActionable(actionableResource);
+            }
+            return base.UnloadCargo(cargoToRemove);
         }
     }
 }
