@@ -22,6 +22,7 @@ public class MapManangerBehaviour : MonoBehaviour
     public Component ActionableMediumWithDoor;
     public Component BedComponent;
     public Component BedroomFloorComponent;
+    public Component CoinComponent;
 
     private List<IMovableMediumCollisionAware<Component>> movableMediums = new List<IMovableMediumCollisionAware<Component>>();
 
@@ -110,7 +111,21 @@ public class MapManangerBehaviour : MonoBehaviour
         {
             return newMedium;
         }
-        if (j<=-2)
+        if (i == 0 && j == -3)
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, CoinComponent, i, j);
+            StepOnActionable<Component> coin = new StepOnActionable<Component>("Coin1", CoinComponent, newMedium, transporterAndWarehouseManager);
+            coin.SetAutoAction(new AutoAction<Component>(x => {
+                IActionExecutor<Component> executor = x;
+                ICargo<Component> simpleCargo = new SimpleCargo<Component>();
+                IResource resource = new SimpleResource(1, "Coin", 0);
+                simpleCargo.addResources(resource, null);
+                QurentinePlayerModel<Component> playerToLoadNewCargoFromCollision = executor as QurentinePlayerModel<Component>;
+                playerToLoadNewCargoFromCollision.LoadCargo(simpleCargo);
+                coin.WasAlreadyTriggered = true;
+            }));
+        }
+        else if (j<=-2)
         {
             newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
         }
@@ -154,8 +169,8 @@ public class MapManangerBehaviour : MonoBehaviour
                 {
                     mainCamera.enabled = false;
                     chestCamera.enabled = true;
-                    stepOnActionableChestCamera.SwitchOn = true;
-                    stepOnActionableBeforeChestCamera.SwitchOn = false;
+                    stepOnActionableChestCamera.WasAlreadyTriggered = true;
+                    stepOnActionableBeforeChestCamera.WasAlreadyTriggered = false;
                 }
             }));
             //----
@@ -174,8 +189,8 @@ public class MapManangerBehaviour : MonoBehaviour
                 {
                     mainCamera.enabled = true;
                     chestCamera.enabled = false;
-                    stepOnActionableBeforeChestCamera.SwitchOn = true;
-                    stepOnActionableChestCamera.SwitchOn = false;
+                    stepOnActionableBeforeChestCamera.WasAlreadyTriggered = true;
+                    stepOnActionableChestCamera.WasAlreadyTriggered = false;
                 }
             }));
         } else if ((i == 0) && (j == -1))

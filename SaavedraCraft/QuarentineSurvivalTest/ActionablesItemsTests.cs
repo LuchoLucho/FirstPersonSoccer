@@ -93,7 +93,7 @@ namespace QuarentineSurvivalTest
             stepOnActionable.SetAutoAction(new AutoAction<object>(x => 
             {
                 wasTheActionInsideTheActionExecuted++;
-                stepOnActionable.SwitchOn = true;
+                stepOnActionable.WasAlreadyTriggered = true;
             }));
             QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
             player.SetDirectionI(1.0f);
@@ -118,7 +118,7 @@ namespace QuarentineSurvivalTest
             stepOnActionable.SetAutoAction(new AutoAction<object>(x =>
             {
                 wasTheActionInsideTheActionExecuted++;
-                stepOnActionable.SwitchOn = true;
+                stepOnActionable.WasAlreadyTriggered = true;
             }));
             QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
             player.SetNewIJ(0.2491f, 0.4998327f);
@@ -208,7 +208,32 @@ namespace QuarentineSurvivalTest
             currentActionable = player.ShowAllActionables()[0];
             Assert.AreEqual("SocketMask", ((SimpleResource)currentActionable).GetResourceName());
             Assert.AreEqual(1, cargoCount);
-        }    
+        }
+
+
+        [TestMethod]
+        public void StepOnPickeableItemsTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            StepOnActionable<object> stepOnActionable = new StepOnActionable<object>("StepOnMe", null, piso, transporterAndWarehouseManager);
+            stepOnActionable.SetDeltaI(0.3f);
+            stepOnActionable.SetAutoAction(new AutoAction<object>(x => {
+                IActionExecutor<object> executor = x;
+                ICargo<object> simpleCargo = new SimpleCargo<object>();
+                IResource resource = new SimpleResource(1, "Coin", 0);
+                simpleCargo.addResources(resource,null);
+                QurentinePlayerModel<object> playerToLoadNewCargoFromCollision = executor as QurentinePlayerModel<object>;
+                playerToLoadNewCargoFromCollision.LoadCargo(simpleCargo);
+            }));
+            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
+            player.SetDirectionI(1.0f);
+            player.SetDirectionJ(0.0f);
+            player.SetVelocity(1.0f);
+            Assert.AreEqual(0,player.showCargo().Count);
+            player.TimeTick(0.5f);
+            Assert.AreEqual(1, player.showCargo().Count);
+        }
 
     }
 }

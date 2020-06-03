@@ -781,6 +781,8 @@ MonoBehaviour:
     type: 3}
   BedroomFloorComponent: {fileID: 5255670805675254505, guid: 35185eb9465536042bf9aa0544b297ed,
     type: 3}
+  CoinComponent: {fileID: 7623217396045995193, guid: d60fa7f7441a3e74ba2785224994ec27,
+    type: 3}
   mainCamera: {fileID: 963194227}
   chestCamera: {fileID: 1505287633}
 --- !u!4 &2061871525

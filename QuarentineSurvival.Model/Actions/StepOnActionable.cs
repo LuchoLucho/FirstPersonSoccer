@@ -12,18 +12,18 @@ namespace QuarentineSurvival.Model.Actions
     {
         private AutoAction<T> action;
 
-        private bool switchOn;
-        public bool SwitchOn
+        private bool wasAlreadyTriggered;
+        public bool WasAlreadyTriggered
         {
             get
             {
-                Log("StepOnActionable.SwitchOn GET =" + switchOn);
-                return switchOn;
+                Log("StepOnActionable.WasAlreadTriggered GET =" + wasAlreadyTriggered);
+                return wasAlreadyTriggered;
             }
             set
             {                
-                switchOn = value;
-                Log("StepOnActionable.SwitchOn SET =" + switchOn);
+                wasAlreadyTriggered = value;
+                Log("StepOnActionable.WasAlreadTriggered SET =" + wasAlreadyTriggered);
             }
         }
 
@@ -53,7 +53,7 @@ namespace QuarentineSurvival.Model.Actions
 
         public override QuarentineCollision<T> GetCollision(ICollisionable<T> other)
         {
-            if (SwitchOn)
+            if (WasAlreadyTriggered)
             {
                 QuarentineCollision<T> nullCollision = new HardCollision<T>(new List<IMovable<T>> { this, other }, float.MaxValue);
                 return nullCollision;
