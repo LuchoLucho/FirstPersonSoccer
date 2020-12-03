@@ -38,6 +38,8 @@ public class MapManangerBehaviour : MonoBehaviour
     public Camera mainCamera;
     public Camera chestCamera;
 
+    public bool shouldCamaraFollowPlayer = true;
+
     private StepOnActionable<Component> stepOnActionableChestCamera;
     private StepOnActionable<Component> stepOnActionableBeforeChestCamera;
 
@@ -54,7 +56,10 @@ public class MapManangerBehaviour : MonoBehaviour
         NewMovable(movablesInMap[0]);
         mainCamera.enabled = true;
         chestCamera.enabled = false;
-        mainCamera.transform.parent = GetRealInstancePlayer().transform; // Camera is child of PLAYER<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (shouldCamaraFollowPlayer)
+        {
+            mainCamera.transform.parent = GetRealInstancePlayer().transform; // Camera is child of PLAYER<<<<<<<<<<<<<<<<<<<<<<<<<<
+        }
     }
 
     // Update is called once per frame
