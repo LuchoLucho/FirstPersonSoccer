@@ -14,7 +14,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
 {
     public const int TOTAL_ANIMATION_TIME = 2;
     public const int CHEST_ITEMS_INTERFACE = 2;
-    public const float PLAYER_VELOCITY = 0.45f;
+    public const float PLAYER_VELOCITY = 0.35f;
 
     public Texture chestTexture;
 
@@ -146,6 +146,25 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
         float angle = 180.0f * Mathf.Atan2(vj, vi) / Mathf.PI;
         //angle += 180.0f;
         //realInstancePlayer.transform.Rotate(0, angle, 0);
+        if ((vi>0)&&(vj<0)) 
+        {
+            angle = (-angle)+90;
+        } else if ((vi<0)&&(vj>0))
+        {
+            //angle += 90;
+            angle = 90 + 270 - (angle - 90);
+        } else if ((vi<0) && (vj<0))
+        {
+            angle = 180 + ((-angle) - 90);
+            //angle = 180;
+        }
+        else
+        {
+            angle = 90 - angle;
+        }
+        //angle = 90;
+        realInstancePlayer.transform.eulerAngles = new Vector3(0, angle, 0);
+        Debug.Log("PlayerControl Angle: ("+vi+", "+vj+")" + angle);
     }
 
     
