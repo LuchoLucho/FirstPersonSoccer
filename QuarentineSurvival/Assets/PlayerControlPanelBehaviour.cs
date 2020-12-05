@@ -25,7 +25,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
     private Component realInstancePlayer;
 
     private float animationTime = 0;
-    public Camera currentCamera;
+    private Camera currentCamera { get { return GetComponent<CamaraController>().GetCurrentCamera(); } }
     public Component marker;
     private Component currentMarker;
 

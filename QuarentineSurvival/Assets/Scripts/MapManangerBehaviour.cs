@@ -35,13 +35,10 @@ public class MapManangerBehaviour : MonoBehaviour
     private IConstructionManagerObserver<Component> singleObserver;
     private ITransporterAndWarehouseManager<Component> transporterAndWarehouseManager;
 
-    public Camera mainCamera;
-    public Camera chestCamera;
-
-    public bool shouldCamaraFollowPlayer = true;
-
     private StepOnActionable<Component> stepOnActionableChestCamera;
     private StepOnActionable<Component> stepOnActionableBeforeChestCamera;
+
+    private CamaraController camaraController;
 
     // Start is called before the first frame update
     void Start()
@@ -54,12 +51,6 @@ public class MapManangerBehaviour : MonoBehaviour
         player.SetVelocity(0.5f);
         movablesInMap.Add(player);
         NewMovable(movablesInMap[0]);
-        mainCamera.enabled = true;
-        chestCamera.enabled = false;
-        if (shouldCamaraFollowPlayer)
-        {
-            mainCamera.transform.parent = GetRealInstancePlayer().transform; // Camera is child of PLAYER<<<<<<<<<<<<<<<<<<<<<<<<<<
-        }
     }
 
     // Update is called once per frame
@@ -172,8 +163,7 @@ public class MapManangerBehaviour : MonoBehaviour
             stepOnActionableChestCamera.SetAutoAction(new AutoAction<Component>(x => {
                 if (x == player)
                 {
-                    mainCamera.enabled = false;
-                    chestCamera.enabled = true;
+                    GetComponent<CamaraController>().SwitchToChestCamera();
                     stepOnActionableChestCamera.WasAlreadyTriggered = true;
                     stepOnActionableBeforeChestCamera.WasAlreadyTriggered = false;
                 }
@@ -192,8 +182,7 @@ public class MapManangerBehaviour : MonoBehaviour
             stepOnActionableBeforeChestCamera.SetAutoAction(new AutoAction<Component>(x => {
                 if (x == player)
                 {
-                    mainCamera.enabled = true;
-                    chestCamera.enabled = false;
+                    this.GetComponent<CamaraController>().SwitchToMainCamera();
                     stepOnActionableBeforeChestCamera.WasAlreadyTriggered = true;
                     stepOnActionableChestCamera.WasAlreadyTriggered = false;
                 }

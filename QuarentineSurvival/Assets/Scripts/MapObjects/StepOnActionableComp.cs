@@ -24,7 +24,7 @@ namespace Assets.Scripts.MapObjects
 
         public override void Log(string message)
         {
-            Debug.Log(message);
+            //Debug.Log(message);
         }
     }
 }
