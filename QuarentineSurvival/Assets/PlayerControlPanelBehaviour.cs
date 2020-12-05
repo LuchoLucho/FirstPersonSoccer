@@ -14,7 +14,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
 {
     public const int TOTAL_ANIMATION_TIME = 2;
     public const int CHEST_ITEMS_INTERFACE = 2;
-    public const float PLAYER_VELOCITY = 0.35f;
+    public const float PLAYER_VELOCITY = 0.45f;
 
     public Texture chestTexture;
 
@@ -103,25 +103,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
             {
                 player.SetVelocity(0.0f);
             }
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            //Debug.Log(Screen.currentResolution);
-            //Debug.Log("mouseDown = " + Input.mousePosition.x/ Screen.currentResolution.width + " " + Input.mousePosition.y/ Screen.currentResolution.height);
-            Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
-            Vector3 p0 = ray.GetPoint(0);
-            Vector3 v = ray.direction;            
-            float lambda = -p0.y / v.y;
-            Vector3 rayHittingFloor = new Vector3(p0.x + lambda * v.x, p0.y + lambda * v.y, p0.z + lambda * v.z);
-            Debug.Log("Ray origin " + p0 + " Direction: " + v + " Lambda = " +  lambda + " rayHittingFloor = " + rayHittingFloor);
-            if (currentMarker != null)
-            {
-                Destroy(currentMarker.gameObject);                
-            }
-            currentMarker = Instantiate(marker, rayHittingFloor, Quaternion.identity);
-            GoToRealUnityCoord(rayHittingFloor);
-        }
+        }        
     }
 
     public void GoToRealUnityCoord(Vector3 rayHittingFloor)
@@ -164,7 +146,7 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
         }
         //angle = 90;
         realInstancePlayer.transform.eulerAngles = new Vector3(0, angle, 0);
-        Debug.Log("PlayerControl Angle: ("+vi+", "+vj+")" + angle);
+        //Debug.Log("PlayerControl Angle: ("+vi+", "+vj+")" + angle);
     }
 
     
@@ -254,48 +236,55 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
                 isChestOpen = false;
             }
             return; // <<<<<<<<<<<<<<<<<<<<<<<<< IF THE CHEST IS OPEN, JUST SHOW THAT!
-        }        
-        if (GUI.Button(new Rect(20, 30, 150, 45), "Up"))
-        {
+        }
+        List<Rect> allControllsRect = new List<Rect>();
+        allControllsRect.Add(new Rect(20, 30, 150, 45));
+        if (GUI.Button(new Rect(20, 30, 150, 45), new GUIContent("Up","Up")))
+        {            
             newPlayerDirection = 90;
             player.SetDirectionI(0);
             player.SetDirectionJ(+1);
             player.SetVelocity(PLAYER_VELOCITY);
             animationTime = TOTAL_ANIMATION_TIME;
         }
+        allControllsRect.Add(new Rect(20, 30 + 50, 150, 45));
         if (GUI.Button(new Rect(20, 30 + 50, 150, 45), "Down"))
-        {
+        {            
             newPlayerDirection = 270;
             player.SetDirectionI(0);
             player.SetDirectionJ(-1);
             player.SetVelocity(PLAYER_VELOCITY);
             animationTime = TOTAL_ANIMATION_TIME;
         }
+        allControllsRect.Add(new Rect(20, 30 + 2 * 50, 150, 45));
         if (GUI.Button(new Rect(20, 30 + 2 * 50, 150, 45), "Right"))
-        {
+        {            
             newPlayerDirection = 360;
             player.SetDirectionI(1);
             player.SetDirectionJ(0);
             player.SetVelocity(PLAYER_VELOCITY);
             animationTime = TOTAL_ANIMATION_TIME;
         }
+        allControllsRect.Add(new Rect(20, 30 + 3 * 50, 150, 45));
         if (GUI.Button(new Rect(20, 30 + 3 * 50, 150, 45), "Left"))
-        {
+        {            
             newPlayerDirection = 180;
             player.SetDirectionI(-1);
             player.SetDirectionJ(0);
             player.SetVelocity(PLAYER_VELOCITY);
             animationTime = TOTAL_ANIMATION_TIME;
         }
+        allControllsRect.Add(new Rect(20, 30 + 4 * 50, 150, 45));
         if (isChestAvailableToOpen)
         {
             if (GUI.Button(new Rect(20, 30 + 4 * 50, 150, 45), "Open"))
-            {
+            {                
                 isChestOpen = true;
             }
         }
+        allControllsRect.Add(new Rect(200, 30, 150, 45));
         if (GUI.Button(new Rect(200, 30, 150, 45), "Inventory"))
-        {
+        {            
             inventoryOpen = !inventoryOpen;
         }
         if (player.ShowAvailableActions().Count > 0)
@@ -303,8 +292,9 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
             int j = 0;
             foreach (IAction<Component> currentAction in player.ShowAvailableActions())
             {
+                allControllsRect.Add(new Rect(200, 30 + j * 50 + 50, 150, 45));
                 if (GUI.Button(new Rect(200, 30 + j*50 + 50, 150, 45), currentAction.ToString()))
-                {
+                {                    
                     Debug.Log("Action! Actionable source=" + currentAction.getSourceActionable());
                     currentAction.execute(player, null, null);
                 }
@@ -317,7 +307,45 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
             //Debug.Log("Rotation : " + rotation + " CurrentR = " + currentPlayerDirection + " NewPlayerDir = " + newPlayerDirection);
             realInstancePlayer.transform.Rotate(0, rotation, 0);
             currentPlayerDirection = newPlayerDirection;
-        }        
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            //Debug.Log("GUI.tooltip = " + GUI.tooltip);
+            //Debug.Log(Screen.currentResolution);
+            //Debug.Log("mouseDown = " + Input.mousePosition.x  + " " + ( Screen.height - Input.mousePosition.y) );
+            Vector2 pointOfMouseClick = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            Debug.Log("pointOfMouseClick = " + pointOfMouseClick);
+            bool isTheMouseInsideAnyControll = false;
+            Debug.Log("allControllsRect size = " + allControllsRect.Count);
+            allControllsRect.ForEach(x => {
+                if (x.Contains(pointOfMouseClick))
+                {
+                    isTheMouseInsideAnyControll = true;
+                    Debug.Log("INSIDE!!! " + x.ToString());
+                }
+                else
+                {
+                    Debug.Log("Not inside = " + x.ToString());
+                }
+            });
+            if (!isTheMouseInsideAnyControll)
+            {
+                Debug.Log("mouseDown = " + Input.mousePosition.x / Screen.currentResolution.width + " " + Input.mousePosition.y / Screen.currentResolution.height);
+                Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
+                Vector3 p0 = ray.GetPoint(0);
+                Vector3 v = ray.direction;
+                float lambda = -p0.y / v.y;
+                Vector3 rayHittingFloor = new Vector3(p0.x + lambda * v.x, p0.y + lambda * v.y, p0.z + lambda * v.z);
+                //Debug.Log("Ray origin " + p0 + " Direction: " + v + " Lambda = " + lambda + " rayHittingFloor = " + rayHittingFloor);
+                if (currentMarker != null)
+                {
+                    Destroy(currentMarker.gameObject);
+                }
+                currentMarker = Instantiate(marker, rayHittingFloor, Quaternion.identity);
+                GoToRealUnityCoord(rayHittingFloor);
+            }
+        }
+        
     }
 
 }
