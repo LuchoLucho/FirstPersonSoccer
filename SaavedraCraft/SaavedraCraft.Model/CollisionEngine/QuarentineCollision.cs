@@ -39,24 +39,24 @@ namespace SaavedraCraft.Model.CollisionEngine
         public override IAction<T> GetActionOnBodyFromCollision(IMovable<T> body)
         {
             return new FullStopAction<T>();
+        }        
+    }
+
+    public class FullStopAction<T2> : IAction<T2>
+    {
+        public bool canExecute(IActionExecutor<T2> executor, IHolder<T2> holder, IActionable<T2> impactedActionable)
+        {
+            return true;
         }
 
-        public class FullStopAction<T2> : IAction<T2>
+        public virtual void execute(IActionExecutor<T2> executor, IHolder<T2> holder, IActionable<T2> impactedActionable, object param = null)
         {
-            public bool canExecute(IActionExecutor<T2> executor, IHolder<T2> holder, IActionable<T2> impactedActionable)
-            {
-                return true;
-            }
+            ((ICollisionable<T2>)executor).SetVelocity(0);
+        }
 
-            public void execute(IActionExecutor<T2> executor, IHolder<T2> holder, IActionable<T2> impactedActionable, object param = null)
-            {
-                ((ICollisionable<T2>)executor).SetVelocity(0);
-            }
-
-            public IActionable<T2> getSourceActionable()
-            {
-                throw new NotImplementedException();
-            }
+        public IActionable<T2> getSourceActionable()
+        {
+            throw new NotImplementedException();
         }
     }
 }

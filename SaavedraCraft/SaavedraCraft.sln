@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.106
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{00AA0C37-724D-43F4-9B0C-E5CD573FF579}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaavedraCraft.Model", "SaavedraCraft.Model\SaavedraCraft.Model.csproj", "{E44ADCEC-0365-4270-A368-E7B4951B2ED1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaavedraCraft.Tests", "SaavedraCraft.Tests\SaavedraCraft.Tests.csproj", "{1851D8EF-D706-4918-967A-29CD70C2260E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuarentineSurvivalTest", "QuarentineSurvivalTest\QuarentineSurvivalTest.csproj", "{30B2DBF8-CC44-4B5B-A208-032B6565DBDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuarentineSurvival.Model", "..\QuarentineSurvival.Model\QuarentineSurvival.Model.csproj", "{9D411551-9144-4441-865C-C74D029777CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{00AA0C37-724D-43F4-9B0C-E5CD573FF579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00AA0C37-724D-43F4-9B0C-E5CD573FF579}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00AA0C37-724D-43F4-9B0C-E5CD573FF579}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E44ADCEC-0365-4270-A368-E7B4951B2ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E44ADCEC-0365-4270-A368-E7B4951B2ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E44ADCEC-0365-4270-A368-E7B4951B2ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +29,10 @@ Global
 		{30B2DBF8-CC44-4B5B-A208-032B6565DBDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30B2DBF8-CC44-4B5B-A208-032B6565DBDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30B2DBF8-CC44-4B5B-A208-032B6565DBDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D411551-9144-4441-865C-C74D029777CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D411551-9144-4441-865C-C74D029777CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D411551-9144-4441-865C-C74D029777CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D411551-9144-4441-865C-C74D029777CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -57,9 +57,17 @@ namespace QuarentineSurvival.Model
                 Vertex2d<T> currentVertex = movableCol.ShowCorners()[i];
                 edgesThatMayCollide.ForEach(e => collissionTime.Add(GetCollisionTimeBetweenEdgeAndPoint(e, currentVertex)));
             }
-            //Log("GetCollisionBetweenMovableAndFix----END");
             collissionTime.Sort();
-            //Log("GetCollisionBetweenMovableAndFix : " + collissionTime[0]);
+            QuarentineCollision<T> customCollision = movableCol.GetCustomCollision(new List<IMovable<T>> { fixedCol }, collissionTime[0]);
+            if (customCollision != null)
+            {
+                return customCollision;
+            }
+            customCollision = fixedCol.GetCustomCollision(new List<IMovable<T>> { movableCol }, collissionTime[0]);
+            if (customCollision != null)
+            {
+                return customCollision;
+            }
             return new HardCollision<T>(new List<IMovable<T>> { movableCol, fixedCol }, collissionTime[0]);
         }
 
@@ -157,6 +165,11 @@ namespace QuarentineSurvival.Model
             }
             ret += ") Width = " + this.GetWidh() + " Heigh = " + this.GetHeigh();
             return ret;
+        }
+
+        public virtual QuarentineCollision<T> GetCustomCollision(List<IMovable<T>> list, float collisionTime)
+        {
+            return null;
         }
     }
 }
