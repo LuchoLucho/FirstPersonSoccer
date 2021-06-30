@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuarentineSurvival.Model;
+using QuarentineSurvival.Model.Actions;
 using QuarentineSurvival.Model.Interface;
 using SaavedraCraft.Model.CollisionEngine;
 using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Interfaces;
+using SaavedraCraft.Model.Interfaces.Transportation;
 using SaavedraCraft.Model.Transportation;
 using System;
 using System.Collections.Generic;
@@ -82,6 +84,58 @@ namespace QuarentineSurvivalTest
             playerAlive.SetVelocity(10.0f);
             playerAlive.TimeTick(1.0f);
             Assert.IsFalse(playerAlive.IsAlive());
+            Assert.AreEqual(0.0f,playerAlive.GetVelocity());
+        }
+
+        [TestMethod]
+        public void WeaponHolderShowTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> medium = new ActionCollisionableMediumAware<object>("aMediumCollionAware", null, 0, 0);
+            QurentinePlayerModel<object> weaponHolder = new QurentinePlayerModel<object>("player", null, medium, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            float attackPower = 5.0f;
+            Func<IWeapon<object>> weaponBuilder = () =>
+            {
+                return new MockWeapon<object>("aWeapon",null, weaponHolder.GetMedium(), attackPower);
+            };
+            IAction<object> exposeHideWeaponAction = new ExposeHideWeaponAction<object>(weaponBuilder);
+            IResource resource = new ActionableResource<object>(1, "WeaponHolder", exposeHideWeaponAction, 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            weaponHolder.LoadCargo(simpleCargo);
+            List<IAction<object>> actionsInTheHolder = weaponHolder.ShowAvailableActions();
+            Assert.AreEqual(1, actionsInTheHolder.Count);
+            List<IActionable<object>> actionables = weaponHolder.ShowAllActionables();
+            Assert.AreEqual(1, actionables.Count);
+            Assert.AreEqual(1, medium.GetMovablesOnMedium().Count);
+            actionsInTheHolder[0].execute(weaponHolder, weaponHolder, actionables[0]);
+            Assert.AreEqual(2, medium.GetMovablesOnMedium().Count);
+        }
+
+        public class ExposeHideWeaponAction<T> : IAction<T>
+        {
+            private Func<IWeapon<T>> weaponBuilder;           
+
+            public ExposeHideWeaponAction(Func<IWeapon<T>> weaponBuilder)
+            {
+                this.weaponBuilder = weaponBuilder;
+            }            
+
+            public bool canExecute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable, object param = null)
+            {
+                this.weaponBuilder();
+            }
+
+            public IActionable<T> getSourceActionable()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public class MockWeapon<T> : SimpleTransporterCollisionable<T>, IWeapon<T>
@@ -121,7 +175,7 @@ namespace QuarentineSurvivalTest
 
             public MockAlive(string aName, T comp, IMovableMediumCollisionAware<T> medium, ITransporterAndWarehouseManager<T> transporterAndWarehouseManager, float initialHealth) : base(aName, comp, medium, transporterAndWarehouseManager)
             {
-                this.health = initialHealth;
+                health = initialHealth;
             }
 
             public float GetHealth()
