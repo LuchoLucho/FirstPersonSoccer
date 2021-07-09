@@ -1,0 +1,42 @@
+﻿<Properties StartupConfiguration="{35D3944B-1A1A-477D-9CCF-2CE8E32A0F5D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Unify.SaavedraCraft.NTest/FightTests.cs">
+    <Files>
+      <File FileName="Unify.SaavedraCraft.NTest/Test.cs" Line="10" Column="30" />
+      <File FileName="Unify.SaavedraCraft.NTest/TransportationTests.cs" Line="13" Column="17" />
+      <File FileName="Unify.SaavedraCraft.NTest/ResourcesTests.cs" Line="30" Column="16" />
+      <File FileName="Unify.SaavedraCraft.NTest/SimpleCollisionEngineTests.cs" Line="14" Column="16" />
+      <File FileName="Unify.SaavedraCraft.NTest/ResourceStorageAndTransportationTests.cs" Line="14" Column="16" />
+      <File FileName="Unify.SaavedraCraft.NTest/ActionablesItemsTests.cs" Line="212" Column="16" />
+      <File FileName="Unify.SaavedraCraft.NTest/FightTests.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Unify" expanded="True">
+            <Node name="Unify.SaavedraCraft.NTest" expanded="True">
+              <Node name="FightTests.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Unify" expanded="True">
+            <Node name="Unify.SaavedraCraft.NTest" expanded="True">
+              <Node name="Unify.SaavedraCraft.NTest" expanded="True">
+                <Node name="ActionablesItemsTests" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Unify PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
