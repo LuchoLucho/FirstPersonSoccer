@@ -133,36 +133,6 @@ namespace Unify.SaavedraCraft.NTest
         }
 
         [Test()]
-        public void ExecutorPickupActioanbleResourcesTest()
-        {
-            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
-            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
-            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
-            ICargo<object> simpleCargo = new SimpleCargo<object>();
-            IResource resource = new ActionableResource<object>(1, "Linterna", new EncenderLinternaAction<object>(), 0);
-            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
-            simpleCargo.addResources(resource, destinyOfResources);
-            player.LoadCargo(simpleCargo);
-            Assert.AreEqual(1, player.ShowAvailableActions().Count);
-        }
-
-        [Test()]
-        public void ExecutorDropActioanbleResourcesTest()
-        {
-            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
-            IMovableMediumCollisionAware<object> piso = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
-            QurentinePlayerModel<object> player = new QurentinePlayerModel<object>("player", null, piso, transporterAndWarehouseManager);
-            ICargo<object> simpleCargo = new SimpleCargo<object>();
-            IResource resource = new ActionableResource<object>(1, "Linterna", new EncenderLinternaAction<object>(), 0);
-            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
-            simpleCargo.addResources(resource, destinyOfResources);
-            player.LoadCargo(simpleCargo);
-            Assert.AreEqual(1, player.ShowAvailableActions().Count);
-            player.UnloadCargo(simpleCargo);
-            Assert.AreEqual(0, player.ShowAvailableActions().Count);
-        }
-
-        [Test()]
         public void ExecutorTransformActionableResourceTest()
         {
             ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();

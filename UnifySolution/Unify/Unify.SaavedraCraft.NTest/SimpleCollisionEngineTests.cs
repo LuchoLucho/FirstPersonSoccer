@@ -139,5 +139,30 @@ namespace Unify.SaavedraCraft.NTest
             Assert.AreEqual(0, player.GetVelocity());
             Assert.IsTrue(player.GetCoordI() + player.GetWidh() / 2 < obstaculo2.GetCoordI() - obstaculo2.GetWidh() / 2);
         }
+
+        [Test()]
+        public void MovableVSMovableTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> pisoOrigen = new ActionCollisionableMediumAware<object>("ActionStreet", null, 0, 0);
+            
+            ICollisionable<object> movable1 = new QurentinePlayerModel<object>("ToCollide1", null, pisoOrigen, transporterAndWarehouseManager);
+            ICollisionable<object> movable2 = new QurentinePlayerModel<object>("ToCollide1", null, pisoOrigen, transporterAndWarehouseManager);
+            int[] directionNorth = new[] { 0, 1 };
+            int[] directionSouth = new[] { 0, -1 };
+            //----
+            movable1.SetNewIJ(0.0f, -0.4f);
+            movable1.SetDirectionI(directionNorth[0]);
+            movable1.SetDirectionJ(directionNorth[1]);
+            movable1.SetVelocity(10.0f);//It will complete the trip in one tick
+
+            movable2.SetNewIJ(0.0f, +0.4f);
+            movable2.SetDirectionI(directionSouth[0]);
+            movable2.SetDirectionI(directionSouth[1]);
+            movable2.SetVelocity(10.0f);
+
+            movable1.TimeTick(1.0f);
+            Assert.AreEqual(0, movable1.GetVelocity());
+        }
     }
 }

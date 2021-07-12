@@ -47,7 +47,7 @@ namespace QuarentineSurvival.Model
 
         public void removeActionable(IActionable<T> actionableToRemove)
         {
-            throw new NotImplementedException();
+            allActionables.Remove(actionableToRemove);
         }
 
         public List<IActionable<T>> ShowAllActionables()
