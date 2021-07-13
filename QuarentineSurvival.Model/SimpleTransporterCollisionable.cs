@@ -146,7 +146,13 @@ namespace QuarentineSurvival.Model
 
         private QuarentineCollision<T> GetCollisionFromBothMovable(ICollisionable<T> simpleMovableCollisionable, ICollisionable<T> other)
         {
-            throw new NotImplementedException();
+            QuarentineCollision<T> oneMovableOtherFix = GetCollisionBetweenMovableAndFix(simpleMovableCollisionable, other);
+            QuarentineCollision<T> oneFixOtherMovable = GetCollisionBetweenMovableAndFix(other, simpleMovableCollisionable);
+            if (oneMovableOtherFix.GetTimeOfCollision() < oneFixOtherMovable.GetTimeOfCollision())
+            {
+                return oneMovableOtherFix;
+            }
+            return oneFixOtherMovable;
         }
 
         public Vertex2d<T>[] ShowCorners()

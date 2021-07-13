@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4071A556-6C53-4C3E-B9A0-C92310668470}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Unify.SaavedraCraft.NTest</RootNamespace>
+    <AssemblyName>Unify.SaavedraCraft.NTest</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TransportationTests.cs" />
+    <Compile Include="MovableTests.cs" />
+    <Compile Include="ResourcesTests.cs" />
+    <Compile Include="SimpleCollisionEngineTests.cs" />
+    <Compile Include="ResourceStorageAndTransportationTests.cs" />
+    <Compile Include="ActionablesItemsTests.cs" />
+    <Compile Include="FightTests.cs" />
+    <Compile Include="PickAndDropTests.cs" />
+    <Compile Include="WearableTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SaavedraCraft\SaavedraCraft.Model\SaavedraCraft.Model.csproj">
+      <Project>{E44ADCEC-0365-4270-A368-E7B4951B2ED1}</Project>
+      <Name>SaavedraCraft.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\QuarentineSurvival.Model\QuarentineSurvival.Model.csproj">
+      <Project>{9D411551-9144-4441-865C-C74D029777CD}</Project>
+      <Name>QuarentineSurvival.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
