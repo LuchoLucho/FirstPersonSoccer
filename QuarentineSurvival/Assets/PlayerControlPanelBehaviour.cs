@@ -314,23 +314,23 @@ public class PlayerControlPanelBehaviour : MonoBehaviour
             //Debug.Log(Screen.currentResolution);
             //Debug.Log("mouseDown = " + Input.mousePosition.x  + " " + ( Screen.height - Input.mousePosition.y) );
             Vector2 pointOfMouseClick = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-            Debug.Log("pointOfMouseClick = " + pointOfMouseClick);
+            //Debug.Log("pointOfMouseClick = " + pointOfMouseClick);
             bool isTheMouseInsideAnyControll = false;
-            Debug.Log("allControllsRect size = " + allControllsRect.Count);
+            //Debug.Log("allControllsRect size = " + allControllsRect.Count);
             allControllsRect.ForEach(x => {
                 if (x.Contains(pointOfMouseClick))
                 {
                     isTheMouseInsideAnyControll = true;
-                    Debug.Log("INSIDE!!! " + x.ToString());
+                    //Debug.Log("INSIDE!!! " + x.ToString());
                 }
                 else
                 {
-                    Debug.Log("Not inside = " + x.ToString());
+                    //Debug.Log("Not inside = " + x.ToString());
                 }
             });
             if (!isTheMouseInsideAnyControll)
             {
-                Debug.Log("mouseDown = " + Input.mousePosition.x / Screen.currentResolution.width + " " + Input.mousePosition.y / Screen.currentResolution.height);
+                //Debug.Log("mouseDown = " + Input.mousePosition.x / Screen.currentResolution.width + " " + Input.mousePosition.y / Screen.currentResolution.height);
                 Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
                 Vector3 p0 = ray.GetPoint(0);
                 Vector3 v = ray.direction;

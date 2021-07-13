@@ -55,11 +55,11 @@ namespace QuarentineSurvival.Model.Actions
         {
             if (WasAlreadyTriggered)
             {
-                QuarentineCollision<T> nullCollision = new HardCollision<T>(new List<IMovable<T>> { this, other }, float.MaxValue);
+                QuarentineCollision<T> nullCollision = new HardCollision<T>(new List<ICollisionable<T>> { this, other }, float.MaxValue);
                 return nullCollision;
             }
             QuarentineCollision<T> oldCollision = base.GetCollision(other);
-            return new SoftCollision<T>(new List<IMovable<T>> { this, other }, oldCollision.GetTimeOfCollision(), action);
+            return new SoftCollision<T>(new List<ICollisionable<T>> { this, other }, oldCollision.GetTimeOfCollision(), action);
         }
     }
 

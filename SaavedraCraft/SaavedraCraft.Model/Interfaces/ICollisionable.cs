@@ -11,6 +11,6 @@ namespace SaavedraCraft.Model.Interface
         Edge<T>[] ShowEdges();
         Vertex2d<T>[] ShowCorners();
         QuarentineCollision<T> GetCollision(ICollisionable<T> other);
-        QuarentineCollision<T> GetCustomCollision(List<IMovable<T>> lists, float timeOfCollision);
+        QuarentineCollision<T> GetCustomCollision(List<ICollisionable<T>> lists, float timeOfCollision);
     }
 }

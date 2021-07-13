@@ -11,6 +11,7 @@ namespace Assets.Scripts
     {
         public Camera mainCamera;
         public Camera chestCamera;
+        public Camera outsideCamera;
         private Camera currentCamera;
         public bool shouldCamaraFollowPlayer = true;
         private MapManangerBehaviour mapManangerBehaviour;
@@ -24,6 +25,7 @@ namespace Assets.Scripts
         {
             mainCamera.enabled = true;
             chestCamera.enabled = false;
+            outsideCamera.enabled = false;
             currentCamera = mainCamera;
         }
 
@@ -31,7 +33,16 @@ namespace Assets.Scripts
         {
             mainCamera.enabled = false;
             chestCamera.enabled = true;
+            outsideCamera.enabled = false;
             currentCamera = chestCamera;
+        }
+
+        public void SwitchToOutside()
+        {
+            outsideCamera.enabled = true;
+            mainCamera.enabled = false;
+            chestCamera.enabled = false;
+            currentCamera = outsideCamera;
         }
 
         public void Update()

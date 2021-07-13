@@ -293,7 +293,16 @@ namespace SaavedraCraft.Model.Transportation
             movableDeltaI += simpleMovable.GetDirectionI() * simpleMovable.GetVelocity() * timedelta;
             movableDeltaJ += simpleMovable.GetDirectionJ() * simpleMovable.GetVelocity() * timedelta;
             //----
-            QuarentineCollision<T> hardCollision = new HardCollision<T>(new List<IMovable<T>> {simpleMovable }, timedelta);
+            //Horrify Fix:
+            QuarentineCollision<T> hardCollision = null;
+            if (simpleMovable is ICollisionable<T>)
+            {
+                hardCollision = new HardCollision<T>(new List<ICollisionable<T>> { (ICollisionable<T>)simpleMovable }, timedelta);
+            }
+            else
+            {
+                hardCollision = new HardCollision<T>(new List<ICollisionable<T>>(), float.MaxValue);
+            }
             //----
             if (movableDeltaJ > MOVABLE_MEDIUM_EDGE_LIMIT / 2)
             {
@@ -461,15 +470,6 @@ namespace SaavedraCraft.Model.Transportation
             this.velocity = newVelocity;
         }
 
-        public override void TimeTick(float timedelta)
-        {
-            if (Math.Abs(this.GetVelocity())<0.000001)
-            {
-                return;
-            }                     
-            currentMovableMedium.OnMovableMoving(this,timedelta);            
-        }
-
         public void traslateEast(float extraDeltaI, float remainingDeltaTime)
         {
             Log("traslateEast");
@@ -524,6 +524,15 @@ namespace SaavedraCraft.Model.Transportation
             {
                 currentMovableMedium.OnMovableMoving(this, remainingDeltaTime);
             }
+        }
+
+        public override void TimeTick(float timedelta)
+        {
+            if (Math.Abs(this.GetVelocity()) < 0.000001)
+            {
+                return;
+            }
+            currentMovableMedium.OnMovableMoving(this, timedelta);
         }
 
         public virtual void Log(string message)

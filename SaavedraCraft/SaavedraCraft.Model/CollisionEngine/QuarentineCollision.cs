@@ -8,10 +8,10 @@ namespace SaavedraCraft.Model.CollisionEngine
 {
     public abstract class QuarentineCollision<T>
     {
-        private List<IMovable<T>> involveInCollision;
+        private List<ICollisionable<T>> involveInCollision;
         private float timeOfCollision;
 
-        public QuarentineCollision(List<IMovable<T>> bodies, float timeOfCollision)
+        public QuarentineCollision(List<ICollisionable<T>> bodies, float timeOfCollision)
         {
             involveInCollision = bodies;
             this.timeOfCollision = timeOfCollision;
@@ -24,7 +24,7 @@ namespace SaavedraCraft.Model.CollisionEngine
             return timeOfCollision;
         }
 
-        public List<IMovable<T>> ShowInvolveMovablesInCollision()
+        public List<ICollisionable<T>> ShowInvolveMovablesInCollision()
         {
             return involveInCollision;
         }
@@ -32,7 +32,7 @@ namespace SaavedraCraft.Model.CollisionEngine
 
     public class HardCollision<T> : QuarentineCollision<T>
     {
-        public HardCollision(List<IMovable<T>> bodies, float timeOfCollision) : base(bodies, timeOfCollision)
+        public HardCollision(List<ICollisionable<T>> bodies, float timeOfCollision) : base(bodies, timeOfCollision)
         {
         }
 

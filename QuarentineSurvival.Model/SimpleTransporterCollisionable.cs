@@ -57,18 +57,24 @@ namespace QuarentineSurvival.Model
                 Vertex2d<T> currentVertex = movableCol.ShowCorners()[i];
                 edgesThatMayCollide.ForEach(e => collissionTime.Add(GetCollisionTimeBetweenEdgeAndPoint(e, currentVertex)));
             }
+            if (collissionTime.Count == 0)
+            {
+                QuarentineCollision<T> nullColission = movableCol.GetCustomCollision(new List<ICollisionable<T>> { fixedCol }, float.MaxValue);
+                return nullColission;
+            }
             collissionTime.Sort();
-            QuarentineCollision<T> customCollision = movableCol.GetCustomCollision(new List<IMovable<T>> { fixedCol }, collissionTime[0]);
+            /*QuarentineCollision<T> customCollision = movableCol.GetCustomCollision(new List<ICollisionable<T>> { fixedCol }, collissionTime[0]);
             if (customCollision != null)
             {
                 return customCollision;
             }
-            customCollision = fixedCol.GetCustomCollision(new List<IMovable<T>> { movableCol }, collissionTime[0]);
+            QuarentineCollision<T> customCollision = fixedCol.GetCustomCollision(new List<ICollisionable<T>> { movableCol }, collissionTime[0]);
             if (customCollision != null)
             {
                 return customCollision;
             }
-            return new HardCollision<T>(new List<IMovable<T>> { movableCol, fixedCol }, collissionTime[0]);
+            return new HardCollision<T>(new List<ICollisionable<T>> { movableCol, fixedCol }, collissionTime[0]);*/
+            return fixedCol.GetCustomCollision(new List<ICollisionable<T>> { movableCol, fixedCol }, collissionTime[0]);
         }
 
         private float GetCollisionTimeBetweenEdgeAndPoint(Edge<T> e, Vertex2d<T> currentVertex)
@@ -167,9 +173,9 @@ namespace QuarentineSurvival.Model
             return ret;
         }
 
-        public virtual QuarentineCollision<T> GetCustomCollision(List<IMovable<T>> list, float collisionTime)
+        public virtual QuarentineCollision<T> GetCustomCollision(List<ICollisionable<T>> list, float collisionTime)
         {
-            return null;
+            return new HardCollision<T>(list, collisionTime);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using SaavedraCraft.Model.CollisionEngine;
+using SaavedraCraft.Model.Interface;
 using SaavedraCraft.Model.Transportation;
 
 namespace SaavedraCraft.Model.Interfaces

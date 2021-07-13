@@ -99,7 +99,8 @@ namespace QuarentineSurvivalTest
             {
                 return new MockWeapon<object>("aWeapon",null, weaponHolder.GetMedium(), attackPower);
             };
-            IAction<object> exposeHideWeaponAction = new ExposeHideWeaponAction<object>(weaponBuilder);
+            Action<IWeapon<object>> weaponDestroyer = (w) => {};
+            IAction<object> exposeHideWeaponAction = new ExposeHideWeaponAction<object>(weaponBuilder, weaponDestroyer);
             IResource resource = new ActionableResource<object>(1, "WeaponHolder", exposeHideWeaponAction, 0);
             IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
             simpleCargo.addResources(resource, destinyOfResources);
@@ -113,13 +114,79 @@ namespace QuarentineSurvivalTest
             Assert.AreEqual(2, medium.GetMovablesOnMedium().Count);
         }
 
+        [TestMethod]
+        public void WeaponHolderBuildAndDestroyTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> medium = new ActionCollisionableMediumAware<object>("aMediumCollionAware", null, 0, 0);
+            QurentinePlayerModel<object> weaponHolder = new QurentinePlayerModel<object>("player", null, medium, transporterAndWarehouseManager);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            float attackPower = 5.0f;
+            Func<IWeapon<object>> weaponBuilder = () =>
+            {
+                return new MockWeapon<object>("aWeapon", null, weaponHolder.GetMedium(), attackPower);
+            };
+            bool wasTheDestroyerCalled = false;
+            Action<IWeapon<object>> weaponDestroyer = (w) =>
+            {
+                wasTheDestroyerCalled = true;
+                medium.MovablePart(w);
+            };
+            IAction<object> exposeHideWeaponAction = new ExposeHideWeaponAction<object>(weaponBuilder, weaponDestroyer);
+            IResource resource = new ActionableResource<object>(1, "WeaponHolder", exposeHideWeaponAction, 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            weaponHolder.LoadCargo(simpleCargo);
+            List<IAction<object>> actionsInTheHolder = weaponHolder.ShowAvailableActions();
+            List<IActionable<object>> actionables = weaponHolder.ShowAllActionables();
+            actionsInTheHolder[0].execute(weaponHolder, weaponHolder, actionables[0]);
+            Assert.AreEqual(2, medium.GetMovablesOnMedium().Count);
+            actionsInTheHolder[0].execute(weaponHolder, weaponHolder, actionables[0]);
+            Assert.AreEqual(1, medium.GetMovablesOnMedium().Count);
+            Assert.IsTrue(wasTheDestroyerCalled);
+        }
+
+        [TestMethod]
+        public void WeaponCreatedToTheRightHurtOtherPlayerTest()
+        {
+            ITransporterAndWarehouseManager<object> transporterAndWarehouseManager = new TransporterAndWarehouseManager<object>();
+            IMovableMediumCollisionAware<object> medium = new ActionCollisionableMediumAware<object>("aMediumCollionAware", null, 0, 0);
+            QurentinePlayerModel<object> weaponHolder = new QurentinePlayerModel<object>("player", null, medium, transporterAndWarehouseManager);
+            weaponHolder.SetNewIJ(-0.8f,-0.8f);
+            ICargo<object> simpleCargo = new SimpleCargo<object>();
+            float attackPower = 5.0f;
+            Func<IWeapon<object>> weaponBuilder = () =>
+            {
+                IWeapon<object> weapon = new MockWeapon<object>("aWeapon", null, weaponHolder.GetMedium(), attackPower);                
+                weapon.SetNewIJ(0.7f,0.7f);
+                return weapon;
+            };            
+            IAction<object> exposeHideWeaponAction = new ExposeHideWeaponAction<object>(weaponBuilder, x=> { });
+            IResource resource = new ActionableResource<object>(1, "WeaponHolder", exposeHideWeaponAction, 0);
+            IMovableMedium<object> destinyOfResources = null; // The resouce has no fixed destination
+            simpleCargo.addResources(resource, destinyOfResources);
+            weaponHolder.LoadCargo(simpleCargo);
+            List<IAction<object>> actionsInTheHolder = weaponHolder.ShowAvailableActions();
+            List<IActionable<object>> actionables = weaponHolder.ShowAllActionables();
+            IAlive<object> toBeHurt = new MockAlive<object>("toBeHurt", null, medium, transporterAndWarehouseManager,1.0f);
+            toBeHurt.SetVelocity(0.01f);
+            toBeHurt.SetNewIJ(0.8f, 0.8f);
+            actionsInTheHolder[0].execute(weaponHolder, weaponHolder, actionables[0]);
+            Assert.IsTrue(toBeHurt.IsAlive());
+            toBeHurt.TimeTick(1.0f);
+            Assert.IsFalse(toBeHurt.IsAlive());
+        }
+
         public class ExposeHideWeaponAction<T> : IAction<T>
         {
-            private Func<IWeapon<T>> weaponBuilder;           
+            private Func<IWeapon<T>> weaponBuilder;
+            private Action<IWeapon<T>> weaponDestroyer;
+            private IWeapon<T> weapon;
 
-            public ExposeHideWeaponAction(Func<IWeapon<T>> weaponBuilder)
+            public ExposeHideWeaponAction(Func<IWeapon<T>> weaponBuilder, Action<IWeapon<T>> weaponDestroyer)
             {
                 this.weaponBuilder = weaponBuilder;
+                this.weaponDestroyer = weaponDestroyer;
             }            
 
             public bool canExecute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable)
@@ -129,7 +196,15 @@ namespace QuarentineSurvivalTest
 
             public void execute(IActionExecutor<T> executor, IHolder<T> holder, IActionable<T> impactedActionable, object param = null)
             {
-                this.weaponBuilder();
+                if (weapon == null)
+                {
+                    weapon = this.weaponBuilder();
+                }
+                else
+                {
+                    weaponDestroyer(weapon);
+                    weapon = null;
+                }
             }
 
             public IActionable<T> getSourceActionable()
@@ -152,9 +227,9 @@ namespace QuarentineSurvivalTest
                 alive.Hurt(attack);
             }
 
-            public override QuarentineCollision<T> GetCustomCollision(List<IMovable<T>> list, float collisionTime)
+            public override QuarentineCollision<T> GetCustomCollision(List<ICollisionable<T>> list, float collisionTime)
             {
-                List<IMovable<T>> toBeHurt = list.FindAll(x => x != this);
+                List<ICollisionable<T>> toBeHurt = list.FindAll(x => x != this);
                 if (toBeHurt.Count == 0)
                 {
                     return null;
@@ -193,8 +268,10 @@ namespace QuarentineSurvivalTest
                 this.health = toSetHealth;
             }
 
-            public override QuarentineCollision<T> GetCustomCollision(List<IMovable<T>> list, float timeOfCollision)
+            public override QuarentineCollision<T> GetCustomCollision(List<ICollisionable<T>> list, float timeOfCollision)
             {
+                List<QuarentineCollision<T>> collisions = new List<QuarentineCollision<T>>();
+                list.ForEach(x => collisions.Add(x.GetCustomCollision(list,timeOfCollision)));
                 return base.GetCustomCollision(list, timeOfCollision);
             }
 
@@ -218,7 +295,7 @@ namespace QuarentineSurvivalTest
             private IWeapon<T> weapon;
             private IAlive<T> alive;
 
-            public DamageCollision(IWeapon<T> weapon, IAlive<T> alive, float timeOfCollision) : base(new List<IMovable<T>> { weapon, alive}, timeOfCollision)
+            public DamageCollision(IWeapon<T> weapon, IAlive<T> alive, float timeOfCollision) : base(new List<ICollisionable<T>> { weapon, alive}, timeOfCollision)
             {
                 this.weapon = weapon;
                 this.alive = alive;

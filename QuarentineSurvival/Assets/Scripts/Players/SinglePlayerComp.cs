@@ -24,6 +24,7 @@ namespace Assets.Scripts.Players
         public override void TimeTick(float timedelta)
         {
             base.TimeTick(timedelta);
+            Debug.LogWarning("SinglePlayerComp TimeTick");
         }
 
         public override void Log(string message)

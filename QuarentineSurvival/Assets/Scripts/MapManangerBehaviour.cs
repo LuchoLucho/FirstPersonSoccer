@@ -37,6 +37,8 @@ public class MapManangerBehaviour : MonoBehaviour
 
     private StepOnActionable<Component> stepOnActionableChestCamera;
     private StepOnActionable<Component> stepOnActionableBeforeChestCamera;
+    private StepOnActionable<Component> stepOnActionableOutsideMainChamber;
+    private StepOnActionable<Component> stepOnActionableInside;
 
     private CamaraController camaraController;
 
@@ -121,13 +123,29 @@ public class MapManangerBehaviour : MonoBehaviour
                 coin.WasAlreadyTriggered = true;
             }));
         }
+        else if (i == 0 && j == -2)
+        {
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
+            stepOnActionableOutsideMainChamber = new StepOnActionableComp("stepOnActionableOutsideMainChamber", null, newMedium, transporterAndWarehouseManager);
+            stepOnActionableOutsideMainChamber.SetWidh(0.9f);
+            stepOnActionableOutsideMainChamber.SetHeigh(0.9f);
+            stepOnActionableOutsideMainChamber.SetAutoAction(new AutoAction<Component>(x => {
+                if (x == player)
+                {
+                    Debug.Log("Im in the OUTSIDE!");
+                    GetComponent<CamaraController>().SwitchToOutside();
+                    stepOnActionableOutsideMainChamber.WasAlreadyTriggered = true;
+                    stepOnActionableInside.WasAlreadyTriggered = false;
+                }
+            }));
+        }        
         else if (j<=-2)
         {
             newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);
         }
         else if ((i == 0) && (j == 0))
         {
-            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, BedroomFloorComponent, i, j);
+            newMedium = new ActionCollisionableMediumAware<Component>("PlayerStartMedium" + i + j, SimpleRoadComponent, i, j);            
         }
         else if ((i ==1) && (j == 1))
         {
@@ -202,6 +220,19 @@ public class MapManangerBehaviour : MonoBehaviour
             paredIzq.SetWidh(0.25f);
             paredIzq.SetHeigh(0.1f);
             paredIzq.SetDeltaI(+0.375f);
+            //--------------------------------------------------------------------------
+            stepOnActionableInside = new StepOnActionableComp("stepOnActionableInside", null, newMedium, transporterAndWarehouseManager);
+            stepOnActionableInside.SetWidh(0.9f);
+            stepOnActionableInside.SetHeigh(0.9f);
+            stepOnActionableInside.SetAutoAction(new AutoAction<Component>(x => {
+                if (x == player)
+                {
+                    Debug.Log("Im in the INSIDE!");
+                    GetComponent<CamaraController>().SwitchToMainCamera();
+                    stepOnActionableOutsideMainChamber.WasAlreadyTriggered = false;
+                    stepOnActionableInside.WasAlreadyTriggered = true;
+                }
+            }));
         }
         else if ((i == 0) && (j == 1))
         {

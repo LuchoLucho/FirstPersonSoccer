@@ -29,7 +29,7 @@ namespace QuarentineSurvival.Model
         public static QuarentineCollision<T> GetCollisionTimeToBeReUsed(IMovableMediumCollisionAware<T> thisMedium, ICollisionable<T> other)
         {
             List<ICollisionable<T>> otherToCollideWith = ShowAllCollisionables(thisMedium);
-            QuarentineCollision<T> nullCollision = new HardCollision<T>(new List<IMovable<T>> { null, other }, float.MaxValue);
+            QuarentineCollision<T> nullCollision = new HardCollision<T>(new List<ICollisionable<T>> { null, other }, float.MaxValue);
             QuarentineCollision<T> nextCollision = nullCollision;
             foreach (ICollisionable<T> currentCollisionable in otherToCollideWith)
             {

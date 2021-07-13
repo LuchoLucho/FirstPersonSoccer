@@ -48,7 +48,7 @@ namespace QuarentineSurvival.Model
         {
             if (isOpen)
             {
-                return new HardCollision<T>(new List<IMovable<T>>() { this, other}, float.MaxValue);//Door open then no collision!!!
+                return new HardCollision<T>(new List<ICollisionable<T>>() { this, other}, float.MaxValue);//Door open then no collision!!!
             }
             return base.GetCollision(other);
         }

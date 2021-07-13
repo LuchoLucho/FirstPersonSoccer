@@ -11,7 +11,7 @@ namespace QuarentineSurvival.Model.Collision
     {
         private IAction<T> action;
 
-        public SoftCollision(List<IMovable<T>> bodies, float timeOfCollision, IAction<T> actionToExecute) : base(bodies, timeOfCollision)
+        public SoftCollision(List<ICollisionable<T>> bodies, float timeOfCollision, IAction<T> actionToExecute) : base(bodies, timeOfCollision)
         {
             action = actionToExecute;
         }
