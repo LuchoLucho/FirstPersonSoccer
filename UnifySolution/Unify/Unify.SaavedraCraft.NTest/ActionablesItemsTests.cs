@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using QuarentineSurvival.Model;
 using QuarentineSurvival.Model.Actions;
@@ -8,6 +9,7 @@ using SaavedraCraft.Model.Interfaces;
 using SaavedraCraft.Model.Interfaces.Transportation;
 using SaavedraCraft.Model.Resources;
 using SaavedraCraft.Model.Transportation;
+using Assert = NUnit.Framework.Assert;
 
 namespace Unify.SaavedraCraft.NTest
 {
